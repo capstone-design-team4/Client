@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".ReductionActivity">
+    tools:context=".DRFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/title1"
         android:layout_width="wrap_content"
@@ -112,4 +113,5 @@
         tools:ignore="MissingConstraints">
 
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

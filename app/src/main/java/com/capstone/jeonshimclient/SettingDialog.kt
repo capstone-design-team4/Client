@@ -6,7 +6,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 
-open class DialogSetting(context: Context) {
+open class SettingDialog(context: Context) {
     private val dialog = Dialog(context)
 
     fun setDig(){
@@ -20,7 +20,7 @@ open class DialogSetting(context: Context) {
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
-        dialog.setContentView(R.layout.setting_dialog)
+        dialog.setContentView(R.layout.dialog_setting)
 
         val edit = dialog.findViewById<EditText>(R.id.input_drname)
         val btnDone = dialog.findViewById<Button>(R.id.check)
