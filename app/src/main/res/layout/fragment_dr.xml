@@ -73,7 +73,7 @@
             android:text="..."
             android:textColor="#FFFFFF"
             android:textSize="6sp"
-            app:backgroundTint="#515151"
+            app:backgroundTint="@color/teal_200"
             tools:ignore="SmallSp,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <EditText

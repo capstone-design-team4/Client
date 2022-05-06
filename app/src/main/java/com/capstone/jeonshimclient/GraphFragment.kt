@@ -25,7 +25,6 @@ class GraphFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val activity = context as Activity
         return inflater.inflate(R.layout.fragment_graph, container, false)
     }
 
@@ -54,9 +53,9 @@ class GraphFragment : Fragment() {
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(false) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
-                axisLineColor = ContextCompat.getColor(context,R.color.purple_500) // 축 색깔 설정
-                gridColor = ContextCompat.getColor(context,R.color.purple_500) // 축 아닌 격자 색깔 설정
-                textColor = ContextCompat.getColor(context,R.color.purple_500) // 라벨 텍스트 컬러 설정
+                axisLineColor = ContextCompat.getColor(context,R.color.white) // 축 색깔 설정
+                gridColor = ContextCompat.getColor(context,R.color.white) // 축 아닌 격자 색깔 설정
+                textColor = ContextCompat.getColor(context,R.color.white) // 라벨 텍스트 컬러 설정
                 textSize = 13f //라벨 텍스트 크기
             }
             xAxis.run {
@@ -64,7 +63,7 @@ class GraphFragment : Fragment() {
                 granularity = 1f // 1 단위만큼 간격 두기
                 setDrawAxisLine(true) // 축 그림
                 setDrawGridLines(false) // 격자
-                textColor = ContextCompat.getColor(context,R.color.purple_500) //라벨 색상
+                textColor = ContextCompat.getColor(context,R.color.white) //라벨 색상
                 textSize = 12f // 텍스트 크기
                 valueFormatter = MyXAxisFormatter() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
@@ -75,7 +74,7 @@ class GraphFragment : Fragment() {
         }
 
         var set = BarDataSet(entries,"DataSet") // 데이터셋 초기화
-        set.color = R.color.white
+        set.color = ContextCompat.getColor(requireContext(),R.color.teal_200)
 
         val dataSet :ArrayList<IBarDataSet> = ArrayList()
         dataSet.add(set)

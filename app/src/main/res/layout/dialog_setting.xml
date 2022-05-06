@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:ems="10"
-        android:hint="Dr 을 입력하세요"
+        android:hint="평균 감축량을 입력하세요"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColor="#ACACAC"
