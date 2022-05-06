@@ -19,7 +19,21 @@
         <entry key="..\:/AndroidProjects/JeonShimClient/app/src/main/res/layout/fragment_user.xml" value="0.36614583333333334" />
         <entry key="..\:/AndroidProjects/JeonShimClient/app/src/main/res/layout/setdialog.xml" value="0.5" />
         <entry key="..\:/AndroidProjects/JeonShimClient/app/src/main/res/layout/setting_dialog.xml" value="0.33" />
+<<<<<<< Updated upstream
         <entry key="..\:/AndroidProjects/JeonShimClient/app/src/main/res/menu/navi_menu.xml" value="0.1" />
+=======
+<<<<<<< HEAD
+        <entry key="..\:/application/Client/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.316" />
+        <entry key="..\:/application/Client/app/src/main/res/drawable/border_layout.xml" value="0.316" />
+        <entry key="..\:/application/Client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.316" />
+        <entry key="..\:/application/Client/app/src/main/res/layout/activity_reduction.xml" value="0.31302083333333336" />
+        <entry key="..\:/application/Client/app/src/main/res/layout/development_status.xml" value="0.31302083333333336" />
+        <entry key="..\:/application/Client/app/src/main/res/layout/setting_dialog.xml" value="0.31302083333333336" />
+        <entry key="..\:/application/Client/app/src/main/res/layout/supply_tatus_list_view.xml" value="0.31302083333333336" />
+=======
+        <entry key="..\:/AndroidProjects/JeonShimClient/app/src/main/res/menu/navi_menu.xml" value="0.1" />
+>>>>>>> 1dcdac30eb9f0367909f97376c5c9e0b74393d93
+>>>>>>> Stashed changes
       </map>
     </option>
   </component>
