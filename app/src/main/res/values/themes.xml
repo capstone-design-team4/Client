@@ -12,7 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- 네비게이션 바 -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!-- 타임피커 -->
+        <item name="android:timePickerMode" tools:targetApi="lollipop">spinner</item>
     </style>
 </resources>
