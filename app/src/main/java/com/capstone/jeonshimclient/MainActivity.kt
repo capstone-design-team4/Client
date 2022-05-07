@@ -2,9 +2,7 @@ package com.capstone.jeonshimclient
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_dr.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,16 +22,16 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, drFragment).commit()
                 }
                 R.id.second -> {
-                    val generationFragment = GenerationFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, generationFragment).commit()
+                    val userFragment = UserFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
                 }
                 R.id.third -> {
                     val graphFragment = GraphFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, graphFragment).commit()
                 }
                 R.id.fourth -> {
-                    val userFragment = UserFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
+                    val usageFragment = UsageFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, usageFragment).commit()
                 }
             }
             true
