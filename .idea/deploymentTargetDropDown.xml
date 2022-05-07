@@ -6,22 +6,12 @@
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
-            <type value="SERIAL_NUMBER" />
-            <value value="R3CN60L2N8D" />
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\vv999\.android\avd\Nexus_5X_API_27.avd" />
           </Key>
         </deviceKey>
       </Target>
-<<<<<<< Updated upstream
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-05-06T06:34:09.356232400Z" />
-=======
-<<<<<<< HEAD
-    </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-05-06T10:05:29.392009500Z" />
-=======
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-05-06T06:34:09.356232400Z" />
->>>>>>> 1dcdac30eb9f0367909f97376c5c9e0b74393d93
->>>>>>> Stashed changes
+    <timeTargetWasSelectedWithDropDown value="2022-05-07T01:49:17.319282900Z" />
   </component>
 </project>

@@ -18,4 +18,13 @@
         <!-- 타임피커 -->
         <item name="android:timePickerMode" tools:targetApi="lollipop">spinner</item>
     </style>
+
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">#000000</item> <!-- divider 색 -->
+        <item name="android:dividerHeight">2dp</item> <!-- divider 높이 -->
+    </style>
+
+    <style name="SpinnerTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+    </style>
 </resources>

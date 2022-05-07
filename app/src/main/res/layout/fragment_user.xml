@@ -17,32 +17,31 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="300dp"
-        android:layout_marginRight="300dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="250dp"
+        android:layout_marginRight="250dp"
+        android:background="@drawable/border_layout"
         android:minHeight="48dp"
+        android:theme="@style/SpinnerTheme"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/title1" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="380dp"
-        android:layout_height="630dp"
+        android:layout_height="580dp"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"

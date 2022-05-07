@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_dr.*
 
 class UserFragment : Fragment() {
@@ -37,14 +38,18 @@ class UserFragment : Fragment() {
             items
         )
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
         spinner.adapter = adapter
+        spinner.setSelection(1)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when(position){
+                    0 -> Toast.makeText(view?.context, "${items[0]} 항목 선택", Toast.LENGTH_SHORT).show()
+                    1 -> Toast.makeText(view?.context, "1번 항목 선택", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
         }
