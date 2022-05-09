@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<array>
+    <string-array name="my_array">
+        <item>전체</item>
+        <item>발전</item>
+        <item>일반</item>
+    </string-array>
+</array>

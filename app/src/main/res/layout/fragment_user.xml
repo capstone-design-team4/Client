@@ -11,35 +11,39 @@
         android:id="@+id/title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/font1"
         android:text="공급발전 현황"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="250dp"
-        android:layout_marginRight="250dp"
-        android:background="@drawable/border_layout"
-        android:minHeight="48dp"
-        android:theme="@style/SpinnerTheme"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+    <FrameLayout
+        android:id="@+id/FrameLayout1"
+        android:layout_width="380dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/FrameLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title1" />
+        app:layout_constraintTop_toBottomOf="@+id/title1">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="258dp"
+            android:layout_height="27dp"
+            android:background="@drawable/border_layout"
+            android:popupBackground="@drawable/border_layout" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/FrameLayout2"
         android:layout_width="380dp"
         android:layout_height="580dp"
         android:layout_marginStart="15dp"
@@ -48,12 +52,18 @@
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1">
+        app:layout_constraintTop_toBottomOf="@+id/FrameLayout1">
 
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/user_recycler" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

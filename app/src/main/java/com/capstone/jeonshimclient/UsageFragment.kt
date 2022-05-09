@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_usage.*
 class UsageFragment : Fragment() {
     lateinit var usageAdapter: UsageAdapter
     val datas = mutableListOf<UsageData>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,6 +25,7 @@ class UsageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
     }
+
     private fun initRecycler() {
         usageAdapter = UsageAdapter(requireContext())
         rv_profile.adapter = usageAdapter
@@ -42,6 +44,7 @@ class UsageFragment : Fragment() {
         }
     }
 }
+
 class VerticalItemDecorator(private val divHeight : Int) : RecyclerView.ItemDecoration() {
 
     @Override
