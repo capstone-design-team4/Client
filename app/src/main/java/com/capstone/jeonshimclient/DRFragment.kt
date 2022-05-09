@@ -19,16 +19,24 @@ class DRFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dialog = SettingDialog(requireContext())
-        button_set_DR.setOnClickListener {
-            dialog.setDig(requireContext())
+
+        val setdialog = SettingDialog(requireContext())
+        val storagedialog = StorageSettingDialog(requireContext())
+
+        button_set_minimum.setOnClickListener {
+            storagedialog.setDig(requireContext())
         }
-        dialog.setOnClickedListener(object : SettingDialog.ButtonClickListener{
+
+        button_set_DR.setOnClickListener {
+            setdialog.setDig(requireContext())
+        }
+        setdialog.setOnClickedListener(object : SettingDialog.ButtonClickListener{
             override fun onClicked(drname: String, reductions: String, time1: String, time2: String){
-                print_dr_name.text = Editable.Factory.getInstance().newEditable("$drname")
+                print_drname.text = Editable.Factory.getInstance().newEditable("$drname")
                 print_reductions.text = Editable.Factory.getInstance().newEditable("${reductions}kWh")
                 print_time.text = Editable.Factory.getInstance().newEditable("$time1 ~ $time2")
             }
-        })
+        }
+        )
     }
 }
