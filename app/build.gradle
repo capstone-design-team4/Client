@@ -37,6 +37,10 @@ android {
         jvmTarget = '1.8'
     }
     namespace 'com.capstone.jeonshimclient'
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -59,4 +63,8 @@ dependencies {
     // Coroutines - Retrofit extention
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.13.0-eap13'
+
+    //retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
