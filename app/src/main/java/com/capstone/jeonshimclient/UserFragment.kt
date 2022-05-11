@@ -53,6 +53,7 @@ class UserFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(position){
+                    // 일단 예시로 채워둠
                     0 -> Toast.makeText(view?.context, "항목 선택", Toast.LENGTH_SHORT).show()
                     1 -> Toast.makeText(view?.context, "1번 항목 선택", Toast.LENGTH_SHORT).show()
                 }
