@@ -1,4 +1,4 @@
-package com.example.retrofit2test
+package com.capstone.jeonshimclient
 
 data class HTTP_GET_Model(
     var something: String? = null,
