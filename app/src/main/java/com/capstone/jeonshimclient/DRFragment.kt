@@ -4,14 +4,22 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import kotlinx.android.synthetic.main.fragment_dr.*
+import kotlinx.android.synthetic.main.fragment_dr.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DRFragment : Fragment() {
+    // APIS 만들어주기
+    val api = APIS.create()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,6 +33,48 @@ class DRFragment : Fragment() {
 
         val setdialog = SettingDialog(requireContext())
         val storagedialog = StorageSettingDialog(requireContext())
+
+        exampleGetButton.setOnClickListener {
+            api.get_users().enqueue(object : Callback<HTTP_GET_Model> {
+                override fun onResponse(
+                    call: Call<HTTP_GET_Model>,
+                    response: Response<HTTP_GET_Model>
+                ){
+                    Log.d("log", response.toString())
+                    Log.d("log", response.body().toString())
+                    if(!response.body().toString().isEmpty())
+                        textExample.setText(response.body().toString())
+                }
+
+                override fun onFailure(call: Call<HTTP_GET_Model>, t: Throwable){
+                    // 실패
+                    Log.d("Log", t.message.toString())
+                    Log.d("Log", "fail")
+                }
+            })
+        }
+
+        examplePostButton2.setOnClickListener {
+            val data = PostModel(
+                exInput0.text.toString(),   // id
+                exInput2.text.toString(),   // pw
+                exInput1.text.toString(),   // nick
+            )
+            api.post_users(data).enqueue(object : Callback<PostResult>{
+                override fun onResponse(call: Call<PostResult>, response: Response<PostResult>) {
+                    Log.d("Log", response.toString())
+                    Log.d("Log", response.body().toString())
+                    if(!response.body().toString().isEmpty())
+                        textExample.setText(response.body().toString())
+                }
+
+                override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                    // 실패
+                    Log.d("log", t.message.toString())
+                    Log.d("log", "fail")
+                }
+            })
+        }
 
         button_set_minimum.setOnClickListener {
             storagedialog.setDig(requireContext())

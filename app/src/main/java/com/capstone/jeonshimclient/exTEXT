@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         binding.getbutton.setOnClickListener {
             api.get_users().enqueue(object : Callback<HTTP_GET_Model> {
                 override fun onResponse(
