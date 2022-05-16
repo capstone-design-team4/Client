@@ -3,47 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="400dp"
-    android:background="#2E2E2E">
-
-    <Button
-        android:id="@+id/input_times2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        app:backgroundTint="#515151"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.306"
-        app:layout_constraintStart_toEndOf="@+id/input_times1"
-        app:layout_constraintTop_toBottomOf="@+id/input_drname"
-        app:layout_constraintVertical_bias="0.167" />
-
-    <TextView
-        android:id="@+id/times"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="시간"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/input_times1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.167"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/input_times1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        app:backgroundTint="#515151"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.231"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_drname"
-        app:layout_constraintVertical_bias="0.167" />
+    android:layout_height="200dp"
+    android:background="@drawable/border_layout">
 
     <EditText
         android:id="@+id/input_drname"
@@ -51,7 +12,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:ems="10"
-        android:hint="Dr 을 입력하세요"
+        android:hint="Dr 이름을 입력하세요"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColor="#ACACAC"
@@ -59,23 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
-
-    <EditText
-        android:id="@+id/input_reductions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="평균 감축량을 입력하세요"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColor="#ACACAC"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.427" />
 
     <Button
         android:id="@+id/check"
@@ -88,7 +33,7 @@
         app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_drname"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintVertical_bias="0.428" />
 
     <Button
         android:id="@+id/cancle"
@@ -101,23 +46,10 @@
         app:layout_constraintHorizontal_bias="0.607"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_drname"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintVertical_bias="0.428" />
 
     <TextView
-        android:id="@+id/reductions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="감축량"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/input_reductions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
-
-    <TextView
-        android:id="@+id/minimunStorage"
+        android:id="@+id/text_drname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dr종류"
@@ -127,6 +59,6 @@
         app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

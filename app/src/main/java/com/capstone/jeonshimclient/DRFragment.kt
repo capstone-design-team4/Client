@@ -3,6 +3,7 @@ package com.capstone.jeonshimclient
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.telecom.Call
 import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,11 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import com.android.volley.Response
 import kotlinx.android.synthetic.main.fragment_dr.*
 import kotlinx.android.synthetic.main.fragment_dr.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class DRFragment : Fragment() {
     // APIS 만들어주기
@@ -33,6 +36,9 @@ class DRFragment : Fragment() {
 
         val setdialog = SettingDialog(requireContext())
         val storagedialog = StorageSettingDialog(requireContext())
+        val storageCondition:Int = 70       // 배터리 저장량 변수
+        val generationCondition:Int = 100   // 발전 공급 현황 퍼센트
+
 
         exampleGetButton.setOnClickListener {
             api.get_users().enqueue(object : Callback<HTTP_GET_Model> {
@@ -84,19 +90,20 @@ class DRFragment : Fragment() {
             setdialog.setDig(requireContext())
         }
         setdialog.setOnClickedListener(object : SettingDialog.ButtonClickListener{
-            override fun onClicked(drname: String, reductions: String, time1: String, time2: String){
+            override fun onClicked(drname: String){
                 print_drname.text = Editable.Factory.getInstance().newEditable("$drname")
-                print_reductions.text = Editable.Factory.getInstance().newEditable("${reductions}kWh")
-                print_time.text = Editable.Factory.getInstance().newEditable("$time1 ~ $time2")
+                print_time.text = Editable.Factory.getInstance().newEditable("13:00 ~ 14:00")
+                print_reductions.text = Editable.Factory.getInstance().newEditable("123 kWh")
             }
         }
         )
         barBattey.max = 100
-        barBattey.setProgress(70)
+        barBattey.setProgress(storageCondition)
+        text_Battery.text = "저장량 : ${storageCondition}%"
         barBattey.thumb = ColorDrawable(Color.TRANSPARENT)
         barBattey.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                seekBar?.progress = 70
+                seekBar?.progress = storageCondition
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -107,11 +114,12 @@ class DRFragment : Fragment() {
         })
 
         barDRcondition.max = 100
-        barDRcondition.setProgress(100)
+        barDRcondition.setProgress(generationCondition)
+        text_generation_condition.text = "발전 공급 현황 : ${generationCondition}%"
         barDRcondition.thumb = ColorDrawable(Color.TRANSPARENT)
         barDRcondition.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                seekBar?.progress = 100
+                seekBar?.progress = generationCondition
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

@@ -61,15 +61,15 @@
 
         <Button
             android:id="@+id/button_set_DR"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="310dp"
-            android:layout_marginLeft="310dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_for_circle_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="315dp"
+            android:layout_marginStart="315dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/exclamation_mark_icon"
             android:fontFamily="@font/font1"
-            android:minWidth="40dip"
             android:minHeight="20dip"
+            android:minWidth="40dip"
             android:text="..."
             android:textColor="#FFFFFF"
             android:textSize="6sp"
@@ -152,12 +152,12 @@
 
         <Button
             android:id="@+id/button_set_minimum"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="140dp"
-            android:background="@drawable/shape_for_circle_button"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="83dp"
+            android:layout_marginStart="83dp"
+            android:layout_marginTop="145dp"
+            android:background="@drawable/battery_icon"
             android:fontFamily="@font/font1"
             android:minHeight="20dip"
             android:minWidth="40dip"
@@ -227,8 +227,18 @@
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="65dp"
-            android:text="저장량"
+            android:text="발전 전력 공급"
             android:textColor="#ACACAC" />
+
+        <TextView
+            android:id="@+id/text_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="82dp"
+            android:layout_marginTop="146dp"
+            android:text="set"
+            android:textColor="@color/teal_200" />
 
     </FrameLayout>
 
@@ -244,7 +254,8 @@
         app:layout_constraintBottom_toTopOf="@+id/exInput1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/exInput1"
@@ -258,7 +269,8 @@
         app:layout_constraintBottom_toTopOf="@+id/exInput2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/exInput2"
@@ -271,7 +283,8 @@
         android:text="password"
         app:layout_constraintBottom_toTopOf="@+id/exampleGetButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/textExample"

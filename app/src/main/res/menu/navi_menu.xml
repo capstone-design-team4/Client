@@ -2,11 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/first" app:showAsAction="ifRoom"
-        android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="감축현황" />
+        android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="감축 현황" />
     <item android:id="@+id/second" app:showAsAction="ifRoom"
-        android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="전력공급현황" />
-    <item android:id="@+id/third" app:showAsAction="ifRoom"
         android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="그래프" />
-    <item android:id="@+id/fourth" app:showAsAction="ifRoom"
-        android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="세대현황" />
+    <item android:id="@+id/third" app:showAsAction="ifRoom"
+        android:enabled="true" android:icon="@drawable/ic_launcher_foreground" android:title="세대 현황" />
 </menu>

@@ -23,14 +23,10 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, drFragment).commit()
                 }
                 R.id.second -> {
-                    val userFragment = UserFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
-                }
-                R.id.third -> {
                     val graphFragment = GraphFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, graphFragment).commit()
                 }
-                R.id.fourth -> {
+                R.id.third -> {
                     val usageFragment = UsageFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, usageFragment).commit()
                 }
