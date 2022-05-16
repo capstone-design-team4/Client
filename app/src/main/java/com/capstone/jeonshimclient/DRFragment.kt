@@ -20,7 +20,7 @@ import retrofit2.Response
 import javax.security.auth.callback.Callback
 
 class DRFragment : Fragment() {
-    // APIS 만들어주기
+    // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용하는 것 같습니다.
     val api = APIS.create()
 
     override fun onCreateView(
@@ -40,7 +40,13 @@ class DRFragment : Fragment() {
         val generationCondition:Int = 100   // 발전 공급 현황 퍼센트
 
 
+        // DRFragment에 예시로 만든 버튼들입니다.
         exampleGetButton.setOnClickListener {
+            // 사용 방법은 위에서 만든 api에서 정의된 함수들을 사용하며 enqueue 함수는 작성하지 않은 것 같은데
+            // enqueue()를 사용해서 밑에 부분을 override 합니다.
+            // response가 받은 결과입니다. response를 통해서 text를 받으면 그 text를 통해 DataModels에 있는 데이터 클래스를
+            // 구성하는듯 합니다.
+            // 더 자세한 내용은 retrofit2 사용법 이라는 검색어로 검색하시면 아실 수 있겠습니다.
             api.get_users().enqueue(object : Callback<HTTP_GET_Model> {
                 override fun onResponse(
                     call: Call<HTTP_GET_Model>,
