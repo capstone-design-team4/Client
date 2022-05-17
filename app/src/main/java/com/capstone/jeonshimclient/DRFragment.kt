@@ -3,7 +3,6 @@ package com.capstone.jeonshimclient
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.telecom.Call
 import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import com.android.volley.Response
 import kotlinx.android.synthetic.main.fragment_dr.*
 import kotlinx.android.synthetic.main.fragment_dr.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 
 class DRFragment : Fragment() {
     // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용하는 것 같습니다.
