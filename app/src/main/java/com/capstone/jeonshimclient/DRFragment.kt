@@ -18,7 +18,6 @@ import retrofit2.Response
 
 class DRFragment : Fragment() {
     // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용
-    // a
     val api = APIS.create()
 
     override fun onCreateView(
@@ -32,8 +31,11 @@ class DRFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // settingDialog는 지울 계획이지만, 코드 참고용으로 일단 두겠음.
         val setdialog = SettingDialog(requireContext())
         val storagedialog = StorageSettingDialog(requireContext())
+        val storageCondition:Int = 70       // 배터리 저장량 변수
+        val generationCondition:Int = 100   // 발전 공급 현황 퍼센트
 
         button_set_minimum.setOnClickListener {
             storagedialog.setDig(requireContext())
@@ -43,19 +45,20 @@ class DRFragment : Fragment() {
             setdialog.setDig(requireContext())
         }
         setdialog.setOnClickedListener(object : SettingDialog.ButtonClickListener{
-            override fun onClicked(drname: String, reductions: String, time1: String, time2: String){
+            override fun onClicked(drname: String){
                 print_drname.text = Editable.Factory.getInstance().newEditable("$drname")
-                print_reductions.text = Editable.Factory.getInstance().newEditable("${reductions}kWh")
-                print_time.text = Editable.Factory.getInstance().newEditable("$time1 ~ $time2")
+                print_time.text = Editable.Factory.getInstance().newEditable("13:00 ~ 14:00")
+                print_reductions.text = Editable.Factory.getInstance().newEditable("123 kWh")
             }
         }
         )
         barBattey.max = 100
-        barBattey.progress = 70
+        barBattey.setProgress(storageCondition)
+        text_Battery.text = "저장량 : ${storageCondition}%"
         barBattey.thumb = ColorDrawable(Color.TRANSPARENT)
         barBattey.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                seekBar?.progress = 70
+                seekBar?.progress = storageCondition
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -66,11 +69,12 @@ class DRFragment : Fragment() {
         })
 
         barDRcondition.max = 100
-        barDRcondition.progress = 100
+        barDRcondition.setProgress(generationCondition)
+        text_generation_condition.text = "발전 공급 현황 : ${generationCondition}%"
         barDRcondition.thumb = ColorDrawable(Color.TRANSPARENT)
         barDRcondition.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                seekBar?.progress = 100
+                seekBar?.progress = generationCondition
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

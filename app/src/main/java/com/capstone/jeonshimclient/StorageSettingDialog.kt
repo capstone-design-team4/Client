@@ -2,6 +2,8 @@ package com.capstone.jeonshimclient
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.SeekBar
@@ -9,7 +11,7 @@ import android.widget.TextView
 
 class StorageSettingDialog(context: Context) {
     private val dialog = Dialog(context)
-    
+
     fun setDig(context: Context){
         dialog.show()
 
@@ -21,6 +23,7 @@ class StorageSettingDialog(context: Context) {
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(R.layout.dialog_storagesetting)
 
         val seekBar = dialog.findViewById<SeekBar>(R.id.seekBar)
