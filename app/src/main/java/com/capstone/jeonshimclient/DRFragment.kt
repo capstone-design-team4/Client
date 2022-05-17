@@ -18,6 +18,7 @@ import retrofit2.Response
 
 class DRFragment : Fragment() {
     // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용
+    // a
     val api = APIS.create()
 
     override fun onCreateView(
