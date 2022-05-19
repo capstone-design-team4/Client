@@ -2,6 +2,7 @@ package com.capstone.jeonshimclient
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,13 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlinx.android.synthetic.main.fragment_graph.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GraphFragment : Fragment() {
+    var api: APIS = APIS.create()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +34,18 @@ class GraphFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        api.graphMeasurementGen().enqueue(object : Callback<List<MeasurementGen>> {
+//            override fun onResponse(call: Call<List<MeasurementGen>>, response: Response<List<MeasurementGen>>){
+//                Log.d("log", response.toString())
+//                Log.d("log", response.body().toString())
+//            }
+//
+//            override fun onFailure(call: Call<List<MeasurementGen>>, t: Throwable) {
+//                Log.d("log",t.message.toString())
+//                Log.d("log","fail")
+//            }
+//        })
 
         generatorGraph()
         usageGraph()

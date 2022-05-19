@@ -17,8 +17,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class DRFragment : Fragment() {
-    // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용
-    val api = APIS.create()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
