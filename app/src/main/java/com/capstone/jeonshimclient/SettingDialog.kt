@@ -19,7 +19,7 @@ open class SettingDialog(context: Context) {
 
         //Dialog 크기 설정
         dialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
-                            WindowManager.LayoutParams.WRAP_CONTENT)
+            WindowManager.LayoutParams.WRAP_CONTENT)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
