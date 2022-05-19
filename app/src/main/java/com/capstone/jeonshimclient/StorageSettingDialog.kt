@@ -11,7 +11,7 @@ import android.widget.TextView
 
 class StorageSettingDialog(context: Context) {
     private val dialog = Dialog(context)
-
+    
     fun setDig(context: Context){
         dialog.show()
 
