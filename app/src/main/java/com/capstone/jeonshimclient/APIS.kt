@@ -13,18 +13,67 @@ interface APIS {
         "accept: application/json",
         "content-type: application/json"
     )
-    fun post_users(
-        @Body jsonparams: PostModel
-    ): Call<PostResult>
+    fun postUserInformation(
+        @Body jsonparams: UserInformation
+    ): Call<Int>
+
+    @GET("/graph/predictUsage/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun graphPredictUsageOf(
+        @Path("userId") userId: String
+    ): Call<Int>
+
+    @GET("/graph/predictGen")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun graphPredictGen(
+    ): Call<Int>
+
+    @GET("/graph/measurementUsage/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun graphMeasurementUsageOf(
+        @Path("userId") userId: String
+    ): Call<Int>
+
+    @GET("/graph/measurementGen")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getMeasurementGen(
+    ): Call<List<MeasurementGen>>
 
     @GET("/drRequest/requestInfo")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
-    fun get_users(
-    ): Call<HTTP_GET_Model>
+    fun getDrRequestInfo(
+    ): Call<DRRequester>
 
+    @GET("/drRequest/decisionFlag")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getDrDecisionFlag(
+    ): Call<Boolean>
+
+    @GET("/drRequest/contractInfo")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getDrContractInfo(
+    ): Call<Int>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
         private const val BASE_URL = "http://158.247.216.131:8080" // 주소
