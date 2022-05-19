@@ -242,7 +242,6 @@
 
     </FrameLayout>
 
-<<<<<<< HEAD
     <EditText
         android:id="@+id/exInput0"
         android:layout_width="wrap_content"
@@ -323,6 +322,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-=======
->>>>>>> afafd71fa3d63dc573addbe02aff54632521ab93
 </androidx.constraintlayout.widget.ConstraintLayout>
