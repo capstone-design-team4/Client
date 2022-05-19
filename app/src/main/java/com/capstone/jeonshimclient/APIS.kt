@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface APIS {
-    @POST("/v1/member")
+    @POST("/userinfo/create")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
@@ -17,7 +17,7 @@ interface APIS {
         @Body jsonparams: PostModel
     ): Call<PostResult>
 
-    @GET("/v1/member")
+    @GET("/drRequest/requestInfo")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
