@@ -59,29 +59,12 @@
             android:text="시간"
             android:textColor="#ACACAC" />
 
-        <Button
-            android:id="@+id/button_set_DR"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="315dp"
-            android:layout_marginLeft="315dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/exclamationmark"
-            android:fontFamily="@font/font1"
-            android:minWidth="40dip"
-            android:minHeight="20dip"
-            android:text="..."
-            android:textColor="#FFFFFF"
-            android:textSize="6sp"
-            app:backgroundTint="@color/teal_200"
-            tools:ignore="SmallSp,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
         <EditText
             android:id="@+id/print_drname"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             android:background="@null"
             android:ems="10"
@@ -89,40 +72,41 @@
             android:hint="입력"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:text="신뢰성 DR"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/print_time"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
             android:layout_marginLeft="110dp"
+            android:layout_marginStart="110dp"
             android:layout_marginTop="30dp"
             android:background="@null"
             android:ems="10"
             android:enabled="false"
-            android:hint="입력"
+            android:hint="요청 없음"
             android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/teal_200"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/print_reductions"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="220dp"
             android:layout_marginLeft="220dp"
+            android:layout_marginStart="220dp"
             android:layout_marginTop="30dp"
             android:background="@null"
             android:ems="10"
             android:enabled="false"
-            android:hint="입력"
+            android:hint="요청 없음"
             android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textColor="@color/teal_200"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/text_감축량"

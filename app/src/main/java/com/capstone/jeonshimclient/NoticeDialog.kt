@@ -6,12 +6,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.EditText
+import android.widget.TextView
 
-open class SettingDialog(context: Context) {
+open class NoticeDialog(context: Context) {
     private val dialog = Dialog(context)
 
     fun setDig(context: Context){
+        var drTime = "13:00 ~ 14:00"
+        var drKwh = 123.3F
+
         dialog.show()
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -20,26 +23,25 @@ open class SettingDialog(context: Context) {
         //Dialog 크기 설정
         dialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(false)
+        // dialog.setCancelable(true)
 
-        dialog.setContentView(R.layout.dialog_setting)
+        dialog.setContentView(R.layout.dialog_notice)
 
-        val edit_dr = dialog.findViewById<EditText>(R.id.input_drname)
-        val btnDone = dialog.findViewById<Button>(R.id.check)
-        val btnCancel = dialog.findViewById<Button>(R.id.cancle)
+        val btnDone = dialog.findViewById<Button>(R.id.bt_check_notice)
+        val txtTime = dialog.findViewById<TextView>(R.id.text_drtime)
+        val txtKwh = dialog.findViewById<TextView>(R.id.text_drkwh)
+
+        txtTime.text = drTime
+        txtKwh.text = "${drKwh} kWh"
 
         btnDone.setOnClickListener{
-            onClickedListener.onClicked(edit_dr.text.toString())
-            dialog.dismiss()
-        }
-
-        btnCancel.setOnClickListener {
+            onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())
             dialog.dismiss()
         }
     }
     interface ButtonClickListener{
-        fun onClicked(drname: String)
+        fun onClicked(drtime: String, drkwh: String)
     }
     private lateinit var onClickedListener: ButtonClickListener
 
