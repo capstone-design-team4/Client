@@ -19,7 +19,10 @@ import retrofit2.Response
 class DRFragment : Fragment() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 4004e52 (merge 안된 거)
 =======
 >>>>>>> parent of 4004e52 (merge 안된 거)
     // APIS 만들어주기 이 녀석을 이용해서 GET, POST 등을 사용하는 것 같습니다.
