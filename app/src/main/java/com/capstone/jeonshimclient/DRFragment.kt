@@ -51,7 +51,7 @@ class DRFragment : Fragment() {
         }
         )
         barBattey.max = 100
-        barBattey.setProgress(storageCondition)
+        barBattey.progress = storageCondition
         text_Battery.text = "저장량 : ${storageCondition}%"
         barBattey.thumb = ColorDrawable(Color.TRANSPARENT)
         barBattey.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -67,7 +67,7 @@ class DRFragment : Fragment() {
         })
 
         barDRcondition.max = 100
-        barDRcondition.setProgress(generationCondition)
+        barDRcondition.progress = generationCondition
         text_generation_condition.text = "발전 공급 현황 : ${generationCondition}%"
         barDRcondition.thumb = ColorDrawable(Color.TRANSPARENT)
         barDRcondition.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -85,7 +85,7 @@ class DRFragment : Fragment() {
 }
 class RunnableTest : Runnable{
     override fun run() {
-        var i = 0;
+        var i = 0
         while(i<10)
             i += 1
     }
