@@ -21,7 +21,7 @@ data class BatteryInformation(
 )
 
 // 태양광 패널 정보
-data class MeasurementGen(
+data class MeasurementGenDay(
     var current: Float,  // 측정하는 전류
     @SerializedName("time_current") var timeCurrent: String,
     var voltage: Float, // 측정하는 전압

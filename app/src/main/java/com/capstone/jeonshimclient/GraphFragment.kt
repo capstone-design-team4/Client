@@ -41,18 +41,18 @@ class GraphFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        api.getMeasurementGen().enqueue(object : Callback<List<MeasurementGen>> {
+        api.getMeasurementGenDay().enqueue(object : Callback<List<MeasurementGenDay>> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
-                call: Call<List<MeasurementGen>>,
-                response: Response<List<MeasurementGen>>
+                call: Call<List<MeasurementGenDay>>,
+                response: Response<List<MeasurementGenDay>>
             ) {
-//                Log.d("log", response.toString())
-//                Log.d("log", response.body().toString())
-//                Log.d("log", response.body()?.count().toString())
+                Log.d("log", "1 :" + response.toString())
+                Log.d("log", "2 :" + response.body().toString())
+                Log.d("log", "3 :" + response.body()?.count().toString())
 
                 // 해당 response에 내용이 없을 경우 차트를 그릴 수 없도록 한다.
-                if (response.body().toString().isNotEmpty()) {
+                if (response.body().toString() != "[]") {
                     val count: Int = response.body()?.count()!!
                     // 각 시간대를 key로 가지는 hashmap에 targetTime에 대응하는 value를 이용하여 set한다.
                     for (index in 0 until count) {
@@ -75,13 +75,13 @@ class GraphFragment : Fragment() {
                     // 새로운 array를 만듭니다. 차트를 그리기 위함입니다.
                     timesArray = ArrayList(genTimeHash.keys)
                     timesArray.sort()
-                }
 
-                generatorGraph()
-                usageGraph()
+                    generatorGraph()
+                    usageGraph()
+                }
             }
 
-            override fun onFailure(call: Call<List<MeasurementGen>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MeasurementGenDay>>, t: Throwable) {
                 // 실패
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
@@ -105,11 +105,11 @@ class GraphFragment : Fragment() {
 //        generator_entries_present.add(BarEntry(3.2f,70.0f))
 
         val generator_entries_expected = ArrayList<BarEntry>()
-        Log.d("log",x.toString())
-        generator_entries_expected.add(BarEntry(x+1, 40.0f))
-        generator_entries_expected.add(BarEntry(x+2, 50.0f))
-        generator_entries_expected.add(BarEntry(x+3, 60.0f))
-        generator_entries_expected.add(BarEntry(x+4, 20.0f))
+        Log.d("log", x.toString())
+        generator_entries_expected.add(BarEntry(x + 1, 40.0f))
+        generator_entries_expected.add(BarEntry(x + 2, 50.0f))
+        generator_entries_expected.add(BarEntry(x + 3, 60.0f))
+        generator_entries_expected.add(BarEntry(x + 4, 20.0f))
 
         userChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
@@ -243,18 +243,19 @@ class GraphFragment : Fragment() {
         }
     }
 
-        inner class XAxisFormatter : ValueFormatter() {
-        private var times = timesArray// arrayOf("13:00","14:00","15:00","16:00","17:00","18:00","19:00")
+    inner class XAxisFormatter : ValueFormatter() {
+        private var times =
+            timesArray// arrayOf("13:00","14:00","15:00","16:00","17:00","18:00","19:00")
 
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             var timesString: ArrayList<String> = ArrayList()
-            for(time in timesArray){
+            for (time in timesArray) {
                 timesString.add(time.toString())
             }
-            if(timesArray.count() < 24)
-                for(i in 1..24-timesArray.count())
-                    timesString.add((timesArray.last()+i).toString())
-            return timesString.getOrNull(value.toInt()-1) ?: value.toString()
+            if (timesArray.count() < 24)
+                for (i in 1..24 - timesArray.count())
+                    timesString.add((timesArray.last() + i).toString())
+            return timesString.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 
