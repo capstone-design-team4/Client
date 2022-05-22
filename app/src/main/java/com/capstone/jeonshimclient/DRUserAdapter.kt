@@ -33,7 +33,7 @@ class DRUserAdapter  (private val context: Context) : RecyclerView.Adapter<DRUse
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val txtName: TextView = itemView.findViewById(R.id.text_username_DR)
-        val userdrgraph : BarChart = itemView.findViewById(R.id.generatorChart)
+        val userdrgraph : BarChart = itemView.findViewById(R.id.userdrresultchart)
 
         fun UserDRGraph(context: Context){
 

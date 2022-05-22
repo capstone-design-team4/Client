@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="spinner_array">
-        <item>전체</item>
-        <item>발전</item>
-        <item>일반</item>
+        <item>세대1</item>
+        <item>세대2</item>
+        <item>세대3</item>
     </string-array>
 </resources>

@@ -10,7 +10,7 @@
 
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/generatorChart"
+        android:id="@+id/userdrresultchart"
         tools:ignore="MissingClass"
         android:layout_width="300dp"
         android:layout_height="350dp"

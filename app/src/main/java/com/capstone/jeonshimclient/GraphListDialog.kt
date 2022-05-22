@@ -46,7 +46,7 @@ open class GraphListDialog(context: Context) {
         user_entries.add(BarEntry(6.2f,20.0f))
         user_entries.add(BarEntry(7.2f,40.0f))
 
-        val userChart = dialog.findViewById<BarChart>(R.id.generatorChart)
+        val userChart = dialog.findViewById<BarChart>(R.id.userdrresultchart)
 
         userChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)

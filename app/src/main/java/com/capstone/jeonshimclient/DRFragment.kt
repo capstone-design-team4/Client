@@ -22,13 +22,13 @@ class DRFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bt_refer1.setOnClickListener{
+        bt_start_graph1.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             mainActivity.changeFragment(1)
         }
 
 
-        bt_refer2.setOnClickListener{
+        bt_start_graph2.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             mainActivity.changeFragment(2)
         }

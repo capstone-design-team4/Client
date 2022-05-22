@@ -1,7 +1,9 @@
 package com.capstone.jeonshimclient
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,17 +35,14 @@ class UserFragment : Fragment() {
         loadSpinner(view)
 //        initRecycler()
     }
+
+    var userdialog_name = "세대0"
     var userdialog_text1 = 0
     var userdialog_text2 = "발전 전력"
     var userdialog_text3 = 0F
     var userdialog_text4 = 0F
 
-    fun loadSpinner(view: View) {
-        val items = arrayOf("전체", "발전", "일반")
-
-
-
-        val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
+    fun loadSpinner(view: View) {val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             view.context,
@@ -65,6 +64,7 @@ class UserFragment : Fragment() {
             ) {
                 when (position) {
                     0 -> {
+                        userdialog_name = "세대1"
                         userdialog_text1 = 1111
                         userdialog_text2 = "발전 전력"
                         userdialog_text3 = 1111F
@@ -72,12 +72,14 @@ class UserFragment : Fragment() {
 
                     }
                     1 -> {
+                        userdialog_name = "세대2"
                         userdialog_text1 = 2222
                         userdialog_text2 = "일반 전력"
                         userdialog_text3 = 2222F
                         userdialog_text4 = 2222F
                     }
                     2 -> {
+                        userdialog_name = "세대3"
                         userdialog_text1 = 3333
                         userdialog_text2 = "발전 전력"
                         userdialog_text3 = 3333F
@@ -90,11 +92,19 @@ class UserFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-
         bt_fragment_user.setOnClickListener{
-            val userDialog = UserDialog(requireContext(),userdialog_text1,userdialog_text2,userdialog_text3,userdialog_text4)
+            val intent = Intent(requireContext(), UserDialog::class.java)
+
+            intent.putExtra("item0", userdialog_name)
+            intent.putExtra("item1", userdialog_text1)
+            intent.putExtra("item2", userdialog_text2)
+            intent.putExtra("item3", userdialog_text3)
+            intent.putExtra("item4", userdialog_text4)
+
+            val userDialog = UserDialog(requireContext(), intent)
             userDialog.userDig(requireContext())
         }
+
         //        usageAdapter = UsageAdapter(requireContext())
         //        rv_profile.adapter = usageAdapter
         //        rv_profile.addItemDecoration(VerticalItemDecorator(30))

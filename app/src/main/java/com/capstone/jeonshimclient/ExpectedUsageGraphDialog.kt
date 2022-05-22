@@ -2,7 +2,6 @@ package com.capstone.jeonshimclient
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.WindowManager
@@ -15,13 +14,11 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import kotlinx.android.synthetic.main.dialog_graph.*
 
-open class GraphDialog(context: Context, intent: Intent) {
+class ExpectedUsageGraphDialog(context: Context) {
     private val dialog = Dialog(context)
-    val username = intent.getStringExtra("user_name")
 
-    fun graphDig(context: Context){
+    fun startDialog(context: Context){
         dialog.show()
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -34,25 +31,28 @@ open class GraphDialog(context: Context, intent: Intent) {
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
-        dialog.setContentView(R.layout.dialog_graph)
+        dialog.setContentView(R.layout.dialog_graph_expected_usage)
 
-        dialog.text_explanation.text = "'${username}'의 일간 사용 전력량"
-        userDialogGraph(context)
+        present_expected_Graph(context)
     }
 
-    fun userDialogGraph(context: Context){
-        val user_entries = ArrayList<BarEntry>()
-        user_entries.add(BarEntry(1.2f,20.0f))
-        user_entries.add(BarEntry(2.2f,40.0f))
-        user_entries.add(BarEntry(3.2f,30.0f))
-        user_entries.add(BarEntry(4.2f,40.0f))
-        user_entries.add(BarEntry(5.2f,70.0f))
-        user_entries.add(BarEntry(6.2f,20.0f))
-        user_entries.add(BarEntry(7.2f,40.0f))
+    fun present_expected_Graph(context: Context){
+        // 현재 사용량 그래프 정보
+        val present_Entry = ArrayList<BarEntry>()
+        present_Entry.add(BarEntry(1.2f, 20.0f))
+        present_Entry.add(BarEntry(2.2f, 40.0f))
+        present_Entry.add(BarEntry(3.2f, 30.0f))
 
-        val userUsageChart = dialog.findViewById<BarChart>(R.id.userusagechart)
+        // 예상 사용량 그래프 정보
+        val expected_Entry = ArrayList<BarEntry>()
+        expected_Entry.add(BarEntry(4.2f, 40.0f))
+        expected_Entry.add(BarEntry(5.2f, 70.0f))
+        expected_Entry.add(BarEntry(6.2f, 20.0f))
+        expected_Entry.add(BarEntry(7.2f, 40.0f))
 
-        userUsageChart.run {
+        val Chart = dialog.findViewById<BarChart>(R.id.present_expected_usage_graph)
+
+        Chart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
@@ -75,6 +75,7 @@ open class GraphDialog(context: Context, intent: Intent) {
                 granularity = 1f // 1 단위만큼 간격 두기
                 setDrawAxisLine(true) // 축 그림
                 setDrawGridLines(false) // 격자
+                textColor = ContextCompat.getColor(context,R.color.gray_2) //라벨 색상
                 textColor = ContextCompat.getColor(context,R.color.gray_1) //라벨 색상
                 textSize = 12f // 텍스트 크기
                 valueFormatter = XAxisFormatter() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
@@ -82,21 +83,27 @@ open class GraphDialog(context: Context, intent: Intent) {
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
             setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
-            legend.isEnabled = false
+
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(context,R.color.gray_1)
+            legend.textSize = 12f
         }
 
 
-        val user_set = BarDataSet(user_entries,"사용량") // 데이터셋 초기화
+        val present_set = BarDataSet(present_Entry,"현재 사용량") // 데이터셋 초기화
+        val expected_set = BarDataSet(expected_Entry,"예상 사용량") // 데이터셋 초기화
 
-        user_set.color = ContextCompat.getColor(context,R.color.black)
+        present_set.color = ContextCompat.getColor(context,R.color.gray_2)
+        expected_set.color = ContextCompat.getColor(context,R.color.gray_1)
 
         val dataSet :ArrayList<IBarDataSet> = ArrayList()
-        dataSet.add(user_set)
+        dataSet.add(present_set)
+        dataSet.add(expected_set)
 
-        val user_data = BarData(dataSet)
-        user_data.barWidth = 0.3f //막대 너비 설정
-        userUsageChart.run {
-            this.data = user_data //차트의 데이터를 data로 설정해줌.
+        val chart_data = BarData(dataSet)
+        chart_data.barWidth = 0.3f //막대 너비 설정
+        Chart.run {
+            this.data = chart_data //차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
         }
