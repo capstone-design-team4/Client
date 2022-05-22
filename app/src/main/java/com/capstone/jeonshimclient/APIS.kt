@@ -43,13 +43,13 @@ interface APIS {
         @Path("userId") userId: String
     ): Call<Int>
 
-    @GET("/graph/measurementGen")
+    @GET("/graph/measurementGenDay")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
-    fun getMeasurementGen(
-    ): Call<List<MeasurementGen>>
+    fun getMeasurementGenDay(
+    ): Call<List<MeasurementGenDay>>
 
     @GET("/drRequest/requestInfo")
     @Headers(

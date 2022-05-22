@@ -32,6 +32,12 @@ class DRFragment : Fragment() {
             val mainActivity = (activity as MainActivity)
             mainActivity.changeFragment(2)
         }
-
+    }
+}
+class RunnableTest : Runnable{
+    override fun run() {
+        var i = 0
+        while(i<10)
+            i += 1
     }
 }
