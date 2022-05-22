@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.034" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/userChart"
+        android:id="@+id/generatorChart"
         android:layout_width="320dp"
         android:layout_height="350dp"
         app:layout_constraintBottom_toBottomOf="parent"

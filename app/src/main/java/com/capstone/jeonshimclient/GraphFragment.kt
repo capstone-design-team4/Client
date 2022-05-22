@@ -1,7 +1,6 @@
 package com.capstone.jeonshimclient
 
 import android.graphics.Color
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +11,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -40,6 +37,8 @@ class GraphFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        usageGraph()
 
         api.getMeasurementGen().enqueue(object : Callback<List<MeasurementGen>> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -78,7 +77,7 @@ class GraphFragment : Fragment() {
                 }
 
                 generatorGraph()
-                usageGraph()
+                //usageGraph()
             }
 
             override fun onFailure(call: Call<List<MeasurementGen>>, t: Throwable) {
@@ -111,7 +110,7 @@ class GraphFragment : Fragment() {
         generator_entries_expected.add(BarEntry(x+3, 60.0f))
         generator_entries_expected.add(BarEntry(x+4, 20.0f))
 
-        userChart.run {
+        generatorChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
@@ -164,7 +163,7 @@ class GraphFragment : Fragment() {
 
         val generator_data = BarData(dataSet)
         generator_data.barWidth = 0.3f //막대 너비 설정
-        userChart.run {
+        generatorChart.run {
             this.data = generator_data //차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
@@ -196,9 +195,9 @@ class GraphFragment : Fragment() {
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(false) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
-                axisLineColor = ContextCompat.getColor(context, R.color.white) // 축 색깔 설정
-                gridColor = ContextCompat.getColor(context, R.color.white) // 축 아닌 격자 색깔 설정
-                textColor = ContextCompat.getColor(context, R.color.white) // 라벨 텍스트 컬러 설정
+                axisLineColor = ContextCompat.getColor(context, R.color.black) // 축 색깔 설정
+                gridColor = ContextCompat.getColor(context, R.color.black) // 축 아닌 격자 색깔 설정
+                textColor = ContextCompat.getColor(context, R.color.black) // 라벨 텍스트 컬러 설정
                 textSize = 13f //라벨 텍스트 크기
             }
             xAxis.run {
@@ -206,7 +205,7 @@ class GraphFragment : Fragment() {
                 granularity = 1f // 1 단위만큼 간격 두기
                 setDrawAxisLine(true) // 축 그림
                 setDrawGridLines(false) // 격자
-                textColor = ContextCompat.getColor(context, R.color.white) //라벨 색상
+                textColor = ContextCompat.getColor(context, R.color.black) //라벨 색상
                 textSize = 12f // 텍스트 크기
                 valueFormatter = XAxisFormatter() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
@@ -227,8 +226,8 @@ class GraphFragment : Fragment() {
         var usage_set_present = BarDataSet(usage_entries_present, "사용량") // 데이터셋 초기화
         var usage_set_expected = BarDataSet(usage_entries_expected, "예상 사용량")
 
-        usage_set_present.color = ContextCompat.getColor(requireContext(), R.color.teal_900)
-        usage_set_expected.color = ContextCompat.getColor(requireContext(), R.color.teal_200)
+        usage_set_present.color = ContextCompat.getColor(requireContext(), R.color.gray_1)
+        usage_set_expected.color = ContextCompat.getColor(requireContext(), R.color.white)
 
         val dataSet: ArrayList<IBarDataSet> = ArrayList()
         dataSet.add(usage_set_present)
@@ -243,19 +242,27 @@ class GraphFragment : Fragment() {
         }
     }
 
-        inner class XAxisFormatter : ValueFormatter() {
-        private var times = timesArray//arrayOf("13:00","14:00","15:00","16:00","17:00","18:00","19:00")
+    // 범석님 잠깐 주석 처리만 하였습니다
+//        inner class XAxisFormatter : ValueFormatter() {
+//        private var times = timesArray//arrayOf("13:00","14:00","15:00","16:00","17:00","18:00","19:00")
+//
+//        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+//            var timesString: ArrayList<String> = ArrayList()
+//            for(time in timesArray){
+//                timesString.add(time.toString())
+//            }
+//            if(timesArray.count() < 24)
+//                for(i in 1..24-timesArray.count())
+//                    timesString.add((timesArray.last()+i).toString())
+//            return timesString.getOrNull(value.toInt()-1) ?: value.toString()
+//        }
 
+    inner class XAxisFormatter : ValueFormatter() {
+        private val days = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            var timesString: ArrayList<String> = ArrayList()
-            for(time in timesArray){
-                timesString.add(time.toString())
-            }
-            if(timesArray.count() < 24)
-                for(i in 1..24-timesArray.count())
-                    timesString.add((timesArray.last()+i).toString())
-            return timesString.getOrNull(value.toInt()-1) ?: value.toString()
+            return days.getOrNull(value.toInt() - 1) ?: value.toString()
         }
+    }
     }
 
 // 아래는 비교용
@@ -265,7 +272,7 @@ class GraphFragment : Fragment() {
 //            return days.getOrNull(value.toInt() - 1) ?: value.toString()
 //        }
 //    }
-}
+//}
 
 
 //class GraphFragment : Fragment() {

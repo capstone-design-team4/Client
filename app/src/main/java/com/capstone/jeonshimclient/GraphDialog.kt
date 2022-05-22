@@ -4,12 +4,10 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -35,10 +33,10 @@ open class GraphDialog(context: Context) {
 
         dialog.setContentView(R.layout.dialog_graph)
 
-        userGraph(context)
+        userDialogGraph(context)
     }
 
-    fun userGraph(context: Context){
+    fun userDialogGraph(context: Context){
         val user_entries = ArrayList<BarEntry>()
         user_entries.add(BarEntry(1.2f,20.0f))
         user_entries.add(BarEntry(2.2f,40.0f))
@@ -48,7 +46,7 @@ open class GraphDialog(context: Context) {
         user_entries.add(BarEntry(6.2f,20.0f))
         user_entries.add(BarEntry(7.2f,40.0f))
 
-        val userChart = dialog.findViewById<BarChart>(R.id.userChart)
+        val userChart = dialog.findViewById<BarChart>(R.id.generatorChart)
 
         userChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)

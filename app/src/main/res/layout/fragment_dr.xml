@@ -5,214 +5,120 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/white"
     tools:context=".DRFragment">
 
+
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/font1"
-        android:text="감축현황"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:text="DR현황"
+        android:textColor="#505050"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.051" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="350dp"
-        android:layout_height="100dp"
-        android:background="@drawable/border_layout"
+    <Button
+        android:id="@+id/bt_refer1"
+        android:layout_width="357dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="220dp"
+        android:width="1dp"
+        android:background="@drawable/button_layout"
+        android:fontFamily="@font/font1"
+        android:text="목록 조회"
+        android:textColor="#404040"
+        android:textSize="18sp"
+        app:backgroundTint="@color/gray_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08"
-        tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/text_종류"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:text="DR종류"
-            android:textColor="#ACACAC" />
-
-        <TextView
-            android:id="@+id/text_시간"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
-
-            android:layout_marginLeft="110dp"
-            android:layout_marginTop="15dp"
-            android:text="시간"
-            android:textColor="#ACACAC" />
-
-        <EditText
-            android:id="@+id/print_drname"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
-            android:background="@null"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="입력"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="신뢰성 DR"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/print_time"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="30dp"
-            android:background="@null"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="요청 없음"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColor="@color/teal_200"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/print_reductions"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="220dp"
-            android:layout_marginStart="220dp"
-            android:layout_marginTop="30dp"
-            android:background="@null"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="요청 없음"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColor="@color/teal_200"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/text_감축량"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="220dp"
-
-            android:layout_marginLeft="220dp"
-            android:layout_marginTop="15dp"
-            android:text="감축량"
-            android:textColor="#ACACAC" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints" />
 
-        <Button
-            android:id="@+id/button_set_minimum"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="144dp"
-            android:background="@drawable/exclamationmark"
-            android:fontFamily="@font/font1"
-            android:minWidth="40dip"
-            android:minHeight="20dip"
-            android:text="..."
-            android:textColor="#FFFFFF"
-            android:textSize="6sp"
-            app:backgroundTint="@color/teal_200"
-            tools:ignore="SmallSp,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+    <Button
+        android:id="@+id/bt_refer2"
+        android:layout_width="357dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="220dp"
+        android:width="1dp"
+        android:background="@drawable/button_layout"
+        android:fontFamily="@font/font1"
+        android:text="DR 조회"
+        android:textColor="#404040"
+        android:textSize="18sp"
+        app:backgroundTint="@color/gray_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527"
+        tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/text_DR_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/title5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font1"
+        android:text="참여한 DR 목록"
+        android:textColor="#505050"
+        android:textSize="23sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.163" />
 
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="115dp"
-            android:text="DR 이행 현황"
-            android:textColor="#ACACAC" />
+    <TextView
+        android:id="@+id/title7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font1"
+        android:text="현재 진행중인 DR"
+        android:textColor="#505050"
+        android:textSize="23sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_Battery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="그 동안 참여했던 DR을 조회합니다.\n날짜마다 참여한 세대와 감축한 양을 확인할 수 있습니다."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.488" />
 
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:text="저장량"
-            android:textColor="#ACACAC" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="현재 요청을 받아 진행중인 DR의 정보를 조회합니다.\n참여하고 있는 세대와 계약된 감축량을 확인할 수 있습니다."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.085" />
 
-        <TextView
-            android:id="@+id/text_generation_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="65dp"
-            android:text="발전 전력 공급"
-            android:textColor="#ACACAC" />
-
-        <EditText
-            android:id="@+id/print_DR_condition"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="130dp"
-            android:background="@null"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="전체"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-
-        <SeekBar
-            android:id="@+id/barBattey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:progressDrawable="@drawable/batterybar" />
-
-        <SeekBar
-            android:id="@+id/barDRcondition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="95dp"
-            android:progressDrawable="@drawable/batterybar" />
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

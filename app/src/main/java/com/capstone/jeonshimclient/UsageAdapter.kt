@@ -9,6 +9,7 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+// 현재 사용 안함
 class UsageAdapter (private val context: Context) : RecyclerView.Adapter<UsageAdapter.ViewHolder>() {
 
     var datas = mutableListOf<UsageData>()
@@ -58,6 +59,4 @@ class UsageAdapter (private val context: Context) : RecyclerView.Adapter<UsageAd
             }
         }
     }
-
-
 }

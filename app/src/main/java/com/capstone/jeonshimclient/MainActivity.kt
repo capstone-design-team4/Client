@@ -1,11 +1,10 @@
 package com.capstone.jeonshimclient
 
-import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,13 +28,31 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, graphFragment).commit()
                 }
                 R.id.third -> {
-                    val usageFragment = UsageFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, usageFragment).commit()
+                    val userFragment = UserFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
                 }
             }
             true
         }
             selectedItemId = R.id.first
         }
+
     }
+    fun changeFragment(index: Int){
+        when(index){
+            1 -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fl_container, DRlistFragment())
+                    .commit()
+            }
+            2 -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fl_container, DRUserFragment())
+                    .commit()
+            }
+        }
+    }
+
 }

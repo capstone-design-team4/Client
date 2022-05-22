@@ -5,7 +5,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <FrameLayout android:layout_width="0dp"
@@ -17,7 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize" android:id="@+id/bnv_main" android:background="#2E2E2E"
+        android:layout_height="?attr/actionBarSize" android:id="@+id/bnv_main" android:background="@color/gray_2"
         app:menu="@menu/navi_menu" app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
