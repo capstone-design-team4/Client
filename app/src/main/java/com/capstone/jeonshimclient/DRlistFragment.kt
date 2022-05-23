@@ -21,13 +21,14 @@ class DRlistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val graphlistdialog = GraphListDialog(requireContext())
-        showgraph1.setOnClickListener{
+
+        showgraph1.setOnClickListener {
             graphlistdialog.graphlistDig(requireContext())
         }
-        showgraph2.setOnClickListener{
+        showgraph2.setOnClickListener {
             graphlistdialog.graphlistDig(requireContext())
         }
-        showgraph3.setOnClickListener{
+        showgraph3.setOnClickListener {
             graphlistdialog.graphlistDig(requireContext())
         }
 

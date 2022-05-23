@@ -51,14 +51,19 @@ interface APIS {
     fun getMeasurementGenDay(
     ): Call<List<MeasurementGenDay>>
 
+
+    // drRequest ********************************************
+
+    // 지금 현재 뜬 DRrequest에 대한 정보를 get
     @GET("/drRequest/requestInfo")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
     fun getDrRequestInfo(
-    ): Call<DRRequester>
+    ): Call<List<DRRequestInfo>>
 
+    //
     @GET("/drRequest/decisionFlag")
     @Headers(
         "accept: application/json",
@@ -66,6 +71,13 @@ interface APIS {
     )
     fun getDrDecisionFlag(
     ): Call<Boolean>
+
+    @GET("drRequest/requestInfo/day")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getDrRequestInfoDayOf():Call<DRRequestInfo>
 
     @GET("/drRequest/contractInfo")
     @Headers(

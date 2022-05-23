@@ -45,11 +45,14 @@ data class PowerSupplyVerification(
     var relayIsUsing: Boolean
 )
 
-// DR request 받았을 때
-// 감축량과
-// 시작 & 종료 date
-data class DRRequester(
-    var requestAmount: Float,
-    var startTime: Date,
-    var endTime: Date
+// DR request Data
+data class DRRequestInfo(
+    var requestId: Int? = null,
+    var requestStartTime: String,
+    var requestEndTime: String,
+    var amount: Float,
+    var user1Flag: Boolean? = null,
+    var user2Flag: Boolean? = null,
+    var user3Flag: Boolean? = null,
+    var decisionFlag: Boolean? = null
 )

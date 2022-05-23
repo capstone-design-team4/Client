@@ -29,14 +29,18 @@ class DRUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fragmentBasic()
+    }
+
+    fun fragmentBasic(){
         val user_entries = ArrayList<BarEntry>()
-        user_entries.add(BarEntry(1.2f, 20.0f))
-        user_entries.add(BarEntry(2.2f, 40.0f))
-        user_entries.add(BarEntry(3.2f, 30.0f))
-        user_entries.add(BarEntry(4.2f, 40.0f))
-        user_entries.add(BarEntry(5.2f, 70.0f))
-        user_entries.add(BarEntry(6.2f, 20.0f))
-        user_entries.add(BarEntry(7.2f, 40.0f))
+        user_entries.add(BarEntry(1f, 20.0f))
+        user_entries.add(BarEntry(2f, 40.0f))
+        user_entries.add(BarEntry(3f, 30.0f))
+        user_entries.add(BarEntry(4f, 40.0f))
+        user_entries.add(BarEntry(5f, 70.0f))
+        user_entries.add(BarEntry(6f, 20.0f))
+        user_entries.add(BarEntry(7f, 40.0f))
 
 
         userDRChart1.run {
@@ -147,24 +151,23 @@ class DRUserFragment : Fragment() {
         dataSet.add(user_set)
 
         val user_data = BarData(dataSet)
-        user_data.barWidth = 0.3f //막대 너비 설정
+        user_data.barWidth = 0.3f // 막대 너비 설정
         userDRChart1.run {
-            this.data = user_data //차트의 데이터를 data로 설정해줌.
+            this.data = user_data // 차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
         }
         userDRChart2.run {
-            this.data = user_data //차트의 데이터를 data로 설정해줌.
+            this.data = user_data // 차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
         }
         userDRChart3.run {
-            this.data = user_data //차트의 데이터를 data로 설정해줌.
+            this.data = user_data // 차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
         }
     }
-
     inner class XAxisFormatter : ValueFormatter() {
         private val days = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {

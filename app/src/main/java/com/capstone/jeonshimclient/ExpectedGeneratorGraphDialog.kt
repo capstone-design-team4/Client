@@ -29,7 +29,7 @@ class ExpectedGeneratorGraphDialog(context: Context) {
     var genTimeHash: HashMap<Int, Float> = HashMap()
 
 
-    fun startDialog(context: Context){
+    fun startDialog(context: Context) {
 
         // api 호출 부분
         api.getMeasurementGenDay().enqueue(object : Callback<List<MeasurementGenDay>> {
@@ -54,7 +54,8 @@ class ExpectedGeneratorGraphDialog(context: Context) {
                         val voltage: Float = response.body()?.get(index)!!.voltage
 
                         if (!genTimeHash.containsKey(targetTime)) {
-                            genTimeHash[targetTime] = 15 * current * voltage
+                            genTimeHash[targetTime] =
+                                15 * current * voltage
                             //Log.d("log", "value = " + genTimeHash[targetTime].toString() + " targetTime = " + targetTime.toString())
                         } else {
                             genTimeHash[targetTime] =
@@ -84,7 +85,8 @@ class ExpectedGeneratorGraphDialog(context: Context) {
         //Dialog 크기 설정
         dialog.window!!.setLayout(
             WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT)
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
@@ -93,7 +95,7 @@ class ExpectedGeneratorGraphDialog(context: Context) {
         present_expected_Graph(context)
     }
 
-    fun present_expected_Graph(context: Context){
+    fun present_expected_Graph(context: Context) {
 
         val generator_entries_present = ArrayList<BarEntry>()
         var x = 1.0f
@@ -132,7 +134,7 @@ class ExpectedGeneratorGraphDialog(context: Context) {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
-            setDrawBarShadow(false) //그래프의 그림자
+            setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
                 axisMaximum = 101f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
@@ -141,18 +143,18 @@ class ExpectedGeneratorGraphDialog(context: Context) {
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(false) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
-                axisLineColor = ContextCompat.getColor(context,R.color.gray_1) // 축 색깔 설정
-                gridColor = ContextCompat.getColor(context,R.color.gray_1) // 축 아닌 격자 색깔 설정
-                textColor = ContextCompat.getColor(context,R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 13f //라벨 텍스트 크기
+                axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
+                gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
+                textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
+                textSize = 13f // 라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
                 granularity = 1f // 1 단위만큼 간격 두기
                 setDrawAxisLine(true) // 축 그림
                 setDrawGridLines(false) // 격자
-                textColor = ContextCompat.getColor(context,R.color.gray_2) //라벨 색상
-                textColor = ContextCompat.getColor(context,R.color.gray_1) //라벨 색상
+                textColor = ContextCompat.getColor(context, R.color.gray_2) // 라벨 색상
+                textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 색상
                 textSize = 12f // 텍스트 크기
                 valueFormatter = XAxisFormatter() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
@@ -161,18 +163,18 @@ class ExpectedGeneratorGraphDialog(context: Context) {
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
-            legend.textColor = ContextCompat.getColor(context,R.color.gray_1)
+            legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
             legend.textSize = 12f
         }
 
 
-        val present_set = BarDataSet(generator_entries_present,"현재 발전량") // 데이터셋 초기화
-        val expected_set = BarDataSet(generator_entries_expected,"예상 발전량") // 데이터셋 초기화
+        val present_set = BarDataSet(generator_entries_present, "현재 발전량") // 데이터셋 초기화
+        val expected_set = BarDataSet(generator_entries_expected, "예상 발전량") // 데이터셋 초기화
 
-        present_set.color = ContextCompat.getColor(context,R.color.gray_2)
-        expected_set.color = ContextCompat.getColor(context,R.color.gray_1)
+        present_set.color = ContextCompat.getColor(context, R.color.gray_2)
+        expected_set.color = ContextCompat.getColor(context, R.color.gray_1)
 
-        val dataSet :ArrayList<IBarDataSet> = ArrayList()
+        val dataSet: ArrayList<IBarDataSet> = ArrayList()
         dataSet.add(present_set)
         dataSet.add(expected_set)
 

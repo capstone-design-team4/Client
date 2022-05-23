@@ -30,6 +30,7 @@ class DRUserAdapter  (private val context: Context) : RecyclerView.Adapter<DRUse
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
     }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val txtName: TextView = itemView.findViewById(R.id.text_username_DR)
@@ -38,13 +39,13 @@ class DRUserAdapter  (private val context: Context) : RecyclerView.Adapter<DRUse
         fun UserDRGraph(context: Context){
 
             val user_entries = ArrayList<BarEntry>()
-            user_entries.add(BarEntry(1.2f,20.0f))
-            user_entries.add(BarEntry(2.2f,40.0f))
-            user_entries.add(BarEntry(3.2f,30.0f))
-            user_entries.add(BarEntry(4.2f,40.0f))
-            user_entries.add(BarEntry(5.2f,70.0f))
-            user_entries.add(BarEntry(6.2f,20.0f))
-            user_entries.add(BarEntry(7.2f,40.0f))
+            user_entries.add(BarEntry(1f,20.0f))
+            user_entries.add(BarEntry(2f,40.0f))
+            user_entries.add(BarEntry(3f,30.0f))
+            user_entries.add(BarEntry(4f,40.0f))
+            user_entries.add(BarEntry(5f,70.0f))
+            user_entries.add(BarEntry(6f,20.0f))
+            user_entries.add(BarEntry(7f,40.0f))
 
 
             userdrgraph.run {

@@ -27,9 +27,13 @@ class MainActivity : FragmentActivity() {
                     val graphFragment = GraphFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, graphFragment).commit()
                 }
+//                R.id.third -> {
+//                    val userFragment = UserFragment()
+//                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
+//                }
                 R.id.third -> {
-                    val userFragment = UserFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
+                    val reductionStatusFragment = ReductionStatusFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, reductionStatusFragment).commit()
                 }
             }
             true
@@ -49,7 +53,7 @@ class MainActivity : FragmentActivity() {
             2 -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fl_container, DRUserFragment())
+                    .replace(R.id.fl_container, ReductionStatusFragment())
                     .commit()
             }
         }
