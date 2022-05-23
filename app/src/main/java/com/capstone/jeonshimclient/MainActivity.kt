@@ -18,23 +18,25 @@ class MainActivity : FragmentActivity() {
         // navi_menu.xml 에서 설정했던 각 아이템들의 id를 통해 알맞은 프래그먼트로 변경하게 한다.
         bnv_main.run { setOnNavigationItemSelectedListener {
             when(it.itemId) {
+//                R.id.first -> {
+//                    // 다른 프래그먼트 화면으로 이동하는 기능
+//                    val drFragment = DRFragment()
+//                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, drFragment).commit()
+//                }
                 R.id.first -> {
                     // 다른 프래그먼트 화면으로 이동하는 기능
-                    val drFragment = DRFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, drFragment).commit()
+                    val reductionStatusFragment = ReductionStatusFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, reductionStatusFragment).commit()
                 }
                 R.id.second -> {
                     val graphFragment = GraphFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, graphFragment).commit()
                 }
-//                R.id.third -> {
-//                    val userFragment = UserFragment()
-//                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
-//                }
                 R.id.third -> {
-                    val reductionStatusFragment = ReductionStatusFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, reductionStatusFragment).commit()
+                    val userFragment = UserFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, userFragment).commit()
                 }
+
             }
             true
         }

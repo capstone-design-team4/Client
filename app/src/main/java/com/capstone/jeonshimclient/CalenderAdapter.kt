@@ -53,9 +53,9 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
             holder.dayTv.setTextColor(R.color.blue_back)
         }
         else{
-            holder.thisView.setBackgroundResource(0)
             holder.dateTv.setTextColor(R.color.white)
             holder.dayTv.setTextColor(R.color.white)
+            holder.thisView.setBackgroundResource(0)
         }
     }
 

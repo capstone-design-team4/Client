@@ -12,6 +12,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_drlist.*
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -75,6 +76,18 @@ class ReductionStatusFragment : Fragment() {
                 monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${data.date}일"
             }
         })
+
+        val graphlistdialog = GraphListDialog(requireContext())
+
+        showgraph1.setOnClickListener {
+            graphlistdialog.graphlistDig(requireContext(), "세대1")
+        }
+        showgraph2.setOnClickListener {
+            graphlistdialog.graphlistDig(requireContext(), "세대2")
+        }
+        showgraph3.setOnClickListener {
+            graphlistdialog.graphlistDig(requireContext(), "세대3")
+        }
     }
 
     // list(날짜, 요일)를 만들고, adapter를 등록하는 메소드
