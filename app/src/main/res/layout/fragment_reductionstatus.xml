@@ -77,14 +77,14 @@
             android:layout_gravity="center_horizontal">
 
             <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="52dp"
-                android:layout_height="43dp"
+                android:id="@+id/imageView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
+                android:src="@drawable/calender_bs_icon"
                 app:layout_constraintEnd_toStartOf="@+id/monthAndDay"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:src="@drawable/calender_icon" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/monthAndDay"

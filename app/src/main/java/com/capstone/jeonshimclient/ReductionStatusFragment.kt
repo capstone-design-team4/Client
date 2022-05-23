@@ -72,7 +72,7 @@ class ReductionStatusFragment : Fragment() {
                 dateTv.setTextColor(R.color.blue_back)
                 dayTv.setTextColor(R.color.blue_back)
                 selectedView = v
-                monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)}월 ${data.date}일"
+                monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${data.date}일"
             }
         })
     }
