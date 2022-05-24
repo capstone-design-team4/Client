@@ -28,6 +28,34 @@ data class MeasurementGenDay(
     @SerializedName("time_voltage") var timeVoltage: String
 )
 
+// 발전량 예상 값, 날짜&시간
+data class PredictionGen(
+    var amount: Float,
+    var period: String
+)
+
+// 사용량예상, 날짜&시간
+data class PredictionUsage(
+    var amount: Float,
+    var period: String
+)
+
+// 하루 기준 전력 사용량
+data class MeasurementUsageDay(
+    var current: Float,
+    @SerializedName("time_current") var timeCurrent: String,
+    var voltage: Float, //
+    @SerializedName("time_voltage") var timeVoltage: String
+)
+
+// 일주일 기준 전력 사용량
+data class MeasurementUsageWeek(
+    var current: Float,
+    @SerializedName("time_current") var timeCurrent: String,
+    var voltage: Float, //
+    @SerializedName("time_voltage") var timeVoltage: String
+)
+
 // 데이터콜렉터
 // DB에 접속하여 건물 사용자의 id와
 // 배터리와 태양광 패널의 측정 센서의 id를 가져야 함

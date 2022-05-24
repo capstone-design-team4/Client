@@ -22,26 +22,36 @@ interface APIS {
         "accept: application/json",
         "content-type: application/json"
     )
-    fun graphPredictUsageOf(
+    fun getPredictionUsage(
         @Path("userId") userId: String
-    ): Call<Int>
+    ): Call<List<PredictionUsage>>
 
-    @GET("/graph/predictGen")
+    @GET("/graph/predictionGen")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
-    fun graphPredictGen(
-    ): Call<Int>
+    fun getPredictionGen(
+    ): Call<List<PredictionGen>>
 
-    @GET("/graph/measurementUsage/{userId}")
+    @GET("/graph/measurementUsageWeek/{userId}")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
-    fun graphMeasurementUsageOf(
+    fun getMeasurementUsageWeek(
         @Path("userId") userId: String
-    ): Call<Int>
+    ): Call<List<MeasurementUsageWeek>>
+
+
+    @GET("/graph/measurementUsageDay/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getMeasurementUsageDay(
+        @Path("userId") userId: String
+    ): Call<List<MeasurementUsageDay>>
 
     @GET("/graph/measurementGenDay")
     @Headers(

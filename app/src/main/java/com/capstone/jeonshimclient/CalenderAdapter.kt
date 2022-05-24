@@ -15,6 +15,8 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
     RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     var drawable: Drawable? = null
     var selectedIndex: Int? = null
+    var selectedView: View? = null
+
     private lateinit var itemClickListener: AdapterView.OnItemClickListener
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -30,7 +32,7 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
                     selectedIndex = pos
                 }
             }
-            Log.d("log", "bind: 선택한 Date = $item")
+//            Log.d("log", "bind: 선택한 Date = $item")
         }
     }
 
@@ -48,9 +50,11 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
 
         holder.bind(dataSet[position])
         if(selectedIndex != null && selectedIndex == position){
+            selectedView = holder.thisView
             holder.thisView.setBackgroundResource(R.drawable.border_layout_bs1)
             holder.dateTv.setTextColor(R.color.blue_back)
             holder.dayTv.setTextColor(R.color.blue_back)
+            selectedIndex = position
         }
         else{
             holder.dateTv.setTextColor(R.color.white)

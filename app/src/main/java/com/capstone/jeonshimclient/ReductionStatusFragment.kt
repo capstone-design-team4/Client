@@ -1,5 +1,8 @@
 package com.capstone.jeonshimclient
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
+import android.content.res.Resources.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,10 +26,13 @@ import java.util.*
 
 class ReductionStatusFragment : Fragment() {
     val itemList = arrayListOf<Date>()
+    @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
     lateinit var calendarList: RecyclerView
     lateinit var mLayoutManager: LinearLayoutManager
-    var selectedPos: Int? = null
+    @RequiresApi(Build.VERSION_CODES.O)
+    var selectedDay: Int = LocalDate.now().dayOfMonth - 1
+    @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
 
@@ -46,29 +53,40 @@ class ReductionStatusFragment : Fragment() {
 
         setListView()
 
+        calendarList.smoothScrollToPosition(LocalDate.now().dayOfMonth - 1)
+
         return view
     }
 
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("log", "OnViewCreated")
         Log.d("log", "listAdapter: " + listAdapter.toString())
         //Log.d("log","calendarList: " + calendarList.)
 
+
+        // 뷰가 시작되었을 때 현재 날짜를 표시해줘야 함
+        monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${LocalDate.now().dayOfMonth}일"
+
+
+        // 캘린더 어떤 날짜를 클릭했을 때 발생
         listAdapter.setOnItemClickListener(object : CalendarAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Date, pos: Int) {
                 val calendarView: View = v.findViewById(R.id.calendar_cell)
                 val dateTv: TextView = v.findViewById(R.id.date_cell)
                 val dayTv: TextView = v.findViewById(R.id.day_cell)
+                selectedDay = pos+1
 
                 if (selectedView != null && selectedView != v) {
+                    Log.d("log", "if문 실행")
                     selectedView?.setBackgroundResource(0)
                     val temp1: TextView = selectedView!!.findViewById(R.id.date_cell)
                     val temp2: TextView = selectedView!!.findViewById(R.id.day_cell)
                     temp1.setTextColor(R.color.white)
                     temp2.setTextColor(R.color.white)
                 }
-
                 calendarView.setBackgroundResource(R.drawable.border_layout_bs1)
                 dateTv.setTextColor(R.color.blue_back)
                 dayTv.setTextColor(R.color.blue_back)
@@ -80,13 +98,13 @@ class ReductionStatusFragment : Fragment() {
         val graphlistdialog = GraphListDialog(requireContext())
 
         showgraph1.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대1")
+            graphlistdialog.graphlistDig(requireContext(), "세대1", selectedDay)
         }
         showgraph2.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대2")
+            graphlistdialog.graphlistDig(requireContext(), "세대2", selectedDay)
         }
         showgraph3.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대3")
+            graphlistdialog.graphlistDig(requireContext(), "세대3", selectedDay)
         }
     }
 
