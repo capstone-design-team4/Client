@@ -11,15 +11,15 @@
             android:top="-2dp">
                 <shape android:shape="rectangle" >
                         <corners
-                            android:bottomLeftRadius="16dp"
-                            android:bottomRightRadius="16dp"
-                            android:topLeftRadius="16dp"
-                            android:topRightRadius="16dp" />
+                            android:bottomLeftRadius="12dp"
+                            android:bottomRightRadius="12dp"
+                            android:topLeftRadius="12dp"
+                            android:topRightRadius="12dp" />
                         <stroke
                             android:width="2dp"
-                            android:color="@color/gray_2" />
+                            android:color="@color/blue_back" />
 
-                        <solid android:color="@color/gray_2"  />
+                        <solid android:color="@color/blue_back"  />
                 </shape>
         </item>
 

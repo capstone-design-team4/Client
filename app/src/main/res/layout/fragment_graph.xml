@@ -62,16 +62,20 @@
             android:layout_height="40dp"
             android:layout_marginLeft="35dp"
             android:layout_marginStart="35dp"
-            android:background="@drawable/background_bs_blue2"
+            android:background="@drawable/background_bs_blue"
+            android:bottomLeftRadius="12dp"
+            android:bottomRightRadius="12dp"
             android:fontFamily="@font/font1"
             android:text="발전량 그래프"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            app:backgroundTint="@color/blue_back"
+            android:topLeftRadius="12dp"
+            android:topRightRadius="12dp"
+            app:backgroundTint="@null"
             app:layout_constraintEnd_toStartOf="@+id/bt_start_graph2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
 
         <Button
             android:id="@+id/bt_start_graph2"
@@ -79,16 +83,16 @@
             android:layout_height="40dp"
             android:layout_marginEnd="35dp"
             android:layout_marginRight="35dp"
-            android:background="@drawable/background_bs_blue2"
+            android:background="@drawable/background_bs_gray"
             android:fontFamily="@font/font1"
             android:text="사용량 그래프"
             android:textColor="@color/gray_2"
             android:textSize="18sp"
-            app:backgroundTint="#EEEEEE"
+            app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bt_start_graph1"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--    <TextView-->
@@ -147,7 +151,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/userDRChart1"
+            android:id="@+id/chart_graphfragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"

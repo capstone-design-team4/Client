@@ -1,11 +1,9 @@
 package com.capstone.jeonshimclient
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.components.AxisBase
@@ -43,7 +41,7 @@ class DRUserFragment : Fragment() {
         user_entries.add(BarEntry(7f, 40.0f))
 
 
-        userDRChart1.run {
+        chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
@@ -152,7 +150,7 @@ class DRUserFragment : Fragment() {
 
         val user_data = BarData(dataSet)
         user_data.barWidth = 0.3f // 막대 너비 설정
-        userDRChart1.run {
+        chart_graphfragment.run {
             this.data = user_data // 차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
