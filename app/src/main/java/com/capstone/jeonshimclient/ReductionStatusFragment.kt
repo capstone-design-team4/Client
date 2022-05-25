@@ -17,14 +17,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_drlist.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 class ReductionStatusFragment : Fragment() {
+    val api = APIS.create()
     val itemList = arrayListOf<Date>()
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
@@ -35,6 +40,8 @@ class ReductionStatusFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
+
+    var drRequestInfo: DrRequestInfo? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -129,5 +136,12 @@ class ReductionStatusFragment : Fragment() {
             )
         }
         calendarList.adapter = listAdapter
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun initDrRequestInfo(day: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = api.getDrRequestInfoDay("${LocalDateTime.now().toString()}")
+        }
     }
 }

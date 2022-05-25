@@ -80,7 +80,17 @@ interface APIS {
         "content-type: application/json"
     )
     fun getDrRequestInfo(
-    ): Call<List<DRRequestInfo>>
+    ): Call<List<DrRequestInfo>>
+
+    // 특정 day에 떴던 DrRequest에 대한 정보를 get
+    @GET("/drRequest/requestInfo/{day}")
+    @Headers(
+        "accept: application/json",
+        "contemt-type: application/json"
+    )
+    fun getDrRequestInfoDay(
+        @Path("day") day: String
+    ): Call<List<DrRequestInfo>>
 
     //
     @GET("/drRequest/decisionFlag")
