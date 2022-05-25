@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_drlist.*
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
@@ -35,6 +36,8 @@ class ReductionStatusFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
+    var requestInfoDay: DrRequestInfo? = null
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -92,6 +95,7 @@ class ReductionStatusFragment : Fragment() {
                 dayTv.setTextColor(R.color.blue_back)
                 selectedView = v
                 monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${data.date}일"
+                getRequestInfoDay(selectedDay)
             }
         })
 
@@ -129,5 +133,12 @@ class ReductionStatusFragment : Fragment() {
             )
         }
         calendarList.adapter = listAdapter
+    }
+
+    // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getRequestInfoDay(day: Int){
+        var date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0,0)
+        Log.d("log", "date: $date")
     }
 }

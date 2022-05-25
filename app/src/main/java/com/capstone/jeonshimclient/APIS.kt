@@ -80,7 +80,7 @@ interface APIS {
         "content-type: application/json"
     )
     fun getDrRequestInfo(
-    ): Call<List<DRRequestInfo>>
+    ): Call<List<DrRequestInfo>>
 
     //
     @GET("/drRequest/decisionFlag")
@@ -96,7 +96,7 @@ interface APIS {
         "accept: application/json",
         "content-type: application/json"
     )
-    fun getDrRequestInfoDayOf():Call<DRRequestInfo>
+    fun getDrRequestInfoDayOf():Call<DrRequestInfo>
 
     @GET("/drRequest/contractInfo")
     @Headers(

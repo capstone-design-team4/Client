@@ -82,7 +82,7 @@ data class PowerSupplyVerification(
 )
 
 // DR request Data
-data class DRRequestInfo(
+data class DrRequestInfo(
     var requestId: Int? = null,
     var requestStartTime: String,
     var requestEndTime: String,

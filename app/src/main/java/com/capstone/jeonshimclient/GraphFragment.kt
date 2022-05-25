@@ -79,6 +79,7 @@ class GraphFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun graphFragmentMain() {
         // 어플 시작시 띄우는 그래프 = 발전량 그래프
         generator_present_expected_Graph(requireContext())
@@ -354,7 +355,7 @@ class GraphFragment : Fragment() {
     }
 
     fun usage_present_expected_Graph(context: Context) {
-        if (!weCanDrawGraphUsage) return
+        //if (!weCanDrawGraphUsage) return
         // 현재 사용량 그래프 정보
         val present_Entry = ArrayList<BarEntry>()
         // 예상 사용량 그래프 정보
@@ -363,6 +364,7 @@ class GraphFragment : Fragment() {
         var x = 1.2f
         var y: Float
         for (key in STARTHOUR..ENDHOUR) {
+            Log.d("log","$key")
             if (usageTimeHash.containsKey(key)) {
                 y = usageTimeHash[key]!!
                 present_Entry.add(BarEntry(x++, y))
@@ -374,10 +376,9 @@ class GraphFragment : Fragment() {
                     } else
                         break
                 }
-                break
+                //break
             }
         }
-
 
         chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
