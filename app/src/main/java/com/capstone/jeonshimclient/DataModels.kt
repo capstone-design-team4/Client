@@ -56,6 +56,14 @@ data class MeasurementUsageWeek(
     @SerializedName("time_voltage") var timeVoltage: String
 )
 
+// 일주일 기준 발전량
+data class MeasurementGenWeek(
+    var current: Float,
+    @SerializedName("time_current") var timeCurrent: String,
+    var voltage: Float, //
+    @SerializedName("time_voltage") var timeVoltage: String
+)
+
 // 데이터콜렉터
 // DB에 접속하여 건물 사용자의 id와
 // 배터리와 태양광 패널의 측정 센서의 id를 가져야 함

@@ -26,22 +26,30 @@ import kotlinx.android.synthetic.main.fragment_graph.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
+import java.time.DayOfWeek
 import java.time.LocalDateTime
 
 class GraphFragment : Fragment() {
     private val STARTHOUR: Int = 13
     private val ENDHOUR: Int = 19
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val STARTDAYOFWEEK: DayOfWeek = DayOfWeek.MONDAY
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val ENDDAYOFWEEK: DayOfWeek = DayOfWeek.SUNDAY
     private val USERCOUNT: Int = 3
 
     var api: APIS = APIS.create()
-    var genTimeHash: HashMap<Int, Float> = HashMap()
+    var genTimeHash: HashMap<DayOfWeek, Float> = HashMap()
     var usageTimeHash: HashMap<Int, Float> = HashMap()
     var usagePredictionTimeHash: HashMap<Int, Float> = HashMap()
-    var predictionTimeHash: HashMap<Int, Float> = HashMap()
+    var predictionTimeHash: HashMap<DayOfWeek, Float> = HashMap()
     var weCanDrawGraphGen: Boolean = false
     var weCanDrawGraphUsage: Boolean = false
 
@@ -61,9 +69,14 @@ class GraphFragment : Fragment() {
         // 코루틴 사용하여 호출함
 
         // api 호출
-        generator_present_expected_Graph_API()
-        usage_present_expected_Graph_API()
-        graphFragmentMain()
+        CoroutineScope(Dispatchers.IO).launch{
+            generator_present_expected_Graph_API()
+            usage_present_expected_Graph_API()
+
+            withContext(Dispatchers.Main){
+                graphFragmentMain()
+            }
+        }
     }
 
     fun graphFragmentMain() {
@@ -104,68 +117,66 @@ class GraphFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun generator_present_expected_Graph_API() {
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val call: Call<List<MeasurementGenDay>> = api.getMeasurementGenDay()
-            val execute = call.execute()
-            val body = execute.body()
-            Log.d("log", "getMeasurementGenDay1 :" + execute.toString())
-            Log.d("log", "getMeasurementGenDay2 :" + body.toString())
-            Log.d(
-                "log", "getMeasurementGenDay3 :" + body?.count().toString()
-            )
-            if(body.toString() != "[]" && body != null){
-                val count = body?.count()!!
-                for (index in 0 until count) {
-                    val targetTime =
-                        LocalDateTime.parse(body[index].timeCurrent).toLocalTime().hour
-                    if (targetTime < STARTHOUR || targetTime > ENDHOUR)
-                        continue
+        val call: Call<List<MeasurementGenWeek>> = api.getMeasurementGenWeek()
+        val execute = call.execute()
+        val body = execute.body()
+        Log.d("log", "getMeasurementGenWeek1 :" + execute.toString())
+        Log.d("log", "getMeasurementGenWeek2 :" + body.toString())
+        Log.d(
+            "log", "getMeasurementGenWeek3 :" + body?.count().toString()
+        )
+        if (body.toString() != "[]" && body != null) {
+            val count = body?.count()!!
+            for (index in 0 until count) {
+                val targetTime =
+                    LocalDateTime.parse(body[index].timeCurrent).dayOfWeek
+                if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
+                    continue
 
-                    val current = body[index].current
-                    val voltage = body[index].voltage
+                val current = body[index].current
+                val voltage = body[index].voltage
 
-                    if (!genTimeHash.containsKey(targetTime))
-                        genTimeHash[targetTime] = 15 * current * voltage
-                    else
-                        genTimeHash[targetTime] =
-                            15 * current * voltage + genTimeHash.getValue(targetTime)
-                }
-            }
-
-            val call2 = api.getPredictionGen()
-            val execute2 = call2.execute()
-            val body2 = execute2.body()
-            Log.d("log", "getPredictionGen1 :" + execute2.toString())
-            Log.d("log", "getPredictionGen2 :" + body2.toString())
-            Log.d(
-                "log", "getPredictionGen3 :" + body2?.count().toString()
-            )
-            if(body2.toString() != "[]" && body2 != null){
-                val count = body2?.count()!!
-                for (index in 0 until count) {
-                    val targetTime =
-                        LocalDateTime.parse(body2[index].period).toLocalTime().hour
-                    if (targetTime < STARTHOUR || targetTime > ENDHOUR)
-                        continue
-
-                    val amount = body2[index].amount
-
-                    if (!genTimeHash.containsKey(targetTime))
-                        genTimeHash[targetTime] = amount
-                    else
-                        genTimeHash[targetTime] =
-                            amount + genTimeHash.getValue(targetTime)
-                }
+                if (!genTimeHash.containsKey(targetTime))
+                    genTimeHash[targetTime] = 15 * current * voltage
+                else
+                    genTimeHash[targetTime] =
+                        15 * current * voltage + genTimeHash.getValue(targetTime)
             }
         }
 
-        weCanDrawGraphGen = true
+        val call2 = api.getPredictionGen()
+        val execute2 = call2.execute()
+        val body2 = execute2.body()
+        Log.d("log", "getPredictionGen1 :" + execute2.toString())
+        Log.d("log", "getPredictionGen2 :" + body2.toString())
+        Log.d(
+            "log", "getPredictionGen3 :" + body2?.count().toString()
+        )
+        if (body2.toString() != "[]" && body2 != null) {
+            val count = body2?.count()!!
+            for (index in 0 until count) {
+                val targetTime =
+                    LocalDateTime.parse(body2[index].period).dayOfWeek
+                if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
+                    continue
+
+                val amount = body2[index].amount
+
+                if (!predictionTimeHash.containsKey(targetTime))
+                    predictionTimeHash[targetTime] = amount
+                else
+                    predictionTimeHash[targetTime] =
+                        amount + predictionTimeHash.getValue(targetTime)
+            }
+        }
+//        weCanDrawGraphGen = true
     }
 
     // 발전량 그래프 띄우는 함수
+    @RequiresApi(Build.VERSION_CODES.O)
     fun generator_present_expected_Graph(context: Context) {
         // 그래프 그릴 판단 못했으면 리턴
-        if (!weCanDrawGraphGen) return
+//        if (!weCanDrawGraphGen) return
 
         // 그래프 표시
         val generator_entries_present = ArrayList<BarEntry>()
@@ -173,14 +184,23 @@ class GraphFragment : Fragment() {
 
         var x = 1.2f
         var y: Float
-        for (key in STARTHOUR..ENDHOUR) {
-            if (genTimeHash.containsKey(key)) {
-                y = genTimeHash[key]!!
+        val week = arrayOf(
+            DayOfWeek.MONDAY,
+            DayOfWeek.TUESDAY,
+            DayOfWeek.WEDNESDAY,
+            DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY,
+            DayOfWeek.SATURDAY,
+            DayOfWeek.SUNDAY
+        )
+        for (key in 0 until 7) {
+            if (genTimeHash.containsKey(week[key])) {
+                y = genTimeHash[week[key]]!!
                 generator_entries_present.add(BarEntry(x++, y))
             } else {
-                for (key2 in key..ENDHOUR) {
-                    if (genTimeHash.containsKey(key2)) {
-                        y = predictionTimeHash[key2]!!
+                for (key2 in key until 7) {
+                    if (genTimeHash.containsKey(week[key2])) {
+                        y = predictionTimeHash[week[key2]]!!
                         generator_entries_expected.add(BarEntry(x++, y))
                     } else
                         break
@@ -274,70 +294,67 @@ class GraphFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun usage_present_expected_Graph_API() {
+        for (i in 1..USERCOUNT) {
+            val call: Call<List<MeasurementUsageDay>> = api.getMeasurementUsageDay("$i")
+            val execute = call.execute()
+            val body = execute.body()
+            Log.d("log", "getMeasurementUsageDay$i 1 :" + execute.toString())
+            Log.d("log", "getMeasurementUsageDay$i 2 :" + body.toString())
+            Log.d(
+                "log", "getMeasurementUsageDay$i 3 :" + body?.count().toString()
+            )
+            if (body.toString() != "[]" && body != null) {
+                val count = body?.count()!!
+                for (index in 0 until count) {
+                    val targetTime =
+                        LocalDateTime.parse(body[index].timeCurrent).toLocalTime().hour
+                    if (targetTime < STARTHOUR || targetTime > ENDHOUR)
+                        continue
 
-        CoroutineScope(Dispatchers.IO).launch {
-            for (i in 1..USERCOUNT) {
-                val call: Call<List<MeasurementUsageDay>> = api.getMeasurementUsageDay("$i")
-                val execute = call.execute()
-                val body = execute.body()
-                Log.d("log", "getMeasurementUsageDay$i 1 :" + execute.toString())
-                Log.d("log", "getMeasurementUsageDay$i 2 :" + body.toString())
-                Log.d(
-                    "log", "getMeasurementUsageDay$i 3 :" + body?.count().toString()
-                )
-                if (body.toString() != "[]" && body != null) {
-                    val count = body?.count()!!
-                    for (index in 0 until count) {
-                        val targetTime =
-                            LocalDateTime.parse(body[index].timeCurrent).toLocalTime().hour
-                        if (targetTime < STARTHOUR || targetTime > ENDHOUR)
-                            continue
+                    val current = body[index].current
+                    val voltage = body[index].voltage
 
-                        val current = body[index].current
-                        val voltage = body[index].voltage
-
-                        if (!usageTimeHash.containsKey(targetTime))
-                            usageTimeHash[targetTime] = 15 * current * voltage
-                        else
-                            usageTimeHash[targetTime] =
-                                15 * current * voltage + usageTimeHash.getValue(targetTime)
-                    }
+                    if (!usageTimeHash.containsKey(targetTime))
+                        usageTimeHash[targetTime] = 15 * current * voltage
+                    else
+                        usageTimeHash[targetTime] =
+                            15 * current * voltage + usageTimeHash.getValue(targetTime)
                 }
             }
-
-            for (i in 1..USERCOUNT) {
-                val call = api.getPredictionUsage("$i")
-                val execute = call.execute()
-                val body = execute.body()
-                Log.d("log", "getPredictionUsage$i 1 :" + execute.toString())
-                Log.d("log", "getPredictionUsage$i 2 :" + body.toString())
-                Log.d(
-                    "log", "getPredictionUsage$i 3 :" + body?.count().toString()
-                )
-                if (body.toString() != "[]" && body != null) {
-                    val count = body?.count()!!
-                    for (index in 0 until count) {
-                        val targetTime =
-                            LocalDateTime.parse(body[index].period).toLocalTime().hour
-                        if (targetTime < STARTHOUR || targetTime > ENDHOUR)
-                            continue
-
-                        val amount = body[index].amount
-
-                        if (!usagePredictionTimeHash.containsKey(targetTime))
-                            usagePredictionTimeHash[targetTime] = amount
-                        else
-                            usageTimeHash[targetTime] = amount + usageTimeHash.getValue(targetTime)
-                    }
-                }
-            }
-
-            weCanDrawGraphUsage = true
         }
+
+        for (i in 1..USERCOUNT) {
+            val call = api.getPredictionUsage("$i")
+            val execute = call.execute()
+            val body = execute.body()
+            Log.d("log", "getPredictionUsage$i 1 :" + execute.toString())
+            Log.d("log", "getPredictionUsage$i 2 :" + body.toString())
+            Log.d(
+                "log", "getPredictionUsage$i 3 :" + body?.count().toString()
+            )
+            if (body.toString() != "[]" && body != null) {
+                val count = body?.count()!!
+                for (index in 0 until count) {
+                    val targetTime =
+                        LocalDateTime.parse(body[index].period).toLocalTime().hour
+                    if (targetTime < STARTHOUR || targetTime > ENDHOUR)
+                        continue
+
+                    val amount = body[index].amount
+
+                    if (!usagePredictionTimeHash.containsKey(targetTime))
+                        usagePredictionTimeHash[targetTime] = amount
+                    else
+                        usagePredictionTimeHash[targetTime] =
+                            amount + usagePredictionTimeHash.getValue(targetTime)
+                }
+            }
+        }
+        weCanDrawGraphUsage = true
     }
 
     fun usage_present_expected_Graph(context: Context) {
-        if(!weCanDrawGraphUsage) return
+        if (!weCanDrawGraphUsage) return
         // 현재 사용량 그래프 정보
         val present_Entry = ArrayList<BarEntry>()
         // 예상 사용량 그래프 정보
@@ -346,13 +363,13 @@ class GraphFragment : Fragment() {
         var x = 1.2f
         var y: Float
         for (key in STARTHOUR..ENDHOUR) {
-            if (genTimeHash.containsKey(key)) {
-                y = genTimeHash[key]!!
+            if (usageTimeHash.containsKey(key)) {
+                y = usageTimeHash[key]!!
                 present_Entry.add(BarEntry(x++, y))
             } else {
                 for (key2 in key..ENDHOUR) {
-                    if (genTimeHash.containsKey(key2)) {
-                        y = predictionTimeHash[key2]!!
+                    if (usagePredictionTimeHash.containsKey(key2)) {
+                        y = usagePredictionTimeHash[key2]!!
                         expected_Entry.add(BarEntry(x++, y))
                     } else
                         break
@@ -420,12 +437,12 @@ class GraphFragment : Fragment() {
     }
 
     inner class XAxisFormatter_usage : ValueFormatter() {
-        //        private val days = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
+        private val days = arrayOf("월", "화", "수", "목", "금", "토", "일")
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            val timesString = ArrayList<String>()
-            for (time in STARTHOUR..ENDHOUR)
-                timesString.add("$time:00")
-            return timesString.getOrNull(value.toInt() - 1) ?: value.toString()
+//            val timesString = ArrayList<String>()
+//            for (time in STARTHOUR..ENDHOUR)
+//                timesString.add("$time:00")
+            return days.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 

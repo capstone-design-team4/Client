@@ -34,6 +34,7 @@ interface APIS {
     fun getPredictionGen(
     ): Call<List<PredictionGen>>
 
+
     @GET("/graph/measurementUsageWeek/{userId}")
     @Headers(
         "accept: application/json",
@@ -52,6 +53,14 @@ interface APIS {
     fun getMeasurementUsageDay(
         @Path("userId") userId: String
     ): Call<List<MeasurementUsageDay>>
+
+    @GET("/graph/measurementGenWeek")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getMeasurementGenWeek(
+    ): Call<List<MeasurementGenWeek>>
 
     @GET("/graph/measurementGenDay")
     @Headers(
