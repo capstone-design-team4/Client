@@ -31,12 +31,15 @@ import java.util.*
 class ReductionStatusFragment : Fragment() {
     val api = APIS.create()
     val itemList = arrayListOf<Date>()
+
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
     lateinit var calendarList: RecyclerView
     lateinit var mLayoutManager: LinearLayoutManager
+
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedDay: Int = LocalDate.now().dayOfMonth - 1
+
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
@@ -77,7 +80,12 @@ class ReductionStatusFragment : Fragment() {
 
 
         // 뷰가 시작되었을 때 현재 날짜를 표시해줘야 함
-        monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${LocalDate.now().dayOfMonth}일"
+        monthAndDay.text = "${
+            LocalDate.now().month.getDisplayName(
+                TextStyle.SHORT,
+                Locale.KOREA
+            )
+        } ${LocalDate.now().dayOfMonth}일"
 
 
         // 캘린더 어떤 날짜를 클릭했을 때 발생
@@ -86,7 +94,7 @@ class ReductionStatusFragment : Fragment() {
                 val calendarView: View = v.findViewById(R.id.calendar_cell)
                 val dateTv: TextView = v.findViewById(R.id.date_cell)
                 val dayTv: TextView = v.findViewById(R.id.day_cell)
-                selectedDay = pos+1
+                selectedDay = pos + 1
 
                 if (selectedView != null && selectedView != v) {
                     Log.d("log", "if문 실행")
@@ -100,7 +108,12 @@ class ReductionStatusFragment : Fragment() {
                 dateTv.setTextColor(R.color.blue_back)
                 dayTv.setTextColor(R.color.blue_back)
                 selectedView = v
-                monthAndDay.text = "${LocalDate.now().month.getDisplayName(TextStyle.SHORT, Locale.KOREA)} ${data.date}일"
+                monthAndDay.text = "${
+                    LocalDate.now().month.getDisplayName(
+                        TextStyle.SHORT,
+                        Locale.KOREA
+                    )
+                } ${data.date}일"
                 getRequestInfoDay(selectedDay)
             }
         })
@@ -141,18 +154,17 @@ class ReductionStatusFragment : Fragment() {
         calendarList.adapter = listAdapter
     }
 
-<<<<<<< HEAD
+
     // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRequestInfoDay(day: Int){
-        var date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0,0)
+    fun getRequestInfoDay(day: Int) {
+        var date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0, 0)
         Log.d("log", "date: $date")
-=======
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun initDrRequestInfo(day: String){
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = api.getDrRequestInfoDay("${LocalDateTime.now().toString()}")
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun initDrRequestInfo(day: String) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val call = api.getDrRequestInfoDay("${LocalDateTime.now().toString()}")
+            }
         }
->>>>>>> d1601e184ca5732f1d5cb53e634c467be18fc0e1
     }
 }
