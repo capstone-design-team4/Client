@@ -81,6 +81,19 @@ interface APIS {
     )
     fun getDrRequestInfo(
     ): Call<List<DrRequestInfo>>
+<<<<<<< HEAD
+=======
+
+    // 특정 day에 떴던 DrRequest에 대한 정보를 get
+    @GET("/drRequest/requestInfo/{day}")
+    @Headers(
+        "accept: application/json",
+        "contemt-type: application/json"
+    )
+    fun getDrRequestInfoDay(
+        @Path("day") day: String
+    ): Call<List<DrRequestInfo>>
+>>>>>>> d1601e184ca5732f1d5cb53e634c467be18fc0e1
 
     //
     @GET("/drRequest/decisionFlag")

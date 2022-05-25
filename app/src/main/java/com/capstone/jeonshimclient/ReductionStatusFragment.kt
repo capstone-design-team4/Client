@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_drlist.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -26,6 +29,7 @@ import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 class ReductionStatusFragment : Fragment() {
+    val api = APIS.create()
     val itemList = arrayListOf<Date>()
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
@@ -38,6 +42,8 @@ class ReductionStatusFragment : Fragment() {
     lateinit var monthAndDay: TextView
     var requestInfoDay: DrRequestInfo? = null
 
+
+    var drRequestInfo: DrRequestInfo? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -135,10 +141,18 @@ class ReductionStatusFragment : Fragment() {
         calendarList.adapter = listAdapter
     }
 
+<<<<<<< HEAD
     // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
     @RequiresApi(Build.VERSION_CODES.O)
     fun getRequestInfoDay(day: Int){
         var date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0,0)
         Log.d("log", "date: $date")
+=======
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun initDrRequestInfo(day: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = api.getDrRequestInfoDay("${LocalDateTime.now().toString()}")
+        }
+>>>>>>> d1601e184ca5732f1d5cb53e634c467be18fc0e1
     }
 }
