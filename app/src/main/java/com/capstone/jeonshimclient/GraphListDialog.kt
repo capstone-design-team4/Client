@@ -1,5 +1,6 @@
 package com.capstone.jeonshimclient
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -32,7 +33,9 @@ open class GraphListDialog(context: Context) {
     val STARTHOUR = 0
     val ENDHOUR = 24
     lateinit var usageTimeHash: HashMap<Int, Float>
+    private var totalAmount: Float = 0f
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     fun graphListDig(
         context: Context,
@@ -54,13 +57,16 @@ open class GraphListDialog(context: Context) {
         dialog.setContentView(R.layout.dialog_graph_list)
 
         val textView: TextView = dialog.findViewById(R.id.pf_graph_name2)
+        val textView2: TextView = dialog.findViewById(R.id.pf_graph_name3)
 
-        textView.text = "세대${household}이 감축한 전력량"
         usageTimeHash = HashMap()
+        totalAmount = 0f
         CoroutineScope(Dispatchers.IO).launch {
             usageGraphAPI(household, selectedDay, drRequestInfo)
 
             withContext(Dispatchers.Main) {
+                textView.text = "세대${household}이 감축한 전력량"
+                textView2.text = totalAmount.toString() + "kwh"
                 listGraph(context)
             }
         }
@@ -151,14 +157,12 @@ open class GraphListDialog(context: Context) {
 
                     if (targetTime < STARTHOUR || targetTime > ENDHOUR) continue
 
-                    val current = body[index].current
-                    val voltage = body[index].voltage
-
+                    val amount = body[index].current * body[index].voltage * 15
+                    totalAmount += amount
                     if (!usageTimeHash.containsKey(targetTime))
-                        usageTimeHash[targetTime] = 15 * current * voltage
+                        usageTimeHash[targetTime] = amount
                     else
-                        usageTimeHash[targetTime] =
-                            15 * current * voltage + usageTimeHash.getValue(targetTime)
+                        usageTimeHash[targetTime] = amount + usageTimeHash.getValue(targetTime)
                 }
             }
         } catch (e: Exception) {

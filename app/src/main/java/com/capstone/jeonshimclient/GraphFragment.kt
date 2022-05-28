@@ -64,6 +64,7 @@ class GraphFragment : Fragment() {
     )
     private val days = arrayOf("월", "화", "수", "목", "금", "토", "일")
     private val times = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,18 +72,18 @@ class GraphFragment : Fragment() {
         api = APIS.create()
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("log", "Coroutine.launch")
-            if(!completeAPI1){
+            if (!completeAPI1) {
                 Log.d("log", "API1")
                 generator_present_expected_Graph_API()
-                if(nowChart == 1)
+                if (nowChart == 1)
                     withContext(Dispatchers.Main) {
                         generator_present_expected_Graph(requireContext())
                     }
             }
-            if(!completeAPI2){
+            if (!completeAPI2) {
                 Log.d("log", "API2")
                 usage_present_expected_Graph_API()
-                if(nowChart == 2) {
+                if (nowChart == 2) {
                     withContext(Dispatchers.Main) {
                         usage_present_expected_Graph(requireContext())
                     }
@@ -149,9 +150,9 @@ class GraphFragment : Fragment() {
             val execute = call.execute()
             val body = execute.body()
             Log.d("log", "getMeasurementGenWeek1 :$execute")
-            Log.d("log", "getMeasurementGenWeek2 : $body.toString()")
+            Log.d("log", "getMeasurementGenWeek2 : ${body.toString()}")
             Log.d(
-                "log", "getMeasurementGenWeek3 : $body?.count().toString()"
+                "log", "getMeasurementGenWeek3 : ${body?.count().toString()}"
             )
 
             if (body.toString() != "[]" && body != null) {
@@ -159,17 +160,15 @@ class GraphFragment : Fragment() {
                 for (index in 0 until count) {
                     val targetTime =
                         LocalDateTime.parse(body[index].timeCurrent).dayOfWeek
+
                     if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
                         continue
 
-                    val current = body[index].current
-                    val voltage = body[index].voltage
-
+                    val amount = body[index].current * body[index].voltage * 15
                     if (!genTimeHash.containsKey(targetTime))
-                        genTimeHash[targetTime] = 15 * current * voltage
+                        genTimeHash[targetTime] = amount
                     else
-                        genTimeHash[targetTime] =
-                            15 * current * voltage + genTimeHash.getValue(targetTime)
+                        genTimeHash[targetTime] = amount + genTimeHash.getValue(targetTime)
                 }
             }
         } catch (e: Exception) {
@@ -190,6 +189,7 @@ class GraphFragment : Fragment() {
                 for (index in 0 until count) {
                     val targetTime =
                         LocalDateTime.parse(body2[index].period).dayOfWeek
+                    Log.d("log", "발견된 targetTime = $targetTime")
                     if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
                         continue
 
@@ -319,14 +319,12 @@ class GraphFragment : Fragment() {
                         if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
                             continue
 
-                        val current = body[index].current
-                        val voltage = body[index].voltage
+                        val amount = body[index].current * body[index].voltage * 15
 
                         if (!usageTimeHash.containsKey(targetTime))
-                            usageTimeHash[targetTime] = 15 * current * voltage
+                            usageTimeHash[targetTime] = amount
                         else
-                            usageTimeHash[targetTime] =
-                                15 * current * voltage + usageTimeHash.getValue(targetTime)
+                            usageTimeHash[targetTime] = amount + usageTimeHash.getValue(targetTime)
                     }
                 }
             } catch (e: Exception) {
@@ -366,6 +364,7 @@ class GraphFragment : Fragment() {
         }
         completeAPI2 = true
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun usage_present_expected_Graph(context: Context) {
         nowChart = 2 // 현재 보여주는 차트 번호
@@ -449,6 +448,7 @@ class GraphFragment : Fragment() {
             invalidate()
         }
     }
+
     inner class XAxisFormatter_usage : ValueFormatter() {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             return days.getOrNull(value.toInt() - 1) ?: value.toString()
