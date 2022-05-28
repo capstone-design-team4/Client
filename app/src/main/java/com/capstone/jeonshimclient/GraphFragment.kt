@@ -45,13 +45,11 @@ class GraphFragment : Fragment() {
     private val ENDDAYOFWEEK: DayOfWeek = DayOfWeek.SUNDAY
     private val USERCOUNT: Int = 3
 
-    var api: APIS = APIS.create()
+    lateinit var api: APIS
     var genTimeHash: HashMap<DayOfWeek, Float> = HashMap()
     var usageTimeHash: HashMap<Int, Float> = HashMap()
     var usagePredictionTimeHash: HashMap<Int, Float> = HashMap()
     var predictionTimeHash: HashMap<DayOfWeek, Float> = HashMap()
-    var weCanDrawGraphGen: Boolean = false
-    var weCanDrawGraphUsage: Boolean = false
 
 
     override fun onCreateView(
@@ -67,13 +65,14 @@ class GraphFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 코루틴 사용하여 호출함
-
         // api 호출
-        CoroutineScope(Dispatchers.IO).launch{
-            generator_present_expected_Graph_API()
-            usage_present_expected_Graph_API()
+        api = APIS.create()
 
-            withContext(Dispatchers.Main){
+        CoroutineScope(Dispatchers.IO).launch {
+            suspend { generator_present_expected_Graph_API() }
+            suspend { usage_present_expected_Graph_API() }
+
+            withContext(Dispatchers.Main) {
                 graphFragmentMain()
             }
         }
@@ -170,14 +169,11 @@ class GraphFragment : Fragment() {
                         amount + predictionTimeHash.getValue(targetTime)
             }
         }
-//        weCanDrawGraphGen = true
     }
 
     // 발전량 그래프 띄우는 함수
     @RequiresApi(Build.VERSION_CODES.O)
     fun generator_present_expected_Graph(context: Context) {
-        // 그래프 그릴 판단 못했으면 리턴
-//        if (!weCanDrawGraphGen) return
 
         // 그래프 표시
         val generator_entries_present = ArrayList<BarEntry>()
@@ -200,7 +196,7 @@ class GraphFragment : Fragment() {
                 generator_entries_present.add(BarEntry(x++, y))
             } else {
                 for (key2 in key until 7) {
-                    if (genTimeHash.containsKey(week[key2])) {
+                    if (predictionTimeHash.containsKey(week[key2])) {
                         y = predictionTimeHash[week[key2]]!!
                         generator_entries_expected.add(BarEntry(x++, y))
                     } else
@@ -351,7 +347,6 @@ class GraphFragment : Fragment() {
                 }
             }
         }
-        weCanDrawGraphUsage = true
     }
 
     fun usage_present_expected_Graph(context: Context) {
@@ -364,7 +359,7 @@ class GraphFragment : Fragment() {
         var x = 1.2f
         var y: Float
         for (key in STARTHOUR..ENDHOUR) {
-            Log.d("log","$key")
+            Log.d("log", "$key")
             if (usageTimeHash.containsKey(key)) {
                 y = usageTimeHash[key]!!
                 present_Entry.add(BarEntry(x++, y))
@@ -376,7 +371,6 @@ class GraphFragment : Fragment() {
                     } else
                         break
                 }
-                //break
             }
         }
 
