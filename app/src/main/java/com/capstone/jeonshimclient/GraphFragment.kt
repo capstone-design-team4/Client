@@ -409,7 +409,7 @@ class GraphFragment : Fragment() {
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 13f //라벨 텍스트 크기
+                textSize = 12f //라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.

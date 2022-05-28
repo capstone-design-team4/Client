@@ -95,16 +95,16 @@ open class GraphListDialog(context: Context) {
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 1001f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                axisMaximum = 200f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
-                granularity = 100f // 50 단위마다 선을 그리려고 설정.
+                granularity = 10f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(true) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 13f //라벨 텍스트 크기
+                textSize = 10f //라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
