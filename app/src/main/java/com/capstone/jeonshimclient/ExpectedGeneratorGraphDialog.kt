@@ -32,11 +32,11 @@ class ExpectedGeneratorGraphDialog(context: Context) {
     fun startDialog(context: Context) {
 
         // api 호출 부분
-        api.getMeasurementGenDay().enqueue(object : Callback<List<MeasurementGenDay>> {
+        api.getMeasurementGenDay().enqueue(object : Callback<List<Measurement>> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
-                call: Call<List<MeasurementGenDay>>,
-                response: Response<List<MeasurementGenDay>>
+                call: Call<List<Measurement>>,
+                response: Response<List<Measurement>>
             ) {
                 Log.d("log", "1 :" + response.toString())
                 Log.d("log", "2 :" + response.body().toString())
@@ -70,7 +70,7 @@ class ExpectedGeneratorGraphDialog(context: Context) {
                 }
             }
 
-            override fun onFailure(call: Call<List<MeasurementGenDay>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Measurement>>, t: Throwable) {
                 // 실패
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")

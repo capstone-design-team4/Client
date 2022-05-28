@@ -8,15 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface APIS {
-    @POST("/userinfo/create")
-    @Headers(
-        "accept: application/json",
-        "content-type: application/json"
-    )
-    fun postUserInformation(
-        @Body jsonparams: UserInformation
-    ): Call<Int>
-
     @GET("/graph/predictUsage/{userId}")
     @Headers(
         "accept: application/json",
@@ -24,7 +15,8 @@ interface APIS {
     )
     fun getPredictionUsage(
         @Path("userId") userId: String
-    ): Call<List<PredictionUsage>>
+    ): Call<List<Prediction>>
+
 
     @GET("/graph/predictionGen")
     @Headers(
@@ -32,7 +24,7 @@ interface APIS {
         "content-type: application/json"
     )
     fun getPredictionGen(
-    ): Call<List<PredictionGen>>
+    ): Call<List<Prediction>>
 
 
     @GET("/graph/measurementUsageWeek/{userId}")
@@ -42,7 +34,7 @@ interface APIS {
     )
     fun getMeasurementUsageWeek(
         @Path("userId") userId: String
-    ): Call<List<MeasurementUsageWeek>>
+    ): Call<List<Measurement>>
 
 
     @GET("/graph/measurementUsageDay/{userId}")
@@ -52,7 +44,7 @@ interface APIS {
     )
     fun getMeasurementUsageDay(
         @Path("userId") userId: String
-    ): Call<List<MeasurementUsageDay>>
+    ): Call<List<Measurement>>
 
     @GET("/graph/measurementGenWeek")
     @Headers(
@@ -60,7 +52,7 @@ interface APIS {
         "content-type: application/json"
     )
     fun getMeasurementGenWeek(
-    ): Call<List<MeasurementGenWeek>>
+    ): Call<List<Measurement>>
 
     @GET("/graph/measurementGenDay")
     @Headers(
@@ -68,19 +60,23 @@ interface APIS {
         "content-type: application/json"
     )
     fun getMeasurementGenDay(
-    ): Call<List<MeasurementGenDay>>
+    ): Call<List<Measurement>>
 
 
     // drRequest ********************************************
 
-    // 지금 현재 뜬 DRrequest에 대한 정보를 get
-    @GET("/drRequest/requestInfo")
+    // 이 요청을 사용하기 위해서는 우선 requestId를 알아야 한다.
+    // requestId와 userId를 이용해서 그 request에 해당하는 user의 배터리 사용량을 알 수 있다.
+    @GET("/drRequest/usageAtDrTime/{requestId}/{userId}")
     @Headers(
         "accept: application/json",
-        "content-type: application/json"
+        "contemt-type: application/json"
     )
-    fun getDrRequestInfo(
-    ): Call<List<DrRequestInfo>>
+    fun getUsageAtDrTime(
+        @Path("requestId") requestId: String,
+        @Path("userId") userId: String
+    ): Call<List<Measurement>>
+
 
     // 특정 day에 떴던 DrRequest에 대한 정보를 get
     @GET("/drRequest/requestInfo/{day}")
@@ -90,31 +86,10 @@ interface APIS {
     )
     fun getDrRequestInfoDay(
         @Path("day") day: String
-    ): Call<List<DrRequestInfo>>
+    ): Call<DrRequestInfo>
 
     //
-    @GET("/drRequest/decisionFlag")
-    @Headers(
-        "accept: application/json",
-        "content-type: application/json"
-    )
-    fun getDrDecisionFlag(
-    ): Call<Boolean>
 
-    @GET("drRequest/requestInfo/day")
-    @Headers(
-        "accept: application/json",
-        "content-type: application/json"
-    )
-    fun getDrRequestInfoDayOf():Call<DrRequestInfo>
-
-    @GET("/drRequest/contractInfo")
-    @Headers(
-        "accept: application/json",
-        "content-type: application/json"
-    )
-    fun getDrContractInfo(
-    ): Call<Int>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
         private const val BASE_URL = "http://158.247.216.131:8080" // 주소

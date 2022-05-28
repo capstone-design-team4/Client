@@ -24,19 +24,23 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import kotlin.math.log
+import kotlin.text.Typography.times
 
 open class GraphListDialog(context: Context) {
     private val dialog = Dialog(context)
     val api = APIS.create()
-    val STARTHOUR = 13
-    val ENDHOUR = 19
-
-    var usageTimeHash: HashMap<Int, Float> = HashMap()
+    val STARTHOUR = 0
+    val ENDHOUR = 24
+    lateinit var usageTimeHash: HashMap<Int, Float>
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun graphlistDig(context: Context, household: String, selectedDay: Int) {
+    fun graphListDig(
+        context: Context,
+        household: Int,
+        selectedDay: Int,
+        drRequestInfo: DrRequestInfo?
+    ) {
         dialog.show()
-
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(androidx.core.R.layout.custom_dialog)
 
@@ -47,58 +51,32 @@ open class GraphListDialog(context: Context) {
         )
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
-
         dialog.setContentView(R.layout.dialog_graph_list)
 
         val textView: TextView = dialog.findViewById(R.id.pf_graph_name2)
-        Log.d("log", "여기 진입")
-        textView.text = "${household}이 감축한 전력량"
 
+        textView.text = "세대${household}이 감축한 전력량"
+        usageTimeHash = HashMap()
         CoroutineScope(Dispatchers.IO).launch {
-            val call = api.getMeasurementUsageDay(household)
-            val execute = call.execute()
-            val body = execute.body()
-            Log.d("log", "getMeasurementUsageDay$household 1 :" + execute.toString())
-            Log.d("log", "getMeasurementUsageDay$household 2 :" + body.toString())
-            Log.d(
-                "log", "getMeasurementUsageDay$household 3 :" + body?.count().toString()
-            )
-            if (body.toString() != "[]" && body != null) {
-                val count = body?.count()!!
-                for (index in 0 until count) {
-                    val targetTime =
-                        LocalDateTime.parse(body[index].timeCurrent).toLocalTime().hour
-                    if (targetTime < STARTHOUR || targetTime > ENDHOUR)
-                        continue
+            usageGraphAPI(household, selectedDay, drRequestInfo)
 
-                    val current = body[index].current
-                    val voltage = body[index].voltage
-
-                    if (!usageTimeHash.containsKey(targetTime))
-                        usageTimeHash[targetTime] = 15 * current * voltage
-                    else
-                        usageTimeHash[targetTime] =
-                            15 * current * voltage + usageTimeHash.getValue(targetTime)
-                }
-            }
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 listGraph(context)
             }
         }
 
     }
 
-    fun listGraph(context: Context) {
+    private fun listGraph(context: Context) {
+        Log.d("log", "${usageTimeHash.size}")
         val user_entries = ArrayList<BarEntry>()
 
-        var x = 1.2f
+        var x = 1f
         var y: Float
         for (key in STARTHOUR..ENDHOUR) {
             if (usageTimeHash.containsKey(key)) {
                 y = usageTimeHash[key]!!
                 user_entries.add(BarEntry(x++, y))
-            } else {
-                break
             }
         }
 
@@ -111,9 +89,9 @@ open class GraphListDialog(context: Context) {
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 101f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                axisMaximum = 1001f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
-                granularity = 25f // 50 단위마다 선을 그리려고 설정.
+                granularity = 100f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(true) // 축 그리기 설정
@@ -154,13 +132,48 @@ open class GraphListDialog(context: Context) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun usageGraphAPI(household: Int, selectedDay: Int, drRequestInfo: DrRequestInfo?) {
+        val call = api.getUsageAtDrTime(drRequestInfo?.requestId.toString(), household.toString())
+        try {
+            val execute = call.execute()
+            val body = execute.body()
+            Log.d("log", "getMeasurementUsageDay$household 1 :$execute")
+            Log.d("log", "getMeasurementUsageDay$household 2 :" + body.toString())
+            Log.d(
+                "log", "getMeasurementUsageDay$household 3 :" + body?.count().toString()
+            )
+            if (body.toString() != "[]" && body != null) {
+                val count = body.count()
+                for (index in 0 until count) {
+                    val targetTime =
+                        LocalDateTime.parse(body[index].timeCurrent).toLocalTime().hour
+
+                    if (targetTime < STARTHOUR || targetTime > ENDHOUR) continue
+
+                    val current = body[index].current
+                    val voltage = body[index].voltage
+
+                    if (!usageTimeHash.containsKey(targetTime))
+                        usageTimeHash[targetTime] = 15 * current * voltage
+                    else
+                        usageTimeHash[targetTime] =
+                            15 * current * voltage + usageTimeHash.getValue(targetTime)
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("log", "GraphListDialog Exception!")
+        }
+    }
+
     inner class XAxisFormatter : ValueFormatter() {
-        //        private val days = arrayOf("13:00","14:00","15:00","16:00","17:00","18:00","19:00")
+        private val times = ArrayList<String>()
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            val timesString = ArrayList<String>()
-            for (time in STARTHOUR..ENDHOUR)
-                timesString.add("$time:00")
-            return timesString.getOrNull(value.toInt() - 1) ?: value.toString()
+            for (i in STARTHOUR..ENDHOUR) {
+                if (usageTimeHash.containsKey(i))
+                    times.add("$i:00")
+            }
+            return times.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 }

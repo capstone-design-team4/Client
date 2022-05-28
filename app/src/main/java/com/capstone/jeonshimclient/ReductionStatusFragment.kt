@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.fragment_drlist.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,8 +32,8 @@ import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 class ReductionStatusFragment : Fragment() {
-    val api = APIS.create()
-    val itemList = arrayListOf<Date>()
+    private val api = APIS.create()
+    private val itemList = arrayListOf<Date>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
@@ -44,8 +47,6 @@ class ReductionStatusFragment : Fragment() {
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
     var requestInfoDay: DrRequestInfo? = null
-
-
     var drRequestInfo: DrRequestInfo? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -74,10 +75,8 @@ class ReductionStatusFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("log", "OnViewCreated")
-        Log.d("log", "listAdapter: " + listAdapter.toString())
-        //Log.d("log","calendarList: " + calendarList.)
 
+        getRequestInfoDay(selectedDay)
 
         // 뷰가 시작되었을 때 현재 날짜를 표시해줘야 함
         monthAndDay.text = "${
@@ -86,7 +85,6 @@ class ReductionStatusFragment : Fragment() {
                 Locale.KOREA
             )
         } ${LocalDate.now().dayOfMonth}일"
-
 
         // 캘린더 어떤 날짜를 클릭했을 때 발생
         listAdapter.setOnItemClickListener(object : CalendarAdapter.OnItemClickListener {
@@ -118,16 +116,16 @@ class ReductionStatusFragment : Fragment() {
             }
         })
 
-        val graphlistdialog = GraphListDialog(requireContext())
+        val graphListdialog = GraphListDialog(requireContext())
 
         showgraph1.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대1", selectedDay)
+            graphListdialog.graphListDig(requireContext(), 1, selectedDay, drRequestInfo)
         }
         showgraph2.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대2", selectedDay)
+            graphListdialog.graphListDig(requireContext(), 2, selectedDay, drRequestInfo)
         }
         showgraph3.setOnClickListener {
-            graphlistdialog.graphlistDig(requireContext(), "세대3", selectedDay)
+            graphListdialog.graphListDig(requireContext(), 3, selectedDay, drRequestInfo)
         }
     }
 
@@ -158,13 +156,27 @@ class ReductionStatusFragment : Fragment() {
     // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
     @RequiresApi(Build.VERSION_CODES.O)
     fun getRequestInfoDay(day: Int) {
-        var date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0, 0)
+        val date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0)
         Log.d("log", "date: $date")
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun initDrRequestInfo(day: String) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val call = api.getDrRequestInfoDay("${LocalDateTime.now().toString()}")
+
+        api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
+            override fun onResponse(
+                call: Call<DrRequestInfo>,
+                response: Response<DrRequestInfo>
+            ) {
+                Log.d("log", response.toString())
+                Log.d("log", response.body().toString())
+                var body = response.body()
+                if (body != null && body.toString() != "[]") {
+                    drRequestInfo = body
+                }
             }
-        }
+
+            override fun onFailure(call: Call<DrRequestInfo>, t: Throwable) {
+                // 실패
+                Log.d("log", t.message.toString())
+                Log.d("log", "fail")
+            }
+        })
     }
 }

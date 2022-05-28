@@ -20,65 +20,16 @@ data class BatteryInformation(
     var charge: Float   // 배터리 저장량
 )
 
-// 태양광 패널 정보
-data class MeasurementGenDay(
-    var current: Float,  // 측정하는 전류
-    @SerializedName("time_current") var timeCurrent: String,
-    var voltage: Float, // 측정하는 전압
-    @SerializedName("time_voltage") var timeVoltage: String
-)
-
-// 발전량 예상 값, 날짜&시간
-data class PredictionGen(
+data class Prediction(
     var amount: Float,
     var period: String
 )
 
-// 사용량예상, 날짜&시간
-data class PredictionUsage(
-    var amount: Float,
-    var period: String
-)
-
-// 하루 기준 전력 사용량
-data class MeasurementUsageDay(
+data class Measurement(
     var current: Float,
     @SerializedName("time_current") var timeCurrent: String,
     var voltage: Float, //
     @SerializedName("time_voltage") var timeVoltage: String
-)
-
-// 일주일 기준 전력 사용량
-data class MeasurementUsageWeek(
-    var current: Float,
-    @SerializedName("time_current") var timeCurrent: String,
-    var voltage: Float, //
-    @SerializedName("time_voltage") var timeVoltage: String
-)
-
-// 일주일 기준 발전량
-data class MeasurementGenWeek(
-    var current: Float,
-    @SerializedName("time_current") var timeCurrent: String,
-    var voltage: Float, //
-    @SerializedName("time_voltage") var timeVoltage: String
-)
-
-// 데이터콜렉터
-// DB에 접속하여 건물 사용자의 id와
-// 배터리와 태양광 패널의 측정 센서의 id를 가져야 함
-data class DataCollector(
-    var userId: Int,
-    var batteryVoltageId: Int,
-    var generatorVoltageId: Int,
-    var generatorCurrentId: Int
-)
-
-// PowerSupplyVerification 클래스를 위함
-// 현재 건물 사용자가 어떤 전력을 사용 중인지 확인
-data class PowerSupplyVerification(
-    var userId: Int,
-    var relayIsUsing: Boolean
 )
 
 // DR request Data
