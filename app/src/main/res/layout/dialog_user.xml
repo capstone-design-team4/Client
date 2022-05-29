@@ -4,192 +4,359 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="380dp"
-    android:layout_height="600dp"
+    android:layout_height="660dp"
     android:background="@drawable/border_layout2">
+
+
+    <Button
+        android:id="@+id/bt_out"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="10dp"
+        android:background="#00ff0000"
+        android:text="X"
+        android:textColor="#505050"
+        android:textSize="24sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/view_dialog_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/title_dialog_user"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_dialog_user">
+
+        <Button
+            android:id="@+id/bt_1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0"
+            android:background="@drawable/dr_bs_icon2"
+            app:backgroundTint="@null"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/text_dialog_user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/font1"
+            android:gravity="left"
+            android:text="이번 달 전기 요금"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/linear1"
+            app:layout_constraintEnd_toEndOf="@+id/linear1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/linear1"
+            app:layout_constraintTop_toBottomOf="@+id/linear1"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/text_edit_dialog_user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="right"
+            android:text="30,000 원"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/linear1"
+            app:layout_constraintEnd_toEndOf="@+id/linear1"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/linear1"
+            app:layout_constraintTop_toBottomOf="@+id/linear1"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear1">
+
+        <Button
+            android:id="@+id/bt_2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="0"
+            android:background="@drawable/dr_bs_icon"
+            app:backgroundTint="@null"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/text_dialog_user2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/font1"
+            android:gravity="left"
+            android:text="현재 사용 전력원"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/text_edit_dialog_user2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="right"
+            android:text="발전 전력"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear2">
+
+        <Button
+            android:id="@+id/bt_3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="0"
+            android:background="@drawable/dr_bs_icon"
+            app:backgroundTint="@null"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/text_dialog_user3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/font1"
+            android:gravity="left"
+            android:text="이번 달 사용 전력량"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/text_edit_dialog_user3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="right"
+            android:text="1111 kWh"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linear3">
+
+        <Button
+            android:id="@+id/bt_4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="0"
+            android:background="@drawable/dr_bs_icon"
+            app:backgroundTint="@null"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/text_dialog_user4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="0"
+            android:fontFamily="@font/font1"
+            android:gravity="left"
+            android:text="하루 사용 전력량"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/text_edit_dialog_user4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="right"
+            android:text="1111 kWh"
+            android:textColor="#505050"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/title_dialog_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/font1"
         android:text="세대 정보"
         android:textColor="#505050"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
-        android:id="@+id/text_dialog_user1"
+        android:id="@+id/txt_dialog_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/font1"
-        android:text="이번 달 전기 요금"
+        android:text="일간 사용 전력량"
         android:textColor="#505050"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_dialog_user"
-        app:layout_constraintVertical_bias="0.215" />
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_user2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_dialog_user2"
+        android:id="@+id/txt_dialog_user2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
         android:fontFamily="@font/font1"
-        android:text="현재 사용중인 전력원"
+        android:text="x월 x일 오늘"
         android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/usagedaychart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_dialog_user1"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_dialog_user3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font1"
-        android:text="이번 달 동안 사용한 전력량"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_dialog_user2"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_dialog_user5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font1"
-        android:text="하루동안 사용한 전력량"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_dialog_user3"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_edit_dialog_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/font1"
-        android:text="30,000 원"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dialog_user1"
-        app:layout_constraintStart_toStartOf="@+id/text_dialog_user1"
-        app:layout_constraintTop_toBottomOf="@+id/view_dialog_user"
-        app:layout_constraintVertical_bias="0.215" />
-
-    <TextView
-        android:id="@+id/text_edit_dialog_user2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/font1"
-        android:text="발전 전력"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dialog_user1"
-        app:layout_constraintStart_toStartOf="@+id/text_dialog_user1"
-        app:layout_constraintTop_toBottomOf="@+id/text_edit_dialog_user"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_edit_dialog_user3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/font1"
-        android:text="12345 kWh"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dialog_user1"
-        app:layout_constraintStart_toStartOf="@+id/text_dialog_user1"
-        app:layout_constraintTop_toBottomOf="@+id/text_edit_dialog_user2"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_edit_dialog_user4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/font1"
-        android:text="1234 kWh"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dialog_user1"
-        app:layout_constraintStart_toStartOf="@+id/text_dialog_user1"
-        app:layout_constraintTop_toBottomOf="@+id/text_edit_dialog_user3"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <TextView
-        android:id="@+id/text_start_graph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:fontFamily="@font/font1"
-        android:text="그래프로 보러 가기 >>"
-        android:textColor="#505050"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dialog_user1"
-        app:layout_constraintStart_toStartOf="@+id/text_dialog_user1"
-        app:layout_constraintTop_toBottomOf="@+id/text_edit_dialog_user4"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_dialog_user"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/view_dialog_user"
-        android:layout_width="360dp"
+        android:layout_width="340dp"
         android:layout_height="2dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:background="@color/gray_2"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_dialog_user"
-        app:layout_constraintVertical_bias="0.028"
         tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/view_dialog_user2"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@color/not_button_clicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear4"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/usagedaychart"
+        android:layout_width="320dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dialog_user2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingClass" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,7 +36,6 @@ class UserFragment : Fragment() {
 //        initRecycler()
     }
 
-    var userdialog_name = "세대0"
     var userdialog_text1 = 0
     var userdialog_text2 = "발전 전력"
     var userdialog_text3 = 0F
@@ -64,7 +63,6 @@ class UserFragment : Fragment() {
             ) {
                 when (position) {
                     0 -> {
-                        userdialog_name = "세대1"
                         userdialog_text1 = 1111
                         userdialog_text2 = "발전 전력"
                         userdialog_text3 = 1111F
@@ -72,14 +70,12 @@ class UserFragment : Fragment() {
 
                     }
                     1 -> {
-                        userdialog_name = "세대2"
                         userdialog_text1 = 2222
                         userdialog_text2 = "일반 전력"
                         userdialog_text3 = 2222F
                         userdialog_text4 = 2222F
                     }
                     2 -> {
-                        userdialog_name = "세대3"
                         userdialog_text1 = 3333
                         userdialog_text2 = "발전 전력"
                         userdialog_text3 = 3333F
@@ -95,7 +91,6 @@ class UserFragment : Fragment() {
         bt_fragment_user.setOnClickListener{
             val intent = Intent(requireContext(), UserDialog::class.java)
 
-            intent.putExtra("item0", userdialog_name)
             intent.putExtra("item1", userdialog_text1)
             intent.putExtra("item2", userdialog_text2)
             intent.putExtra("item3", userdialog_text3)
@@ -104,48 +99,7 @@ class UserFragment : Fragment() {
             val userDialog = UserDialog(requireContext(), intent)
             userDialog.userDig(requireContext())
         }
-
-        //        usageAdapter = UsageAdapter(requireContext())
-        //        rv_profile.adapter = usageAdapter
-        //        rv_profile.addItemDecoration(VerticalItemDecorator(30))
-        //        rv_profile.addItemDecoration(HorizontalItemDecorator(20))
     }
+
+
 }
-//    private fun initRecycler() {
-//        usageAdapter = UsageAdapter(requireContext())
-//        rv_profile.adapter = usageAdapter
-//        rv_profile.addItemDecoration(VerticalItemDecorator(30))
-//        rv_profile.addItemDecoration(HorizontalItemDecorator(20))
-//
-//        datas.apply {
-//            add(UsageData(name = "세대1", usageDay = "일간 전력량 : 1234 kWh", fee = "사용 요금 : 1234 원", switch = true))
-//            add(UsageData(name = "세대2", usageDay = "일간 전력량 : 5678 kWh", fee = "사용 요금 : 5678 원", switch = false))
-//            add(UsageData(name = "세대3", usageDay = "일간 전력량 : 9999 kWh", fee = "사용 요금 : 9999 원", switch = false))
-//            add(UsageData(name = "세대4", usageDay = "일간 전력량 : 0 kWh", fee = "사용 요금 : 0 원", switch = true))
-//
-//            usageAdapter.datas = datas
-//            usageAdapter.notifyDataSetChanged()
-//
-//        }
-//    }
-//}
-//
-//class VerticalItemDecorator(private val divHeight : Int) : RecyclerView.ItemDecoration() {
-//
-//    @Override
-//    override fun getItemOffsets(outRect: Rect, view: View, parent : RecyclerView, state : RecyclerView.State) {
-//        super.getItemOffsets(outRect, view, parent, state)
-//        outRect.top = divHeight
-//        outRect.bottom = divHeight
-//    }
-//}
-//
-//class HorizontalItemDecorator(private val divHeight : Int) : RecyclerView.ItemDecoration() {
-//
-//    @Override
-//    override fun getItemOffsets(outRect: Rect, view: View, parent : RecyclerView, state : RecyclerView.State) {
-//        super.getItemOffsets(outRect, view, parent, state)
-//        outRect.left = divHeight
-//        outRect.right = divHeight
-//    }
-//}
