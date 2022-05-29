@@ -16,7 +16,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_drlist.*
+import kotlinx.android.synthetic.main.fragment_reductionstatus.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,6 +88,7 @@ class ReductionStatusFragment : Fragment() {
 
         // 캘린더 어떤 날짜를 클릭했을 때 발생
         listAdapter.setOnItemClickListener(object : CalendarAdapter.OnItemClickListener {
+            @SuppressLint("ResourceAsColor")
             override fun onItemClick(v: View, data: Date, pos: Int) {
                 val calendarView: View = v.findViewById(R.id.calendar_cell)
                 val dateTv: TextView = v.findViewById(R.id.date_cell)

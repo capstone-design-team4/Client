@@ -53,21 +53,4 @@ class MainActivity : FragmentActivity() {
 
     }
 
-    fun changeFragment(index: Int) {
-        when (index) {
-            1 -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fl_container, DRListFragment())
-                    .commit()
-            }
-            2 -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fl_container, ReductionStatusFragment())
-                    .commit()
-            }
-        }
-    }
-
 }
