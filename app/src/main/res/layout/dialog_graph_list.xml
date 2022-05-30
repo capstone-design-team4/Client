@@ -8,7 +8,7 @@
     android:background="@drawable/border_layout2">
 
     <View
-        android:id="@+id/view4"
+        android:id="@+id/view_dialog_graph_list1"
         android:layout_width="320dp"
         android:layout_height="1dp"
         android:background="@color/gray_2"
@@ -20,7 +20,7 @@
         tools:ignore="MissingConstraints" />
 
     <View
-        android:id="@+id/view5"
+        android:id="@+id/view_dialog_graph_list2"
         android:layout_width="320dp"
         android:layout_height="1dp"
         android:background="@color/gray_2"

@@ -45,6 +45,26 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/text_fragment_user3"
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/font1"
+        android:text="세대의 전력을 설정해주세요."
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_fragment_user"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
         android:id="@+id/text_fragment_user2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,6 +82,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_fragment_user1"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/text_fragment_user4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/font1"
+        android:text="각 세대의 전력 방식을 설정할 수 있습니다."
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_fragment_user3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/spinner_fragment_user"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:width="1dp"
+        android:bottomLeftRadius="16dp"
+        android:bottomRightRadius="16dp"
+        android:topLeftRadius="16dp"
+        android:topRightRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_fragment_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_fragment_user2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/bt_fragment_user"
@@ -87,27 +148,30 @@
         app:layout_constraintVertical_bias="0"
         tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
 
-    <Spinner
-        android:id="@+id/spinner_fragment_user"
+
+    <Button
+        android:id="@+id/bt_fragment_user2"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:width="1dp"
-        android:bottomLeftRadius="16dp"
-        android:bottomRightRadius="16dp"
-        android:topLeftRadius="16dp"
-        android:topRightRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_fragment_user"
+        android:background="@drawable/background_bs_blue"
+        android:fontFamily="@font/font1"
+        android:text="전체 세대 발전 현황 조회"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="#4444FF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_fragment_user2"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/text_fragment_user4"
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

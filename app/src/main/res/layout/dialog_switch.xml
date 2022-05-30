@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="340dp"
+    android:layout_height="250dp"
+    android:background="@drawable/border_layout2">
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="215dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="7dp"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/view_dialog_switch2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_name1"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch1"
+        tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="215dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="8dp"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/view_dialog_switch3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_name2"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch2"
+        tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="215dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="215dp"
+        android:layout_marginTop="7dp"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/view_dialog_switch4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_name3"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch3"
+        tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:id="@+id/title_dialog_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/font1"
+        android:text="전력 공급 설정"
+        android:textColor="#505050"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_name1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font1"
+        android:text="세대 1"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_dialog_switch2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txt_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font1"
+        android:text="세대 2"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_dialog_switch3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_dialog_switch2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txt_name3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/font1"
+        android:text="세대 3"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_dialog_switch3" />
+
+    <View
+        android:id="@+id/view_dialog_switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/gray_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_dialog_switch" />
+
+    <View
+        android:id="@+id/view_dialog_switch2"
+        style="@style/Divider"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/not_button_clicked"
+        app:layout_constraintBottom_toTopOf="@+id/txt_name2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_name1" />
+
+    <View
+        android:id="@+id/view_dialog_switch3"
+        style="@style/Divider"
+        android:layout_marginTop="10dp"
+        android:background="@color/not_button_clicked"
+        app:layout_constraintBottom_toTopOf="@+id/txt_name3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_name2" />
+
+    <View
+        android:id="@+id/view_dialog_switch4"
+        style="@style/Divider"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_name3" />
+
+    <Button
+        android:id="@+id/bt_OK"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_bs_gray"
+        android:text="확인"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_cancle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch4"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/bt_cancle"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_bs_gray"
+        android:text="취소"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/bt_OK"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_dialog_switch4"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TouchTargetSizeCheck" />
+</androidx.constraintlayout.widget.ConstraintLayout>

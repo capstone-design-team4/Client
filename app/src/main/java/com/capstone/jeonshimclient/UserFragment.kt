@@ -99,6 +99,9 @@ class UserFragment : Fragment() {
             val userDialog = UserDialog(requireContext(), intent)
             userDialog.userDig(requireContext())
         }
+        bt_fragment_user2.setOnClickListener {
+            SwtichDialog(requireContext()).switchDig(requireContext())
+        }
     }
 
 
