@@ -3,6 +3,10 @@ package com.capstone.jeonshimclient
 import com.google.gson.annotations.SerializedName
 import java.sql.Date
 
+data class PostResult(
+    var result:String? = null
+)
+
 // user 정보
 data class UserInformation(
     @SerializedName("user_id") var userId: Int,
@@ -30,6 +34,11 @@ data class Measurement(
     @SerializedName("time_current") var timeCurrent: String,
     var voltage: Float, //
     @SerializedName("time_voltage") var timeVoltage: String
+)
+
+data class RelayController(
+    var relay1Id: Int,
+    var relayIsUsing: Boolean
 )
 
 // DR request Data

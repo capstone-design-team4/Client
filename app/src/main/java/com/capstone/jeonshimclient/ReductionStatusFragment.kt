@@ -41,7 +41,7 @@ class ReductionStatusFragment : Fragment() {
     lateinit var mLayoutManager: LinearLayoutManager
 
     @RequiresApi(Build.VERSION_CODES.O)
-    var selectedDay: Int = LocalDate.now().dayOfMonth - 1
+    var selectedDay: Int = LocalDate.now().dayOfMonth
 
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null

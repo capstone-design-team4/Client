@@ -8,6 +8,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface APIS {
+    @POST("/relay/relayController")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun postRelayController(
+        @Body jsonparams: RelayController
+    ): Call<PostResult>
+
     @GET("/graph/predictUsage/{userId}")
     @Headers(
         "accept: application/json",
