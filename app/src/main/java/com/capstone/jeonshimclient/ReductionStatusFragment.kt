@@ -44,6 +44,9 @@ class ReductionStatusFragment : Fragment() {
     var selectedDay: Int = LocalDate.now().dayOfMonth
 
     @RequiresApi(Build.VERSION_CODES.O)
+    var selectedMonth: Int = LocalDate.now().monthValue
+
+    @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
     var requestInfoDay: DrRequestInfo? = null
@@ -76,7 +79,7 @@ class ReductionStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getRequestInfoDay(selectedDay)
+        getRequestInfoDay(selectedMonth, selectedDay)
 
         // 뷰가 시작되었을 때 현재 날짜를 표시해줘야 함
         monthAndDay.text = "${
@@ -107,25 +110,27 @@ class ReductionStatusFragment : Fragment() {
                 dateTv.setTextColor(R.color.blue_back)
                 dayTv.setTextColor(R.color.blue_back)
                 selectedView = v
-                monthAndDay.text = "${
-                    LocalDate.now().month.getDisplayName(
-                        TextStyle.SHORT,
-                        Locale.KOREA
-                    )
-                } ${data.date}일"
-                getRequestInfoDay(selectedDay)
+                monthAndDay.text = "${selectedMonth}월 ${data.date}일"
+                getRequestInfoDay(selectedMonth, selectedDay)
             }
         })
+
+        calenderImage.setOnClickListener{
+
+        }
 
         val graphListdialog = GraphListDialog(requireContext())
 
         showgraph1.setOnClickListener {
+//            if (drRequestInfo?.user1Flag != false)
             graphListdialog.graphListDig(requireContext(), 1, selectedDay, drRequestInfo)
         }
         showgraph2.setOnClickListener {
+//            if (drRequestInfo?.user2Flag != false)
             graphListdialog.graphListDig(requireContext(), 2, selectedDay, drRequestInfo)
         }
         showgraph3.setOnClickListener {
+//            if (drRequestInfo?.user3Flag != false)
             graphListdialog.graphListDig(requireContext(), 3, selectedDay, drRequestInfo)
         }
     }
@@ -140,9 +145,7 @@ class ReductionStatusFragment : Fragment() {
         for (i: Int in 1..lastDayOfMonth.dayOfMonth) {
             val date = LocalDate.of(LocalDate.now().year, LocalDate.now().month, i)
             val dayOfWeek: DayOfWeek = date.dayOfWeek
-            // dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US)
-            // Log.d("log", dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA))
-            // Log.d("log", dayOfWeek.toString().substring(0, 3))
+
             itemList.add(
                 Date(
                     dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA),
@@ -156,8 +159,8 @@ class ReductionStatusFragment : Fragment() {
 
     // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRequestInfoDay(day: Int) {
-        val date = LocalDateTime.of(LocalDate.now().year, LocalDate.now().month, day, 0, 0)
+    fun getRequestInfoDay(month: Int, day: Int) {
+        val date = LocalDateTime.of(LocalDate.now().year, month, day, 0, 0)
         Log.d("log", "date: $date")
 
         api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
@@ -170,6 +173,7 @@ class ReductionStatusFragment : Fragment() {
                 var body = response.body()
                 if (body != null && body.toString() != "[]") {
                     drRequestInfo = body
+                    changeText()
                 }
             }
 
@@ -179,5 +183,22 @@ class ReductionStatusFragment : Fragment() {
                 Log.d("log", "fail")
             }
         })
+    }
+
+    fun changeText() {
+        if (drRequestInfo?.user1Flag == true)
+            showgraph1.text = "사용량 보기 >"
+        else
+            showgraph1.text = "참여하지 않음"
+
+        if (drRequestInfo?.user2Flag == true)
+            showgraph2.text = "사용량 보기 >"
+        else
+            showgraph2.text = "참여하지 않음"
+
+        if (drRequestInfo?.user3Flag == true)
+            showgraph3.text = "사용량 보기 >"
+        else
+            showgraph3.text = "참여하지 않음"
     }
 }

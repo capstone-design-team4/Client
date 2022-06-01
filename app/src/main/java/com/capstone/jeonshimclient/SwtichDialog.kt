@@ -31,15 +31,15 @@ class SwtichDialog(context: Context) {
 //        dialog.switch2.isChecked = false;
 //        dialog.switch3.isChecked = true;
 
-        dialog.switch1.setOnCheckedChangeListener{buttonView, isChecked ->
+        dialog.switch1.setOnCheckedChangeListener{ _, _ ->
             // 서버로 값 넣어주기
         }
 
-        dialog.switch2.setOnCheckedChangeListener{buttonView, isChecked ->
+        dialog.switch2.setOnCheckedChangeListener{ _, _ ->
             // 서버로 값 넣어주기
         }
 
-        dialog.switch3.setOnCheckedChangeListener{buttonView, isChecked ->
+        dialog.switch3.setOnCheckedChangeListener{ _, _ ->
             // 서버로 값 넣어주기
         }
 
