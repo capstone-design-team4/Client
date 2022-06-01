@@ -11,10 +11,11 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var api: APIS = APIS.create()
+
         val reductionStatusFragment = ReductionStatusFragment()
         val graphFragment = GraphFragment()
         val userFragment = UserFragment()
+        val batteryFragment = BatteryFragment()
 
         // 하단 탭이 눌렸을 때 화면을 전환하기 위해선 이벤트 처리하기 위해 BottomNavigationView 객체 생성
         val bnv_main = findViewById<BottomNavigationView>(R.id.bnv_main)
@@ -44,6 +45,13 @@ class MainActivity : FragmentActivity() {
                             nowFragmentNumber = 3
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.fl_container, userFragment).commit()
+                        }
+                    }
+                    R.id.fourth -> {
+                        if (nowFragmentNumber != 4) {
+                            nowFragmentNumber = 4
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.fl_container, batteryFragment).commit()
                         }
                     }
                 }

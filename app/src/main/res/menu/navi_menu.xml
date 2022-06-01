@@ -7,4 +7,6 @@
         android:enabled="true" android:icon="@drawable/kaka8" android:title="그래프" />
     <item android:id="@+id/third" app:showAsAction="ifRoom"
         android:enabled="true" android:icon="@drawable/kaka9" android:title="세대 현황" />
+    <item android:id="@+id/fourth" app:showAsAction="ifRoom"
+        android:enabled="true" android:icon="@drawable/kaka6" android:title="배터리" />
 </menu>
