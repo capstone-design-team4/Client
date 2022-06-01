@@ -30,7 +30,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.math.log
+import kotlin.text.Typography.times
 
 class GraphFragment : Fragment() {
     private val STARTHOUR: Int = 13
@@ -44,30 +47,38 @@ class GraphFragment : Fragment() {
     private val USERCOUNT: Int = 3
 
     private lateinit var api: APIS
-    private var genTimeHash: HashMap<DayOfWeek, Float> = HashMap()
-    private var usageTimeHash: HashMap<DayOfWeek, Float> = HashMap()
-    private var usagePredictionTimeHash: HashMap<DayOfWeek, Float> = HashMap()
-    private var predictionTimeHash: HashMap<DayOfWeek, Float> = HashMap()
+    private var genTimeHash: HashMap<LocalDate, Float> = HashMap()
+    private var usageTimeHash: HashMap<LocalDate, Float> = HashMap()
+    private var usagePredictionTimeHash: HashMap<LocalDate, Float> = HashMap()
+    private var predictionTimeHash: HashMap<LocalDate, Float> = HashMap()
     private var completeAPI1: Boolean = false
     private var completeAPI2: Boolean = false
     private var nowChart: Int = 1 // 1 or 2 현재 보여주는 chart
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val week = arrayOf(
-        DayOfWeek.MONDAY,
-        DayOfWeek.TUESDAY,
-        DayOfWeek.WEDNESDAY,
-        DayOfWeek.THURSDAY,
-        DayOfWeek.FRIDAY,
-        DayOfWeek.SATURDAY,
-        DayOfWeek.SUNDAY
-    )
-    private val days = arrayOf("월", "화", "수", "목", "금", "토", "일")
-    private val times = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
+
+    // 그래프 x축 항목들 앞에 5일 + 오늘 + 내일 -> 총 7일, 달/일로 표시
+    private val days: ArrayList<LocalDate> = ArrayList()
+
+    // 그래프 x축 항목들 13시부터 19시까지 표기
+    private val strArray = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // days에 들어가야할 날짜들부터 넣어줌
+        var date = LocalDate.now().minusDays(5)
+        Log.d("log", "오늘 " + LocalDate.now().toString())
+        for (i in 0..6) {
+            Log.d("log", "배열 만드는 중 " + date.toString())
+            days.add(date)
+            date = date.plusDays(1)
+        }
+        // x축 항목 만들어주려고 string형 배열
+        for (i in 0..6) {
+            strArray.add("${days[i].monthValue}/${days[i].dayOfMonth}")
+        }
+
 
         api = APIS.create()
         CoroutineScope(Dispatchers.IO).launch {
@@ -159,10 +170,7 @@ class GraphFragment : Fragment() {
                 val count = body.count()
                 for (index in 0 until count) {
                     val targetTime =
-                        LocalDateTime.parse(body[index].timeCurrent).dayOfWeek
-
-                    if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
-                        continue
+                        LocalDateTime.parse(body[index].timeCurrent).toLocalDate()
 
                     val amount = body[index].current * body[index].voltage * 15
                     if (!genTimeHash.containsKey(targetTime))
@@ -188,10 +196,8 @@ class GraphFragment : Fragment() {
                 val count = body2.count()
                 for (index in 0 until count) {
                     val targetTime =
-                        LocalDateTime.parse(body2[index].period).dayOfWeek
+                        LocalDateTime.parse(body2[index].period).toLocalDate()
                     Log.d("log", "발견된 targetTime = $targetTime")
-                    if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
-                        continue
 
                     val amount = body2[index].amount
 
@@ -219,21 +225,18 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-        for (key in 0 until 7) {
-            if (genTimeHash.containsKey(week[key])) {
-                y = genTimeHash[week[key]]!!
-                generator_entries_present.add(BarEntry(x++, y))
-            } else {
-                for (key2 in key until 7) {
-                    if (predictionTimeHash.containsKey(week[key2])) {
-                        y = predictionTimeHash[week[key2]]!!
-                        generator_entries_expected.add(BarEntry(x++, y))
-                    } else
-                        break
-                }
-                break
-            }
+        for (i in 0 until 6) {
+            y = if (genTimeHash.containsKey(days[i]))
+                genTimeHash[days[i]]!!
+            else
+                0f
+            generator_entries_present.add(BarEntry(x++, y))
         }
+        y = if(predictionTimeHash.containsKey(days[6]))
+                predictionTimeHash[days[6]]!!
+            else
+                0f
+        generator_entries_expected.add(BarEntry(x++, y))
 
         chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
@@ -293,14 +296,15 @@ class GraphFragment : Fragment() {
     }
 
     inner class XAxisFormatter_generator : ValueFormatter() {
-        //        private val days = arrayOf("13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00")
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            return times.getOrNull(value.toInt() - 1) ?: value.toString()
+            return strArray.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun usage_present_expected_Graph_API() {
+        Log.d("log", "api가 반복되고 있는 것인지 확인")
         for (i in 1..USERCOUNT) {
             val call = api.getMeasurementUsageWeek("$i")
             try {
@@ -315,19 +319,22 @@ class GraphFragment : Fragment() {
                     val count = body.count()
                     for (index in 0 until count) {
                         val targetTime =
-                            LocalDateTime.parse(body[index].timeCurrent).toLocalDate().dayOfWeek
-                        if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
-                            continue
+                            LocalDateTime.parse(body[index].timeCurrent).toLocalDate()
+                        Log.d("log", "index = $index/$count $targetTime")
 
                         val amount = body[index].current * body[index].voltage * 15
 
                         if (!usageTimeHash.containsKey(targetTime))
                             usageTimeHash[targetTime] = amount
                         else
-                            usageTimeHash[targetTime] = amount + usageTimeHash.getValue(targetTime)
+                            usageTimeHash[targetTime] =
+                                amount + usageTimeHash.getValue(targetTime)
+
+                        Log.d("log", "$usageTimeHash[targetTime]")
                     }
                 }
             } catch (e: Exception) {
+                Log.d("log", e.toString())
                 usage_present_expected_Graph_API()
             }
         }
@@ -347,10 +354,10 @@ class GraphFragment : Fragment() {
                     var amount: Float
                     for (index in 0 until count) {
                         val targetTime =
-                            LocalDateTime.parse(body[index].period).toLocalDate().dayOfWeek
-                        if (targetTime < STARTDAYOFWEEK || targetTime > ENDDAYOFWEEK)
-                            continue
+                            LocalDateTime.parse(body[index].period).toLocalDate()
+
                         amount = body[index].amount
+
                         if (!usagePredictionTimeHash.containsKey(targetTime))
                             usagePredictionTimeHash[targetTime] = amount
                         else
@@ -376,31 +383,28 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-
-        for (key in 0 until 7) {
-            Log.d("log", "시간 $key")
-            if (usageTimeHash.containsKey(week[key])) {
-                y = usageTimeHash[week[key]]!!
-                Log.d("log", "들어가는 값 $y")
-                present_Entry.add(BarEntry(x++, y))
-            } else {
-                for (key2 in key until 7) {
-                    if (usagePredictionTimeHash.containsKey(week[key2])) {
-                        y = usagePredictionTimeHash[week[key2]]!!
-                        expected_Entry.add(BarEntry(x++, y))
-                    } else
-                        break
-                }
-            }
+        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
+        Log.d("log", "그래프 그릴건데 $days")
+        for (i in 0 until 6) {
+            y = if (usageTimeHash.containsKey(days[i]))
+                usageTimeHash[days[i]]!!
+            else 0f
+            present_Entry.add(BarEntry(x++, y))
         }
+        y = if (usagePredictionTimeHash.containsKey(days[6]))
+            usagePredictionTimeHash[days[6]]!!
+        else
+            0f
+        expected_Entry.add((BarEntry(x++, y)))
+
         chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
-            setDrawBarShadow(false) //그래프의 그림자
-            setDrawGridBackground(false)//격자구조 넣을건지
-            axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 20001f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+            setDrawBarShadow(false) // 그래프의 그림자
+            setDrawGridBackground(false)// 격자구조 넣을건지
+            axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
+                axisMaximum = 20001f // 100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
                 granularity = 1000f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
@@ -451,7 +455,7 @@ class GraphFragment : Fragment() {
 
     inner class XAxisFormatter_usage : ValueFormatter() {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            return days.getOrNull(value.toInt() - 1) ?: value.toString()
+            return strArray.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 }
