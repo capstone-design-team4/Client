@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.sql.Date
 
 data class PostResult(
-    var result:String? = null
+    var result: String
 )
 
 // user 정보
@@ -37,7 +37,7 @@ data class Measurement(
 )
 
 data class RelayController(
-    var relay1Id: Int,
+    var relayId: Int,
     var relayIsUsing: Boolean
 )
 
@@ -51,4 +51,8 @@ data class DrRequestInfo(
     var user2Flag: Boolean? = null,
     var user3Flag: Boolean? = null,
     var decisionFlag: Boolean? = null
+)
+
+data class RelayIsUsing(
+    var relayIsUsing: Boolean
 )

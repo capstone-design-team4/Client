@@ -68,9 +68,7 @@ class GraphFragment : Fragment() {
 
         // days에 들어가야할 날짜들부터 넣어줌
         var date = LocalDate.now().minusDays(5)
-        Log.d("log", "오늘 " + LocalDate.now().toString())
         for (i in 0..6) {
-            Log.d("log", "배열 만드는 중 " + date.toString())
             days.add(date)
             date = date.plusDays(1)
         }
@@ -78,7 +76,6 @@ class GraphFragment : Fragment() {
         for (i in 0..6) {
             strArray.add("${days[i].monthValue}/${days[i].dayOfMonth}")
         }
-
 
         api = APIS.create()
         CoroutineScope(Dispatchers.IO).launch {

@@ -2,10 +2,13 @@ package com.capstone.jeonshimclient
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.lang.reflect.Type
 
 interface APIS {
     @POST("/relay/relayController")
@@ -14,7 +17,7 @@ interface APIS {
         "content-type: application/json"
     )
     fun postRelayController(
-        @Body jsonparams: RelayController
+        @Body params: RelayController
     ): Call<PostResult>
 
     @GET("/graph/predictUsage/{userId}")
@@ -99,10 +102,19 @@ interface APIS {
 
     //
 
+    // user id에 해당하는 릴레이 전원이 on인지 확인
+    @GET("/pi/relay/{userId}")
+    @Headers(
+        "accept: application/json",
+        "contemt-type: application/json"
+    )
+    fun getRelayIsUsing(
+        @Path("userId") userId: Int
+    ): Call<RelayIsUsing>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
         private const val BASE_URL = "http://158.247.216.131:8080" // 주소
-
+        private val nullOnEmptyConverterFactory = NullOnEmptyConverterFactory()
         fun create(): APIS {
 
             val gson: Gson = GsonBuilder().setLenient().create();
@@ -110,9 +122,22 @@ interface APIS {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
 //                .client(client)
+                .addConverterFactory(nullOnEmptyConverterFactory)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
                 .create(APIS::class.java)
         }
+    }
+}
+
+class NullOnEmptyConverterFactory : Converter.Factory() {
+    override fun responseBodyConverter(
+        type: Type,
+        annotations: Array<Annotation>,
+        retrofit: Retrofit
+    ): Converter<ResponseBody, *> {
+        val delegate: Converter<ResponseBody, *> =
+            retrofit.nextResponseBodyConverter<Any>(this, type, annotations)
+        return Converter { body -> if (body.contentLength() == 0L) null else delegate.convert(body) }
     }
 }

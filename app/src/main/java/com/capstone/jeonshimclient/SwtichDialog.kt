@@ -1,18 +1,27 @@
 package com.capstone.jeonshimclient
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.WindowManager
+import android.widget.Switch
 import kotlinx.android.synthetic.main.dialog_switch.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class SwtichDialog(context: Context) {
+class SwitchDialog(context: Context, relayIsUsing1: Boolean, relayIsUsing2: Boolean, relayIsUsing3: Boolean, api: APIS) {
+    var relay1: Boolean = relayIsUsing1
+    var relay2: Boolean = relayIsUsing2
+    var relay3: Boolean = relayIsUsing3
+    var api = api
     private val dialog = Dialog(context)
 
-
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     fun switchDig(context: Context){
-
         dialog.show()
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -26,29 +35,56 @@ class SwtichDialog(context: Context) {
 
         dialog.setContentView(R.layout.dialog_switch)
 
-        // 서버에서 값 넣어주기
-//        dialog.switch1.isChecked = true;
-//        dialog.switch2.isChecked = false;
-//        dialog.switch3.isChecked = true;
+        val switch1: Switch = dialog.switch1
+        val switch2: Switch = dialog.switch2
+        val switch3: Switch = dialog.switch3
 
-        dialog.switch1.setOnCheckedChangeListener{ _, _ ->
-            // 서버로 값 넣어주기
+        Log.d("log", "릴레이1" + relay1.toString())
+        switch1.isChecked = relay1;
+        switch2.isChecked = relay2;
+        switch3.isChecked = relay3;
+
+        dialog.switch1.setOnCheckedChangeListener{ _, isChecked ->
+            relay1 = isChecked == true
         }
 
-        dialog.switch2.setOnCheckedChangeListener{ _, _ ->
-            // 서버로 값 넣어주기
+        dialog.switch2.setOnCheckedChangeListener{ _, isChecked ->
+            relay2 = isChecked == true
         }
 
-        dialog.switch3.setOnCheckedChangeListener{ _, _ ->
-            // 서버로 값 넣어주기
+        dialog.switch3.setOnCheckedChangeListener{ _, isChecked ->
+            relay3 = isChecked == true
         }
 
         dialog.bt_OK.setOnClickListener {
+            for(i in 1..3){
+                Log.d("log","$i 번째 !!!")
+                var relayData: RelayController? = null
+                when (i) {
+                    1 -> relayData = RelayController(1, relay1)
+                    2 -> relayData = RelayController(3, relay2)
+                    3 -> relayData = RelayController(5, relay3)
+                }
+                api.postRelayController(relayData!!).enqueue(object : Callback<PostResult> {
+                    override fun onResponse(
+                        call: Call<PostResult>,
+                        response: Response<PostResult>
+                    ) {
+                        Log.d("log", response.toString())
+                        Log.d("log", response.body().toString())
+                    }
+                    override fun onFailure(call: Call<PostResult>, t: Throwable) {
+                        // 실패
+                        Log.d("log",t.message.toString())
+                        Log.d("log","fail")
+                    }
+                })
+            }
+
             dialog.dismiss()
         }
 
         dialog.bt_cancle.setOnClickListener {
-            // 넣었던 값 수정해주기?
             dialog.dismiss()
         }
     }

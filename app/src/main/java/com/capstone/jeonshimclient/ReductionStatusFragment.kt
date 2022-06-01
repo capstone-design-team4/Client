@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -16,6 +17,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.dialog_calendar.*
 import kotlinx.android.synthetic.main.fragment_reductionstatus.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,9 @@ import java.util.*
 class ReductionStatusFragment : Fragment() {
     private val api = APIS.create()
     private val itemList = arrayListOf<Date>()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    var now: LocalDate = LocalDate.now()
 
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
@@ -115,23 +120,40 @@ class ReductionStatusFragment : Fragment() {
             }
         })
 
-        calenderImage.setOnClickListener{
-
+        // 뷰가 생성될 때 left, right 를 눌렀을 때 month 를 변화시켜주어야 함
+        var left: ImageView = view.findViewById(R.id.left_reductionstatus)
+        left.setOnClickListener{
+            if(selectedMonth > 1){
+                selectedMonth-=1
+                now.withMonth(selectedMonth)
+                monthAndDay.text = "${selectedMonth}월 ${selectedDay}일"
+                setListView()
+                getRequestInfoDay(selectedMonth, selectedDay)
+            }
         }
-
-        val graphListdialog = GraphListDialog(requireContext())
+        var right: ImageView = view.findViewById(R.id.right_reductionstatus)
+        right.setOnClickListener{
+            if(selectedMonth < 12){
+                selectedMonth+=1
+                now.withMonth(selectedMonth)
+                monthAndDay.text = "${selectedMonth}월 ${selectedDay}일"
+                setListView()
+                getRequestInfoDay(selectedMonth, selectedDay)
+            }
+        }
+        val graphListDialog = GraphListDialog(requireContext())
 
         showgraph1.setOnClickListener {
 //            if (drRequestInfo?.user1Flag != false)
-            graphListdialog.graphListDig(requireContext(), 1, selectedDay, drRequestInfo)
+            graphListDialog.graphListDig(requireContext(), 1, selectedDay, drRequestInfo)
         }
         showgraph2.setOnClickListener {
 //            if (drRequestInfo?.user2Flag != false)
-            graphListdialog.graphListDig(requireContext(), 2, selectedDay, drRequestInfo)
+            graphListDialog.graphListDig(requireContext(), 2, selectedDay, drRequestInfo)
         }
         showgraph3.setOnClickListener {
 //            if (drRequestInfo?.user3Flag != false)
-            graphListdialog.graphListDig(requireContext(), 3, selectedDay, drRequestInfo)
+            graphListDialog.graphListDig(requireContext(), 3, selectedDay, drRequestInfo)
         }
     }
 
@@ -139,11 +161,11 @@ class ReductionStatusFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListView() {
         // 현재 달의 마지막 날짜
-        val lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
+        val lastDayOfMonth = now.withDayOfMonth(now.lengthOfMonth())
         lastDayOfMonth.format(DateTimeFormatter.ofPattern("dd"))
 
         for (i: Int in 1..lastDayOfMonth.dayOfMonth) {
-            val date = LocalDate.of(LocalDate.now().year, LocalDate.now().month, i)
+            val date = LocalDate.of(now.year, now.month, i)
             val dayOfWeek: DayOfWeek = date.dayOfWeek
 
             itemList.add(
@@ -156,11 +178,10 @@ class ReductionStatusFragment : Fragment() {
         calendarList.adapter = listAdapter
     }
 
-
     // 어떤 날짜를 선택했을 때 그 날짜에 해당하는 drRequest의 id값을 받아야 함
     @RequiresApi(Build.VERSION_CODES.O)
     fun getRequestInfoDay(month: Int, day: Int) {
-        val date = LocalDateTime.of(LocalDate.now().year, month, day, 0, 0)
+        val date = LocalDateTime.of(now.year, month, day, 0, 0)
         Log.d("log", "date: $date")
 
         api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {

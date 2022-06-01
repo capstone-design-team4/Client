@@ -12,8 +12,20 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserFragment : Fragment() {
+    private val api = APIS.create()
+    private var relayIsUsing1 = true
+    private var relayIsUsing2 = true
+    private var relayIsUsing3 = true
+    private lateinit var switchDialog: SwitchDialog
+
     //    lateinit var usageAdapter: UsageAdapter
     lateinit var mainActivity: MainActivity
     override fun onAttach(context: Context) {
@@ -41,7 +53,8 @@ class UserFragment : Fragment() {
     var userdialog_text3 = 0F
     var userdialog_text4 = 0F
 
-    fun loadSpinner(view: View) {val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
+    fun loadSpinner(view: View) {
+        val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             view.context,
@@ -88,7 +101,7 @@ class UserFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-        bt_fragment_user.setOnClickListener{
+        bt_fragment_user.setOnClickListener {
             val intent = Intent(requireContext(), UserDialog::class.java)
 
             intent.putExtra("item1", userdialog_text1)
@@ -100,9 +113,36 @@ class UserFragment : Fragment() {
             userDialog.userDig(requireContext())
         }
         bt_fragment_user2.setOnClickListener {
-            SwtichDialog(requireContext()).switchDig(requireContext())
+            CoroutineScope(Dispatchers.IO).launch {
+                for (i in 1..3)
+                    getRelayIsUsing(i)
+                delay(100)
+                withContext(Dispatchers.Main) {
+                    switchDialog =
+                        SwitchDialog(requireContext(), relayIsUsing1, relayIsUsing2, relayIsUsing3, api)
+                    switchDialog.switchDig(requireContext())
+                }
+            }
         }
     }
 
+    suspend fun getRelayIsUsing(userId: Int) {
+        api.getRelayIsUsing(userId).enqueue(object : Callback<RelayIsUsing> {
+            override fun onResponse(call: Call<RelayIsUsing>, response: Response<RelayIsUsing>) {
+                var body = response.body()
+                if (body != null && body.toString() != "[]") {
+                    when (userId) {
+                        1 -> relayIsUsing1 = body.relayIsUsing
+                        2 -> relayIsUsing2 = body.relayIsUsing
+                        3 -> relayIsUsing3 = body.relayIsUsing
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<RelayIsUsing>, t: Throwable) {
+                Log.d("log", t.message.toString())
+                Log.d("log", "fail")
+            }
+        })
+    }
 }
