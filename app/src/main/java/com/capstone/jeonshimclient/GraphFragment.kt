@@ -32,13 +32,17 @@ import retrofit2.awaitResponse
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.log
+import kotlin.math.log10
+import kotlin.math.pow
 import kotlin.text.Typography.times
 
 class GraphFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private val USERCOUNT: Int = 3
-
     private lateinit var api: APIS
     private var genTimeHash: HashMap<LocalDate, Float> = HashMap()
     private var usageTimeHash: HashMap<LocalDate, Float> = HashMap()
@@ -47,10 +51,8 @@ class GraphFragment : Fragment() {
     private var completeAPI1: Boolean = false
     private var completeAPI2: Boolean = false
     private var nowChart: Int = 1 // 1 or 2 현재 보여주는 chart
-
     // 그래프 x축 항목들 앞에 5일 + 오늘 + 내일 -> 총 7일, 달/일로 표시
     private val days: ArrayList<LocalDate> = ArrayList()
-
     // 그래프 x축 항목들 13시부터 19시까지 표기
     private val strArray = ArrayList<String>()
 
@@ -221,11 +223,24 @@ class GraphFragment : Fragment() {
                 0f
             generator_entries_present.add(BarEntry(x++, y))
         }
-        y = if(predictionTimeHash.containsKey(days[6]))
-                predictionTimeHash[days[6]]!!
-            else
-                0f
+        y = if (predictionTimeHash.containsKey(days[6]))
+            predictionTimeHash[days[6]]!!
+        else
+            0f
         generator_entries_expected.add(BarEntry(x++, y))
+
+        var axisMax = 101f
+        var temp1 = 0
+        if (genTimeHash.isNotEmpty())
+            temp1 = Collections.max(genTimeHash.values).toInt()
+        var temp2 = 0
+        if (predictionTimeHash.isNotEmpty())
+            temp2 = Collections.max(predictionTimeHash.values).toInt()
+        val temp =
+            if (temp1 > temp2) temp1
+            else temp2
+        val len = log10(temp.toDouble()).toInt()
+        axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
 
         chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
@@ -234,7 +249,7 @@ class GraphFragment : Fragment() {
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 501f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                axisMaximum = axisMax // axisMax로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
                 granularity = 25f // 25 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
@@ -386,6 +401,19 @@ class GraphFragment : Fragment() {
             0f
         expected_Entry.add((BarEntry(x++, y)))
 
+        var axisMax = 101f
+        var temp1 = 0
+        if (usageTimeHash.isNotEmpty())
+            temp1 = Collections.max(usageTimeHash.values).toInt()
+        var temp2 = 0
+        if (usagePredictionTimeHash.isNotEmpty())
+            temp2 = Collections.max(usagePredictionTimeHash.values).toInt()
+        val temp =
+            if (temp1 > temp2) temp1
+            else temp2
+        val len = log10(temp.toDouble()).toInt()
+        axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
+
         chart_graphfragment.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
@@ -393,7 +421,7 @@ class GraphFragment : Fragment() {
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 20001f // 100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                axisMaximum = axisMax // axisMax로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
                 granularity = 1000f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)

@@ -13,11 +13,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SwitchDialog(context: Context, relayIsUsing1: Boolean, relayIsUsing2: Boolean, relayIsUsing3: Boolean, api: APIS) {
+class SwitchDialog(context: Context, relayIsUsing1: Boolean, relayIsUsing2: Boolean, relayIsUsing3: Boolean, apis: APIS) {
     var relay1: Boolean = relayIsUsing1
     var relay2: Boolean = relayIsUsing2
     var relay3: Boolean = relayIsUsing3
-    var api = api
+    private var api = apis
     private val dialog = Dialog(context)
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")

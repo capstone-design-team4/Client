@@ -36,25 +36,19 @@ import java.util.*
 class ReductionStatusFragment : Fragment() {
     private val api = APIS.create()
     private val itemList = arrayListOf<Date>()
-
     @RequiresApi(Build.VERSION_CODES.O)
     var now: LocalDate = LocalDate.now()
-
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
     lateinit var calendarList: RecyclerView
     lateinit var mLayoutManager: LinearLayoutManager
-
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedDay: Int = LocalDate.now().dayOfMonth
-
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedMonth: Int = LocalDate.now().monthValue
-
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedView: View? = null
     lateinit var monthAndDay: TextView
-    var requestInfoDay: DrRequestInfo? = null
     var drRequestInfo: DrRequestInfo? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -121,20 +115,20 @@ class ReductionStatusFragment : Fragment() {
         })
 
         // 뷰가 생성될 때 left, right 를 눌렀을 때 month 를 변화시켜주어야 함
-        var left: ImageView = view.findViewById(R.id.left_reductionstatus)
-        left.setOnClickListener{
-            if(selectedMonth > 1){
-                selectedMonth-=1
+        val left: ImageView = view.findViewById(R.id.left_reductionstatus)
+        left.setOnClickListener {
+            if (selectedMonth > 1) {
+                selectedMonth -= 1
                 now.withMonth(selectedMonth)
                 monthAndDay.text = "${selectedMonth}월 ${selectedDay}일"
                 setListView()
                 getRequestInfoDay(selectedMonth, selectedDay)
             }
         }
-        var right: ImageView = view.findViewById(R.id.right_reductionstatus)
-        right.setOnClickListener{
-            if(selectedMonth < 12){
-                selectedMonth+=1
+        val right: ImageView = view.findViewById(R.id.right_reductionstatus)
+        right.setOnClickListener {
+            if (selectedMonth < 12) {
+                selectedMonth += 1
                 now.withMonth(selectedMonth)
                 monthAndDay.text = "${selectedMonth}월 ${selectedDay}일"
                 setListView()

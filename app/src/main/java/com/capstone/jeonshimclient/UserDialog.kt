@@ -25,21 +25,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.math.log10
+import kotlin.math.pow
 
 open class UserDialog(context: Context, intent: Intent) {
-    private lateinit var api: APIS
-    val STARTHOUR = 0
-    val ENDHOUR = 24
-    private var completeAPI: Boolean = false
     // context는 그래프 띄울 때 넣을 용도
     private val dialog = Dialog(context)
+    private val item1 = intent.getIntExtra("item1", 0)
+    private val item2 = intent.getStringExtra("item2")
+    private val item3 = intent.getFloatExtra("item3", 0F)
+    private val item4 = intent.getFloatExtra("item4", 0F)
 
-    val item1 = intent.getIntExtra("item1", 0)
-    val item2 = intent.getStringExtra("item2")
-    val item3 = intent.getFloatExtra("item3", 0F)
-    val item4 = intent.getFloatExtra("item4", 0F)
-
-    fun userDig(context: Context) {
+    fun userDig(context: Context, usageHash: HashMap<Int, Float>) {
 
         dialog.show()
 
@@ -68,28 +68,39 @@ open class UserDialog(context: Context, intent: Intent) {
         dialog.text_edit_dialog_user2.text = item2
         dialog.text_edit_dialog_user3.text = "$item3 kWh"
         dialog.text_edit_dialog_user4.text = "$item4 kWh"
+
+        userDialogGraph(context, usageHash)
     }
 
-    fun userDialogGraph(context: Context){
+    fun userDialogGraph(context: Context, usageHash: HashMap<Int, Float>){
         val user_entries = ArrayList<BarEntry>()
-        user_entries.add(BarEntry(1.2f,20.0f))
-        user_entries.add(BarEntry(2.2f,40.0f))
-        user_entries.add(BarEntry(3.2f,30.0f))
-        user_entries.add(BarEntry(4.2f,40.0f))
-        user_entries.add(BarEntry(5.2f,70.0f))
-        user_entries.add(BarEntry(6.2f,20.0f))
-        user_entries.add(BarEntry(7.2f,40.0f))
+        var x = 1f
+        var y: Float
+        for(hour in 13 .. 19){
+            y = if(usageHash.containsKey(hour))
+                usageHash[hour]!!
+            else
+                0f
+            user_entries.add(BarEntry(x++, y))
+        }
 
+        var axisMax = 101f
+        if(usageHash.isNotEmpty())
+        {
+            val temp = Collections.max(usageHash.values).toInt()
+            val len = log10(temp.toDouble()).toInt()
+            axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
+        }
         val userUsageChart = dialog.findViewById<BarChart>(R.id.usagedaychart)
 
         userUsageChart.run {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
             setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
-            setDrawBarShadow(false) //그래프의 그림자
+            setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
-            axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 101f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+            axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
+                axisMaximum = axisMax // axisMax 위치에 선을 그리기 위해 101f로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
                 granularity = 25f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
@@ -126,7 +137,7 @@ open class UserDialog(context: Context, intent: Intent) {
         val user_data = BarData(dataSet)
         user_data.barWidth = 0.3f //막대 너비 설정
         userUsageChart.run {
-            this.data = user_data //차트의 데이터를 data로 설정해줌.
+            this.data = user_data // 차트의 데이터를 data로 설정해줌.
             setFitBars(true)
             invalidate()
         }

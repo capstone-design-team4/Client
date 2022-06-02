@@ -1,4 +1,5 @@
 package com.capstone.jeonshimclient
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,7 @@ import com.john.waveview.WaveView
 import kotlinx.android.synthetic.main.fragment_battery.*
 import kotlin.concurrent.thread
 
-class BatteryFragment: Fragment() {
+class BatteryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,10 +25,10 @@ class BatteryFragment: Fragment() {
 
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_charging)
 
-        thread(start = true){
+        thread(start = true) {
             var i = 1
-            while(i<=500){
-                i+=10
+            while (i <= 500) {
+                i += 10
                 progressBar.progress = i
                 Thread.sleep(10)
             }

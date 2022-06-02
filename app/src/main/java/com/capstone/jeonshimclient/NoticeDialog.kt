@@ -12,8 +12,8 @@ open class NoticeDialog(context: Context) {
     private val dialog = Dialog(context)
 
     fun setDig(context: Context){
-        var drTime = "13:00 ~ 14:00"
-        var drKwh = 123.3F
+        val drTime = "13:00 ~ 14:00"
+        val drKwh = 123.3F
 
         dialog.show()
 

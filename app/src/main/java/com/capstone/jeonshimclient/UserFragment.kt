@@ -41,8 +41,13 @@ class UserFragment : Fragment() {
     private var usageHash2 = HashMap<Int, Float>()
     private var usageHash3 = HashMap<Int, Float>()
     private var selectedSpinner = 1
-
+    private var counterIO = 4
+    private var counterMAIN = 1
     private lateinit var switchDialog: SwitchDialog
+    private var userdialog_text1 = 0 // 이번 달 전기 요금
+    private var userdialog_text2 = "발전 전력" // 현재 사용 전력원
+    private var userdialog_text3 = 0F // 이번 달 사용 전력량
+    private var userdialog_text4 = 0F // 하루 사용 전력량
 
     lateinit var mainActivity: MainActivity
     override fun onAttach(context: Context) {
@@ -62,17 +67,6 @@ class UserFragment : Fragment() {
         loadSpinner(view)
     }
 
-    // 이번 달 전기 요금 -> get Fee 로 받아올 것
-    var userdialog_text1 = 0
-
-    // 현재 사용 전력원    -> relayIsUsing
-    var userdialog_text2 = "발전 전력"
-
-    // 이번 달 사용 전력량  -> getUsageMonth
-    var userdialog_text3 = 0F
-
-    // 하루 사용 전력량    -> getUsageDay
-    var userdialog_text4 = 0F
 
     fun loadSpinner(view: View) {
         val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
@@ -109,13 +103,10 @@ class UserFragment : Fragment() {
         bt_fragment_user.setOnClickListener {
             val intent = Intent(requireContext(), UserDialog::class.java)
             CoroutineScope(Dispatchers.IO).launch {
+                counterMAIN = 1
                 when (selectedSpinner) {
                     1 -> CoroutineScope(Dispatchers.IO).launch {
-                        getFee(1)
-                        getRelayIsUsing(1)
-                        getUsageDay(1)
-                        getUsageMonth(1)
-                        delay(1000)
+                        getAll(1)
                         userdialog_text1 = fee1
                         userdialog_text2 = if (relayIsUsing1)
                             "발전 전력"
@@ -123,13 +114,11 @@ class UserFragment : Fragment() {
                             "일반 전력"
                         userdialog_text3 = usageMonthAmount1
                         userdialog_text4 = usageDayAmount1
+
+                        counterMAIN -= 1
                     }
                     2 -> CoroutineScope(Dispatchers.IO).launch {
-                        getFee(2)
-                        getRelayIsUsing(2)
-                        getUsageDay(2)
-                        getUsageMonth(2)
-                        delay(1000)
+                        getAll(2)
                         userdialog_text1 = fee2
                         userdialog_text2 = if (relayIsUsing2)
                             "발전 전력"
@@ -137,13 +126,11 @@ class UserFragment : Fragment() {
                             "일반 전력"
                         userdialog_text3 = usageMonthAmount2
                         userdialog_text4 = usageDayAmount2
+
+                        counterMAIN -= 1
                     }
                     3 -> CoroutineScope(Dispatchers.IO).launch {
-                        getFee(3)
-                        getRelayIsUsing(3)
-                        getUsageDay(3)
-                        getUsageMonth(3)
-                        delay(1000)
+                        getAll(3)
                         userdialog_text1 = fee3
                         userdialog_text2 = if (relayIsUsing3)
                             "발전 전력"
@@ -151,10 +138,16 @@ class UserFragment : Fragment() {
                             "일반 전력"
                         userdialog_text3 = usageMonthAmount3
                         userdialog_text4 = usageDayAmount3
+
+                        counterMAIN -= 1
                     }
                 }
-                delay(1000)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
+                    while (counterMAIN > 0) {
+                        Log.d("log", "delay")
+                        delay(10)
+                    }
+
                     intent.putExtra("item1", userdialog_text1)
                     intent.putExtra("item2", userdialog_text2)
                     intent.putExtra("item3", userdialog_text3)
@@ -162,12 +155,16 @@ class UserFragment : Fragment() {
 
                     // UserDialog 띄우기
                     val userDialog = UserDialog(requireContext(), intent)
-                    userDialog.userDig(requireContext())
+                    when (selectedSpinner) {
+                        1 -> userDialog.userDig(requireContext(), usageHash1)
+                        2 -> userDialog.userDig(requireContext(), usageHash2)
+                        3 -> userDialog.userDig(requireContext(), usageHash3)
+                    }
+
                 }
             }
         }
         bt_fragment_user2.setOnClickListener {
-
             // 코루틴 안에서 실행
             CoroutineScope(Dispatchers.IO).launch {
                 for (i in 1..3)
@@ -188,6 +185,21 @@ class UserFragment : Fragment() {
         }
     }
 
+    // 사용자 정보를 받기 위한 모든 get
+    // counter를 4로 맞춰놓고 비동기 방식으로 IO를 진행
+    // 통신이 끝나고 dialog 를 띄워야 하므로 counter 가 0이 될 때까지 딜레이를 주어야 함
+    suspend fun getAll(userId: Int) {
+        counterIO = 4
+        getFee(userId)
+        getRelayIsUsing(userId)
+        getUsageDay(userId)
+        getUsageMonth(userId)
+        while (counterIO > 0) {
+            Log.d("log", "delay counter = $counterIO")
+            delay(10)
+        }
+    }
+
     fun getRelayIsUsing(userId: Int) {
         api.getRelayIsUsing(userId).enqueue(object : Callback<RelayIsUsing> {
             override fun onResponse(call: Call<RelayIsUsing>, response: Response<RelayIsUsing>) {
@@ -199,11 +211,13 @@ class UserFragment : Fragment() {
                         3 -> relayIsUsing3 = body.relayIsUsing
                     }
                 }
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
 
             override fun onFailure(call: Call<RelayIsUsing>, t: Throwable) {
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
         })
     }
@@ -219,11 +233,13 @@ class UserFragment : Fragment() {
                         3 -> fee3 = body.fee
                     }
                 }
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
 
             override fun onFailure(call: Call<Fee>, t: Throwable) {
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
         })
     }
@@ -239,6 +255,11 @@ class UserFragment : Fragment() {
                 if (body != null && body.toString() != "[]") {
                     val count = body.count()
                     var amount = 0f
+                    when (userId) {
+                        1 -> usageHash1.clear()
+                        2 -> usageHash2.clear()
+                        3 -> usageHash3.clear()
+                    }
                     for (i in 0 until count) {
                         val temp = body[i].current * body[i].voltage * 15
                         val targetTime = LocalDateTime.parse(body[i].timeCurrent).hour
@@ -264,11 +285,13 @@ class UserFragment : Fragment() {
                         3 -> usageDayAmount3 = amount
                     }
                 }
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
 
             override fun onFailure(call: Call<List<Measurement>>, t: Throwable) {
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
         })
     }
@@ -293,11 +316,13 @@ class UserFragment : Fragment() {
                         3 -> usageMonthAmount3 = amount
                     }
                 }
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
 
             override fun onFailure(call: Call<List<Measurement>>, t: Throwable) {
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
+                counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
             }
         })
     }

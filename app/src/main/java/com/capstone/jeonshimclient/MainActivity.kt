@@ -11,7 +11,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val reductionStatusFragment = ReductionStatusFragment()
         val graphFragment = GraphFragment()
         val userFragment = UserFragment()

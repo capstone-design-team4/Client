@@ -24,10 +24,10 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
         val dayTv: TextView = view.findViewById(R.id.day_cell)
         val thisView: View = view
 
-        fun bind(item: Date){
+        fun bind(item: Date) {
             val pos = adapterPosition
-            if(pos!=RecyclerView.NO_POSITION){
-                itemView.setOnClickListener{
+            if (pos != RecyclerView.NO_POSITION) {
+                itemView.setOnClickListener {
                     listener?.onItemClick(itemView, item, pos)
                     selectedIndex = pos
                 }
@@ -49,14 +49,13 @@ class CalendarAdapter(private val dataSet: ArrayList<Date>) :
         holder.dayTv.text = dataSet[position].day
 
         holder.bind(dataSet[position])
-        if(selectedIndex != null && selectedIndex == position){
+        if (selectedIndex != null && selectedIndex == position) {
             selectedView = holder.thisView
             holder.thisView.setBackgroundResource(R.drawable.border_layout_bs1)
             holder.dateTv.setTextColor(R.color.blue_back)
             holder.dayTv.setTextColor(R.color.blue_back)
             selectedIndex = position
-        }
-        else{
+        } else {
             holder.dateTv.setTextColor(R.color.white)
             holder.dayTv.setTextColor(R.color.white)
             holder.thisView.setBackgroundResource(0)

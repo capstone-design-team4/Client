@@ -21,7 +21,7 @@ open class CalendarDialog(context: Context) {
     private var dialogDay: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun calenderDialog(context: Context, selectedYear: Int, selectedMonth: Int, selectedDay: Int){
+    fun calenderDialog(context: Context, selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
         dialogYear = selectedYear
         dialogMonth = selectedMonth
         dialogDay = selectedDay
@@ -44,19 +44,22 @@ open class CalendarDialog(context: Context) {
         calenderDialog.minDate = SimpleDateFormat("yyyyMMdd").parse("20200101").time
 
         // 캘린더 뷰의 날짜를 클릭 했을 때 발생될 이벤트
-        calenderDialog.setOnDateChangeListener{view, year, month, dayOfMonth ->
+        calenderDialog.setOnDateChangeListener { view, year, month, dayOfMonth ->
             dialogYear = year
             dialogMonth = month
             dialogDay = dayOfMonth
         }
     }
-    fun getYear(): Int{
+
+    fun getYear(): Int {
         return dialogYear
     }
-    fun getMonth(): Int{
+
+    fun getMonth(): Int {
         return dialogMonth
     }
-    fun getDay(): Int{
+
+    fun getDay(): Int {
         return dialogDay
     }
 }
