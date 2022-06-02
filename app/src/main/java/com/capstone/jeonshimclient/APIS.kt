@@ -58,6 +58,14 @@ interface APIS {
         @Path("userId") userId: String
     ): Call<List<Measurement>>
 
+    @GET("/userManagement/batteryCharge")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getBatteryCharge(
+    ): Call<BatteryCharge>
+
     @GET("/graph/measurementGenWeek")
     @Headers(
         "accept: application/json",

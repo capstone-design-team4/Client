@@ -1,5 +1,6 @@
 package com.capstone.jeonshimclient
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -24,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -39,6 +41,8 @@ open class UserDialog(context: Context, intent: Intent) {
     private val item3 = intent.getFloatExtra("item3", 0F)
     private val item4 = intent.getFloatExtra("item4", 0F)
 
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
     fun userDig(context: Context, usageHash: HashMap<Int, Float>) {
 
         dialog.show()
@@ -68,7 +72,7 @@ open class UserDialog(context: Context, intent: Intent) {
         dialog.text_edit_dialog_user2.text = item2
         dialog.text_edit_dialog_user3.text = "$item3 kWh"
         dialog.text_edit_dialog_user4.text = "$item4 kWh"
-
+        dialog.txt_dialog_user2.text = "${LocalDate.now().monthValue}월 ${LocalDate.now().dayOfMonth}일 오늘"
         userDialogGraph(context, usageHash)
     }
 
