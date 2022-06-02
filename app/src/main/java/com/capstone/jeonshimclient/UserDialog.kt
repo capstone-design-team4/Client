@@ -39,8 +39,6 @@ open class UserDialog(context: Context, intent: Intent) {
     val item3 = intent.getFloatExtra("item3", 0F)
     val item4 = intent.getFloatExtra("item4", 0F)
 
-
-
     fun userDig(context: Context) {
 
         dialog.show()
@@ -66,10 +64,10 @@ open class UserDialog(context: Context, intent: Intent) {
         dialog.bt_out.setOnClickListener {
             dialog.dismiss()
         }
-        dialog.text_edit_dialog_user1.setText("$item1 원")
-        dialog.text_edit_dialog_user2.setText(item2)
-        dialog.text_edit_dialog_user3.setText("$item3 kWh")
-        dialog.text_edit_dialog_user4.setText("$item4 kWh")
+        dialog.text_edit_dialog_user1.text = "$item1 원"
+        dialog.text_edit_dialog_user2.text = item2
+        dialog.text_edit_dialog_user3.text = "$item3 kWh"
+        dialog.text_edit_dialog_user4.text = "$item4 kWh"
     }
 
     fun userDialogGraph(context: Context){

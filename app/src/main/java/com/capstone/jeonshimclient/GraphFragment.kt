@@ -36,14 +36,7 @@ import kotlin.math.log
 import kotlin.text.Typography.times
 
 class GraphFragment : Fragment() {
-    private val STARTHOUR: Int = 13
-    private val ENDHOUR: Int = 19
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private val STARTDAYOFWEEK: DayOfWeek = DayOfWeek.MONDAY
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val ENDDAYOFWEEK: DayOfWeek = DayOfWeek.SUNDAY
     private val USERCOUNT: Int = 3
 
     private lateinit var api: APIS
@@ -54,7 +47,6 @@ class GraphFragment : Fragment() {
     private var completeAPI1: Boolean = false
     private var completeAPI2: Boolean = false
     private var nowChart: Int = 1 // 1 or 2 현재 보여주는 chart
-
 
     // 그래프 x축 항목들 앞에 5일 + 오늘 + 내일 -> 총 7일, 달/일로 표시
     private val days: ArrayList<LocalDate> = ArrayList()

@@ -56,3 +56,7 @@ data class DrRequestInfo(
 data class RelayIsUsing(
     var relayIsUsing: Boolean
 )
+
+data class Fee(
+    var fee: Int
+)

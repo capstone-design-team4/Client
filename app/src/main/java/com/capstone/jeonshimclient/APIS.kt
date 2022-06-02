@@ -82,7 +82,7 @@ interface APIS {
     @GET("/drRequest/usageAtDrTime/{requestId}/{userId}")
     @Headers(
         "accept: application/json",
-        "contemt-type: application/json"
+        "content-type: application/json"
     )
     fun getUsageAtDrTime(
         @Path("requestId") requestId: String,
@@ -94,7 +94,7 @@ interface APIS {
     @GET("/drRequest/requestInfo/{day}")
     @Headers(
         "accept: application/json",
-        "contemt-type: application/json"
+        "content-type: application/json"
     )
     fun getDrRequestInfoDay(
         @Path("day") day: String
@@ -106,11 +106,38 @@ interface APIS {
     @GET("/pi/relay/{userId}")
     @Headers(
         "accept: application/json",
-        "contemt-type: application/json"
+        "content-type: application/json"
     )
     fun getRelayIsUsing(
         @Path("userId") userId: Int
     ): Call<RelayIsUsing>
+
+    @GET("/userManagement/usageMonth/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getUsageMonth(
+        @Path("userId") userId: Int
+    ): Call<List<Measurement>>
+
+    @GET("/userManagement/usageDay/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getUsageDay(
+        @Path("userId") userId: Int
+    ): Call<List<Measurement>>
+
+    @GET("/userManagement/fee/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getFee(
+        @Path("userId") userId: Int
+    ): Call<Fee>
 
     companion object { // static 처럼 공유객체로 사용가능함. 모든 인스턴스가 공유하는 객체로서 동작함.
         private const val BASE_URL = "http://158.247.216.131:8080" // 주소
