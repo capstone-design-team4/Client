@@ -172,7 +172,7 @@ class ReductionStatusFragment : Fragment() {
         val date = LocalDateTime.of(now.year, month, day, 0, 0)
         Log.d("log", "date: $date")
 
-        api.getDrRequestInfoDay(date.dayOfMonth.toString()).enqueue(object : Callback<DrRequestInfo> {
+        api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
             override fun onResponse(
                 call: Call<DrRequestInfo>,
                 response: Response<DrRequestInfo>

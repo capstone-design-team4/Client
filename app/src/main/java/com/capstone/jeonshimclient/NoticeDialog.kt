@@ -22,7 +22,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         val endTime = intent.getStringExtra("endTime")
         val kWh = intent.getFloatExtra("kwh", 0F)
 
-        drTime = startTime + endTime
+        drTime = startTime + " : "+ endTime
         drKwh = kWh
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

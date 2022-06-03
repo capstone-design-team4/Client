@@ -74,6 +74,7 @@ class MainActivity : FragmentActivity() {
             selectedItemId = R.id.first
         }
 
+        val con = this
         CoroutineScope(Dispatchers.IO).launch {
             while(true) {
                 Log.d("abc :", "${drRequestInfo}" )
@@ -98,10 +99,11 @@ class MainActivity : FragmentActivity() {
                         intent.putExtra("endTime", endTime_string)
                         intent.putExtra("kwh", drRequestInfo?.amount)
 
-                        val mainActivity = this as MainActivity
+                        withContext(Dispatchers.Main){
+                            val noticeDialog = NoticeDialog(con, intent)
+                            noticeDialog.setDig(con, intent)
+                        }
 
-                        val noticeDialog = NoticeDialog(mainActivity, intent)
-                        noticeDialog.setDig(mainActivity, intent)
                         this.cancel()
                     }
                 }
