@@ -254,7 +254,7 @@ class GraphFragment : Fragment() {
                 granularity = 25f // 25 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
-                setDrawAxisLine(false) // 축 그리기 설정
+                setDrawAxisLine(true) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정

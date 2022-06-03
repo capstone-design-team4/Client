@@ -24,7 +24,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.log
+import kotlin.math.log10
+import kotlin.math.pow
 import kotlin.text.Typography.times
 
 open class GraphListDialog(context: Context) {
@@ -86,6 +91,14 @@ open class GraphListDialog(context: Context) {
             }
         }
 
+        var axisMax = 101f
+        if(usageTimeHash.isNotEmpty())
+        {
+            val temp = Collections.max(usageTimeHash.values).toInt()
+            val len = log10(temp.toDouble()).toInt()
+            axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
+        }
+
         val userChart = dialog.findViewById<BarChart>(R.id.userdrresultchart)
 
         userChart.run {
@@ -95,7 +108,7 @@ open class GraphListDialog(context: Context) {
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = 200f //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
+                axisMaximum = axisMax //100 위치에 선을 그리기 위해 101f로 맥시멈값 설정
                 axisMinimum = 0f // 최소값 0
                 granularity = 10f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
