@@ -1,8 +1,6 @@
 package com.capstone.jeonshimclient
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
-import android.content.res.Resources.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,12 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_calendar.*
 import kotlinx.android.synthetic.main.fragment_reductionstatus.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +25,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 class ReductionStatusFragment : Fragment() {
@@ -178,7 +172,7 @@ class ReductionStatusFragment : Fragment() {
         val date = LocalDateTime.of(now.year, month, day, 0, 0)
         Log.d("log", "date: $date")
 
-        api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
+        api.getDrRequestInfoDay(date.dayOfMonth.toString()).enqueue(object : Callback<DrRequestInfo> {
             override fun onResponse(
                 call: Call<DrRequestInfo>,
                 response: Response<DrRequestInfo>

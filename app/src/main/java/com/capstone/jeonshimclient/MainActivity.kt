@@ -1,16 +1,19 @@
 package com.capstone.jeonshimclient
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import java.time.LocalDateTime
+import kotlin.math.log
 
 class MainActivity : FragmentActivity() {
     private var nowFragmentNumber = 0
@@ -70,13 +73,52 @@ class MainActivity : FragmentActivity() {
             }
             selectedItemId = R.id.first
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            while(true) {
+                Log.d("abc :", "${drRequestInfo}" )
+                if(drRequestInfo != null) {
+                    val starttime = LocalDateTime.parse(drRequestInfo?.requestStartTime)
+                    val endtime = LocalDateTime.parse(drRequestInfo?.requestEndTime)
+
+                    Log.d("abc : ", "${starttime}")
+                    Log.d("abc2 : ", "${starttime}")
+
+                    if (LocalDateTime.now().hour == starttime.hour - 1) {
+                        val startTime_string =
+                            starttime.hour.toString() + ":" + starttime.minute.toString()
+                        val endTime_string =
+                            endtime.hour.toString() + ":" + endtime.minute.toString()
+
+                        Log.d("abc3 : ", "${startTime_string}")
+                        Log.d("abc4 : ", "${endTime_string}")
+
+                        val intent = Intent()
+                        intent.putExtra("startTime", startTime_string)
+                        intent.putExtra("endTime", endTime_string)
+                        intent.putExtra("kwh", drRequestInfo?.amount)
+
+                        val mainActivity = this as MainActivity
+
+                        val noticeDialog = NoticeDialog(mainActivity, intent)
+                        noticeDialog.setDig(mainActivity, intent)
+                        this.cancel()
+                    }
+                }
+                delay(5000)
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun drRequestInfoDay(day: Int){
-        api.getDrRequestInfoDay(day).enqueue(object : Callback<DrRequestInfo> {
+        val date = LocalDateTime.of(LocalDateTime.now().year, LocalDateTime.now().month, day, 0, 0)
+        Log.d("log", "date: $date")
+
+        api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
             override fun onResponse(call: Call<DrRequestInfo>, response: Response<DrRequestInfo>) {
                 val body = response.body()
+                Log.d("abc_ :","${body}")
                 if (body != null && body.toString() != "[]") {
                     drRequestInfo = DrRequestInfo(body.requestId, body.requestStartTime, body.requestEndTime, body.amount, body.user1Flag, body.user2Flag, body.user3Flag, body.decisionFlag)
                 }
