@@ -71,7 +71,7 @@ open class GraphListDialog(context: Context) {
 
             withContext(Dispatchers.Main) {
                 textView.text = "세대${household}이 감축한 전력량"
-                textView2.text = totalAmount.toString() + "kwh"
+                textView2.text = totalAmount.toString() + "W"
                 listGraph(context)
             }
         }

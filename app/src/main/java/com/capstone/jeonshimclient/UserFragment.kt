@@ -107,7 +107,7 @@ class UserFragment : Fragment() {
                 when (selectedSpinner) {
                     1 -> CoroutineScope(Dispatchers.IO).launch {
                         getAll(1)
-                        userdialog_text1 = fee1
+                        userdialog_text1 = ((usageMonthAmount1 / 1000) * 93).toInt() + 910
                         userdialog_text2 = if (relayIsUsing1)
                             "발전 전력"
                         else
@@ -119,7 +119,7 @@ class UserFragment : Fragment() {
                     }
                     2 -> CoroutineScope(Dispatchers.IO).launch {
                         getAll(2)
-                        userdialog_text1 = fee2
+                        userdialog_text1 = ((usageMonthAmount2 / 1000) * 93).toInt() + 910
                         userdialog_text2 = if (relayIsUsing2)
                             "발전 전력"
                         else
@@ -131,7 +131,7 @@ class UserFragment : Fragment() {
                     }
                     3 -> CoroutineScope(Dispatchers.IO).launch {
                         getAll(3)
-                        userdialog_text1 = fee3
+                        userdialog_text1 = ((usageMonthAmount3 / 1000) * 93).toInt()
                         userdialog_text2 = if (relayIsUsing3)
                             "발전 전력"
                         else

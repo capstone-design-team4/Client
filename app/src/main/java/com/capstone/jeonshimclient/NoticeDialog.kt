@@ -41,7 +41,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         val txtKwh = dialog.findViewById<TextView>(R.id.text_drkwh)
 
         txtTime.text = drTime
-        txtKwh.text = "${drKwh} kWh"
+        txtKwh.text = "${drKwh} W"
 
         btnDone.setOnClickListener{
             onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())

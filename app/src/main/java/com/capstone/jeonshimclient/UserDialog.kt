@@ -70,8 +70,8 @@ open class UserDialog(context: Context, intent: Intent) {
         }
         dialog.text_edit_dialog_user1.text = "$item1 원"
         dialog.text_edit_dialog_user2.text = item2
-        dialog.text_edit_dialog_user3.text = "$item3 kWh"
-        dialog.text_edit_dialog_user4.text = "$item4 kWh"
+        dialog.text_edit_dialog_user3.text = "$item3 W"
+        dialog.text_edit_dialog_user4.text = "$item4 W"
         dialog.txt_dialog_user2.text = "${LocalDate.now().monthValue}월 ${LocalDate.now().dayOfMonth}일 오늘"
         userDialogGraph(context, usageHash)
     }
