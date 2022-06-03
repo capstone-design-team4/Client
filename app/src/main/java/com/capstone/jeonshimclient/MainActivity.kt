@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -101,7 +102,16 @@ class MainActivity : FragmentActivity() {
 
                         withContext(Dispatchers.Main){
                             val noticeDialog = NoticeDialog(con, intent)
+                            val abc = findViewById<TextView>(R.id.drTime)
+                            val abc2 = findViewById<TextView>(R.id.drkWh)
                             noticeDialog.setDig(con, intent)
+
+                            noticeDialog.setOnClickedListener(object : NoticeDialog.ButtonClickListener{
+                                override fun onClicked(drtime: String, drkwh: String) {
+                                    abc.text = drtime
+                                    abc2.text = drkwh
+                                }
+                            })
                         }
 
                         this.cancel()

@@ -44,7 +44,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         txtKwh.text = "${drKwh} kWh"
 
         btnDone.setOnClickListener{
-            // onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())
+            onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())
             dialog.dismiss()
         }
     }
