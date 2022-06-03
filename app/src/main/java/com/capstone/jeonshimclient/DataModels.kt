@@ -2,7 +2,6 @@ package com.capstone.jeonshimclient
 
 import com.google.gson.annotations.SerializedName
 import java.sql.Date
-import java.time.LocalDateTime
 
 data class PostResult(
     var result: String
