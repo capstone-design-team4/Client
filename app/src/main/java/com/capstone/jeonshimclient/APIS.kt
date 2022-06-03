@@ -105,7 +105,7 @@ interface APIS {
         "content-type: application/json"
     )
     fun getDrRequestInfoDay(
-        @Path("day") day: String
+        @Path("day") day: Int
     ): Call<DrRequestInfo>
 
     //
