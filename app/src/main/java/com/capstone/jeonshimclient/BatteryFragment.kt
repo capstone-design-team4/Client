@@ -37,6 +37,7 @@ class BatteryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_charging)
         var textView = view.findViewById<TextView>(R.id.fragment_battery_textView1)
+
         jobMain = CoroutineScope(Dispatchers.Main).launch {
             delay(200)
             while(true){
@@ -61,7 +62,7 @@ class BatteryFragment : Fragment() {
             while (true) {
                 Log.d("log", "IO $batteryCharge")
                 getBatteryCharge()
-                delay(5000)
+                delay(1000)
             }
         }
 //        thread(start = true) {

@@ -102,10 +102,10 @@ class MainActivity : FragmentActivity() {
 
                         withContext(Dispatchers.Main){
                             val noticeDialog = NoticeDialog(con, intent)
-                            val abc = findViewById<TextView>(R.id.drTime)
-                            val abc2 = findViewById<TextView>(R.id.drkWh)
                             noticeDialog.setDig(con, intent)
 
+                            val abc = findViewById<TextView>(R.id.drTime)
+                            val abc2 = findViewById<TextView>(R.id.drkWh)
                             noticeDialog.setOnClickedListener(object : NoticeDialog.ButtonClickListener{
                                 override fun onClicked(drtime: String, drkwh: String) {
                                     abc.text = drtime

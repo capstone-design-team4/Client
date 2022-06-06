@@ -74,6 +74,14 @@ interface APIS {
     fun getMeasurementGenWeek(
     ): Call<List<Measurement>>
 
+    @GET("/graph/yearGenData")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getYearGenData(
+    ): Call<List<YearData>>
+
     @GET("/graph/measurementGenDay")
     @Headers(
         "accept: application/json",
@@ -128,6 +136,14 @@ interface APIS {
     fun getUsageMonth(
         @Path("userId") userId: Int
     ): Call<List<Measurement>>
+
+    @GET("/graph/yearUsageData")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getYearUsageData(
+    ): Call<List<YearData>>
 
     @GET("/userManagement/usageDay/{userId}")
     @Headers(

@@ -67,3 +67,9 @@ data class BatteryCharge(
     var charge: Int,
     var updatedDate: String
 )
+
+data class YearData(
+    val dataId: Int,
+    var amount: Int,
+    var date: String
+)

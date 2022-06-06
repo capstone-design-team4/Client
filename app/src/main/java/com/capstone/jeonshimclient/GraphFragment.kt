@@ -44,31 +44,48 @@ class GraphFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private val USERCOUNT: Int = 3
     private lateinit var api: APIS
-    private var genTimeHash: HashMap<LocalDate, Float> = HashMap()
-    private var usageTimeHash: HashMap<LocalDate, Float> = HashMap()
+    private var genTimeHash: HashMap<LocalDate, Int> = HashMap()
+    private var usageTimeHash: HashMap<LocalDate, Int> = HashMap()
+    private var genMonthHash: HashMap<LocalDate, Float> = HashMap()
+    private var usageMonthHash: HashMap<LocalDate, Float> = HashMap()
     private var usagePredictionTimeHash: HashMap<LocalDate, Float> = HashMap()
     private var predictionTimeHash: HashMap<LocalDate, Float> = HashMap()
     private var completeAPI1: Boolean = false
     private var completeAPI2: Boolean = false
     private var nowChart: Int = 1 // 1 or 2 현재 보여주는 chart
-    // 그래프 x축 항목들 앞에 5일 + 오늘 + 내일 -> 총 7일, 달/일로 표시
-    private val days: ArrayList<LocalDate> = ArrayList()
-    // 그래프 x축 항목들 13시부터 19시까지 표기
+
+    // 그래프 x축 항목
+    private val days: ArrayList<LocalDate> = ArrayList()    // 연/월/일
+    private val months: ArrayList<LocalDate> = ArrayList()  // 연/월
+
+    // 그래프 x축 항목들 표기법
     private val strArray = ArrayList<String>()
+    private val strArrayMonth = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // days에 들어가야할 날짜들부터 넣어줌
-        var date = LocalDate.now().minusDays(5)
-        for (i in 0..6) {
+        var date = LocalDate.now().minusDays(365)
+        var date2 = date.month
+        months.add(LocalDate.of(date.year, date2, 1))
+        for (i in 0..365) {
             days.add(date)
+            if (date2 != date.month) {
+                months.add(LocalDate.of(date.year, date2, 1))
+                date2 = date.month
+            }
             date = date.plusDays(1)
+
+            Log.d("chart", date.toString())
         }
         // x축 항목 만들어주려고 string형 배열
-        for (i in 0..6) {
-            strArray.add("${days[i].monthValue}/${days[i].dayOfMonth}")
+        for (i in 0..365) {
+            strArray.add("${days[i].year}/${days[i].monthValue}/${days[i].dayOfMonth}")
+        }
+        for (value in months) {
+            strArrayMonth.add("${value.year}/${value.month}")
         }
 
         api = APIS.create()
@@ -124,10 +141,8 @@ class GraphFragment : Fragment() {
 
             generator_present_expected_Graph(requireContext())
             text_fragment_graph2.text =
-                "일주일 동안 건물에서 발전시킨 전력의 양을 보여줍니다.\n실제로 발전된 전력의 양과 이후에 발전될 전력의 양을 \n동시에 확인할 수 있습니다."
+                "일 년 동안 건물에서 발전시킨 전력의 양을 보여줍니다.\n실제로 발전된 전력의 양과 이후에 발전될 전력의 양을 \n동시에 확인할 수 있습니다."
 
-//            val startgraph = ExpectedGeneratorGraphDialog(requireContext())
-//            startgraph.startDialog(requireContext())
         }
         bt_start_graph2.setOnClickListener {
             bt_start_graph2.background =
@@ -139,35 +154,42 @@ class GraphFragment : Fragment() {
 
             usage_present_expected_Graph(requireContext())
             text_fragment_graph2.text =
-                "일주일 동안 건물 전체에서 사용된 전력의 양을 보여줍니다.\n실제로 사용한 전력의 양과 이후에 사용될 전력의 양을 \n동시에 확인할 수 있습니다.\n( 세대별 사용량은 세대 정보 페이지에서 조회합니다. )"
-//            val startgraph = ExpectedUsageGraphDialog(requireContext())
-//            startgraph.startDialog(requireContext())
+                "일 년 동안 건물 전체에서 사용된 전력의 양을 보여줍니다.\n실제로 사용한 전력의 양과 이후에 사용될 전력의 양을 \n동시에 확인할 수 있습니다.\n( 세대별 사용량은 세대 정보 페이지에서 조회합니다. )"
+
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun generator_present_expected_Graph_API() {
-        val call = api.getMeasurementGenWeek()
+        val call = api.getYearGenData()
         try {
             val execute = call.execute()
             val body = execute.body()
-            Log.d("log", "getMeasurementGenWeek1 :$execute")
-            Log.d("log", "getMeasurementGenWeek2 : ${body.toString()}")
+            Log.d("log", "getYearGenData1 :$execute")
+            Log.d("log", "getYearGenData2 : ${body.toString()}")
             Log.d(
-                "log", "getMeasurementGenWeek3 : ${body?.count().toString()}"
+                "log", "getYearGenData3 : ${body?.count().toString()}"
             )
 
             if (body.toString() != "[]" && body != null) {
                 val count = body.count()
                 for (index in 0 until count) {
                     val targetTime =
-                        LocalDateTime.parse(body[index].timeCurrent).toLocalDate()
+                        LocalDateTime.parse(body[index].date).toLocalDate()
 
-                    val amount = body[index].current * body[index].voltage * 15
+                    val amount = body[index].amount
                     if (!genTimeHash.containsKey(targetTime))
                         genTimeHash[targetTime] = amount
                     else
                         genTimeHash[targetTime] = amount + genTimeHash.getValue(targetTime)
+                }
+                for (keyValue in genTimeHash) {
+                    val key = LocalDate.of(keyValue.key.year, keyValue.key.month, 1)
+                    val value = keyValue.value
+                    if (genMonthHash.containsKey(key))
+                        genMonthHash[key] = genMonthHash.getValue(key) + value
+                    else
+                        genMonthHash[key] = value.toFloat()
                 }
             }
         } catch (e: Exception) {
@@ -216,9 +238,9 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-        for (i in 0 until 6) {
+        for (i in 0 until 365) {
             y = if (genTimeHash.containsKey(days[i]))
-                genTimeHash[days[i]]!!
+                genTimeHash[days[i]]!!.toFloat()
             else
                 0f
             generator_entries_present.add(BarEntry(x++, y))
@@ -229,29 +251,19 @@ class GraphFragment : Fragment() {
             0f
         generator_entries_expected.add(BarEntry(x++, y))
 
-        var axisMax = 101f
-        var temp1 = 0
-        if (genTimeHash.isNotEmpty())
-            temp1 = Collections.max(genTimeHash.values).toInt()
-        var temp2 = 0
-        if (predictionTimeHash.isNotEmpty())
-            temp2 = Collections.max(predictionTimeHash.values).toInt()
-        val temp =
-            if (temp1 > temp2) temp1
-            else temp2
-        val len = log10(temp.toDouble()).toInt()
-        axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
 
         chart_graphfragment.run {
+            isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
-            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+//            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
+
             axisLeft.run { //왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = axisMax // axisMax로 맥시멈값 설정
-                axisMinimum = 0f // 최소값 0
-                granularity = 25f // 25 단위마다 선을 그리려고 설정.
+                axisMinimum = 4000f // 최소값 0
+                granularity = 3f // 25 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(true) // 축 그리기 설정
@@ -271,7 +283,7 @@ class GraphFragment : Fragment() {
                 valueFormatter = XAxisFormatter_generator() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
+            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
@@ -294,8 +306,9 @@ class GraphFragment : Fragment() {
         chart_data.barWidth = 0.3f //막대 너비 설정
         chart_graphfragment.run {
             this.data = chart_data //차트의 데이터를 data로 설정해줌.
+            this.data.setDrawValues(false)
             setFitBars(true)
-            invalidate()
+            setDrawValueAboveBar(false)
         }
     }
 
@@ -309,38 +322,43 @@ class GraphFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun usage_present_expected_Graph_API() {
         Log.d("log", "api가 반복되고 있는 것인지 확인")
-        for (i in 1..USERCOUNT) {
-            val call = api.getMeasurementUsageWeek("$i")
-            try {
-                val execute = call.execute()
-                val body = execute.body()
-                Log.d("log", "getMeasurementUsageWeek$i 1 :$execute")
-                Log.d("log", "getMeasurementUsageWeek$i 2 :" + body.toString())
-                Log.d(
-                    "log", "getMeasurementUsageWeek$i 3 :" + body?.count().toString()
-                )
-                if (body.toString() != "[]" && body != null) {
-                    val count = body.count()
-                    for (index in 0 until count) {
-                        val targetTime =
-                            LocalDateTime.parse(body[index].timeCurrent).toLocalDate()
-                        Log.d("log", "index = $index/$count $targetTime")
 
-                        val amount = body[index].current * body[index].voltage * 15
+        val call = api.getYearUsageData()
+        try {
+            val execute = call.execute()
+            val body = execute.body()
+            Log.d("log", "getMeasurementUsageWeek1 :$execute")
+            Log.d("log", "getMeasurementUsageWeek2 :" + body.toString())
+            Log.d(
+                "log", "getMeasurementUsageWeek3 :" + body?.count().toString()
+            )
+            if (body.toString() != "[]" && body != null) {
+                val count = body.count()
+                for (index in 0 until count) {
+                    val targetTime =
+                        LocalDateTime.parse(body[index].date).toLocalDate()
+                    Log.d("log", "index = $index/$count $targetTime")
 
-                        if (!usageTimeHash.containsKey(targetTime))
-                            usageTimeHash[targetTime] = amount
-                        else
-                            usageTimeHash[targetTime] =
-                                amount + usageTimeHash.getValue(targetTime)
+                    val amount = body[index].amount
 
-                        Log.d("log", "$usageTimeHash[targetTime]")
-                    }
+                    if (!usageTimeHash.containsKey(targetTime))
+                        usageTimeHash[targetTime] = amount
+                    else
+                        usageTimeHash[targetTime] =
+                            amount + usageTimeHash.getValue(targetTime)
                 }
-            } catch (e: Exception) {
-                Log.d("log", e.toString())
-                usage_present_expected_Graph_API()
+                for (keyValue in usageTimeHash) {
+                    val key = LocalDate.of(keyValue.key.year, keyValue.key.month, 1)
+                    val value = keyValue.value
+                    if (usageMonthHash.containsKey(key))
+                        usageMonthHash[key] = usageMonthHash.getValue(key) + value
+                    else
+                        usageMonthHash[key] = value.toFloat()
+                }
             }
+        } catch (e: Exception) {
+            Log.d("log", e.toString())
+            usage_present_expected_Graph_API()
         }
 
         for (i in 1..USERCOUNT) {
@@ -389,41 +407,29 @@ class GraphFragment : Fragment() {
         var y: Float
         Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
         Log.d("log", "그래프 그릴건데 $days")
-        for (i in 0 until 6) {
+        for (i in 0 until 365) {
             y = if (usageTimeHash.containsKey(days[i]))
-                usageTimeHash[days[i]]!!
+                usageTimeHash[days[i]]!!.toFloat()
             else 0f
             present_Entry.add(BarEntry(x++, y))
         }
-        y = if (usagePredictionTimeHash.containsKey(days[6]))
-            usagePredictionTimeHash[days[6]]!!
+        y = if (usagePredictionTimeHash.containsKey(LocalDate.now()))
+            usagePredictionTimeHash[LocalDate.now()]!!
         else
             0f
         expected_Entry.add((BarEntry(x++, y)))
 
-        var axisMax = 101f
-        var temp1 = 0
-        if (usageTimeHash.isNotEmpty())
-            temp1 = Collections.max(usageTimeHash.values).toInt()
-        var temp2 = 0
-        if (usagePredictionTimeHash.isNotEmpty())
-            temp2 = Collections.max(usagePredictionTimeHash.values).toInt()
-        val temp =
-            if (temp1 > temp2) temp1
-            else temp2
-        val len = log10(temp.toDouble()).toInt()
-        axisMax = temp - (temp % 10f.pow(len)) + 10f.pow(len)
-
         chart_graphfragment.run {
+            isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
-            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+//            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMaximum = axisMax // axisMax로 맥시멈값 설정
-                axisMinimum = 0f // 최소값 0
-                granularity = 1000f // 50 단위마다 선을 그리려고 설정.
+                axisMinimum = 10000f // 최소값 0
+                granularity = 3f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
@@ -443,7 +449,7 @@ class GraphFragment : Fragment() {
                 valueFormatter = XAxisFormatter_usage() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(false) // 그래프 터치해도 아무 변화없게 막음
+            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
@@ -465,14 +471,162 @@ class GraphFragment : Fragment() {
         chart_data.barWidth = 0.3f //막대 너비 설정
         chart_graphfragment.run {
             this.data = chart_data //차트의 데이터를 data로 설정해줌.
+            this.data.setDrawValues(false)
             setFitBars(true)
-            invalidate()
         }
     }
 
     inner class XAxisFormatter_usage : ValueFormatter() {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             return strArray.getOrNull(value.toInt() - 1) ?: value.toString()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun gen_month_Graph(context: Context) {
+        nowChart = 3 // 현재 보여주는 차트 번호
+
+        // 현재 사용량 그래프 정보
+        val month_Entry = ArrayList<BarEntry>()
+
+        var x = 1f
+        var y: Float
+        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
+        Log.d("log", "그래프 그릴건데 $days")
+        for (i in usageMonthHash)
+        {
+            y = i.value
+            month_Entry.add((BarEntry(x++, y)))
+        }
+
+        chart_graphfragment.run {
+            isAutoScaleMinMaxEnabled = true
+            description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
+//            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+            setDrawBarShadow(false) // 그래프의 그림자
+            setDrawGridBackground(false)// 격자구조 넣을건지
+            axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
+                axisMinimum = 10000f // 최소값 0
+                granularity = 3f // 50 단위마다 선을 그리려고 설정.
+                setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
+                setDrawGridLines(true) //격자 라인 활용
+                setDrawAxisLine(false) // 축 그리기 설정
+                axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
+                gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
+                textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
+                textSize = 12f //라벨 텍스트 크기
+            }
+            xAxis.run {
+                position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
+                granularity = 1f // 1 단위만큼 간격 두기
+                setDrawAxisLine(true) // 축 그림
+                setDrawGridLines(false) // 격자
+                textColor = ContextCompat.getColor(context, R.color.blue_back) //라벨 색상
+                textColor = ContextCompat.getColor(context, R.color.blue_back2) //라벨 색상
+                textSize = 12f // 텍스트 크기
+                valueFormatter = XAxisFormatter_usage_month() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
+            }
+            axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
+            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+            animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
+
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
+            legend.textSize = 12f
+        }
+
+        val month_set = BarDataSet(month_Entry, "월별 사용량") // 데이터셋 초기화
+
+        month_set.color = ContextCompat.getColor(context, R.color.blue_back)
+
+        val dataSet: ArrayList<IBarDataSet> = ArrayList()
+        dataSet.add(month_set)
+
+        val chart_data = BarData(dataSet)
+        chart_data.barWidth = 0.3f //막대 너비 설정
+        chart_graphfragment.run {
+            this.data = chart_data //차트의 데이터를 data로 설정해줌.
+            this.data.setDrawValues(false)
+            setFitBars(true)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun usage_month_Graph(context: Context) {
+        nowChart = 4 // 현재 보여주는 차트 번호
+
+        // 현재 사용량 그래프 정보
+        val month_Entry = ArrayList<BarEntry>()
+
+        var x = 1f
+        var y: Float
+        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
+        Log.d("log", "그래프 그릴건데 $days")
+        for (i in usageMonthHash)
+        {
+            y = i.value
+            month_Entry.add((BarEntry(x++, y)))
+        }
+
+        chart_graphfragment.run {
+            isAutoScaleMinMaxEnabled = true
+            description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
+//            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
+            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+            setDrawBarShadow(false) // 그래프의 그림자
+            setDrawGridBackground(false)// 격자구조 넣을건지
+            axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
+                axisMinimum = 10000f // 최소값 0
+                granularity = 3f // 50 단위마다 선을 그리려고 설정.
+                setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
+                setDrawGridLines(true) //격자 라인 활용
+                setDrawAxisLine(false) // 축 그리기 설정
+                axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
+                gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
+                textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
+                textSize = 12f //라벨 텍스트 크기
+            }
+            xAxis.run {
+                position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
+                granularity = 1f // 1 단위만큼 간격 두기
+                setDrawAxisLine(true) // 축 그림
+                setDrawGridLines(false) // 격자
+                textColor = ContextCompat.getColor(context, R.color.blue_back) //라벨 색상
+                textColor = ContextCompat.getColor(context, R.color.blue_back2) //라벨 색상
+                textSize = 12f // 텍스트 크기
+                valueFormatter = XAxisFormatter_usage_month() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
+            }
+            axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
+            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+            animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
+
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
+            legend.textSize = 12f
+        }
+
+        val month_set = BarDataSet(month_Entry, "월별 사용량") // 데이터셋 초기화
+
+        month_set.color = ContextCompat.getColor(context, R.color.blue_back)
+
+        val dataSet: ArrayList<IBarDataSet> = ArrayList()
+        dataSet.add(month_set)
+
+        val chart_data = BarData(dataSet)
+        chart_data.barWidth = 0.3f //막대 너비 설정
+        chart_graphfragment.run {
+            this.data = chart_data //차트의 데이터를 data로 설정해줌.
+            this.data.setDrawValues(false)
+            setFitBars(true)
+        }
+    }
+
+    inner class XAxisFormatter_usage_month : ValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            return strArrayMonth.getOrNull(value.toInt() - 1) ?: value.toString()
         }
     }
 }
