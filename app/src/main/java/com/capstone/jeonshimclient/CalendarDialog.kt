@@ -10,9 +10,6 @@ import android.widget.CalendarView
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.Month
-import java.time.Year
-import java.time.temporal.ChronoField
 
 open class CalendarDialog(context: Context) {
     private val dialog = Dialog(context)

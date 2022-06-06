@@ -7,9 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.util.Log
 import android.view.WindowManager
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.BarChart
@@ -21,12 +19,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlinx.android.synthetic.main.dialog_user.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -76,7 +69,7 @@ open class UserDialog(context: Context, intent: Intent) {
         userDialogGraph(context, usageHash)
     }
 
-    fun userDialogGraph(context: Context, usageHash: HashMap<Int, Float>){
+    private fun userDialogGraph(context: Context, usageHash: HashMap<Int, Float>){
         val user_entries = ArrayList<BarEntry>()
         var x = 1f
         var y: Float

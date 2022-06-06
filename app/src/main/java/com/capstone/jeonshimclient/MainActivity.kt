@@ -14,12 +14,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlin.math.log
 
 class MainActivity : FragmentActivity() {
     private var nowFragmentNumber = 0
-    var drRequestInfo : DrRequestInfo? = null   // DrRequestInfo 객체
-    val api:APIS = APIS.create()
+    var drRequestInfo: DrRequestInfo? = null   // DrRequestInfo 객체
+    private val api: APIS = APIS.create()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +77,10 @@ class MainActivity : FragmentActivity() {
 
         val con = this
         CoroutineScope(Dispatchers.IO).launch {
-            while(true) {
-                Log.d("abc :", "${drRequestInfo}" )
-                if(drRequestInfo != null) {
+            while (true) {
+                if (drRequestInfo != null) {
                     val starttime = LocalDateTime.parse(drRequestInfo?.requestStartTime)
                     val endtime = LocalDateTime.parse(drRequestInfo?.requestEndTime)
-
-                    Log.d("abc : ", "${starttime}")
-                    Log.d("abc2 : ", "${starttime}")
 
                     if (LocalDateTime.now().hour == starttime.hour - 1) {
                         val startTime_string =
@@ -92,21 +88,24 @@ class MainActivity : FragmentActivity() {
                         val endTime_string =
                             endtime.hour.toString() + ":" + endtime.minute.toString()
 
-                        Log.d("abc3 : ", "${startTime_string}")
-                        Log.d("abc4 : ", "${endTime_string}")
+                        Log.d("abc3 : ", startTime_string)
+                        Log.d("abc4 : ", endTime_string)
 
                         val intent = Intent()
                         intent.putExtra("startTime", startTime_string)
                         intent.putExtra("endTime", endTime_string)
                         intent.putExtra("kwh", drRequestInfo?.amount)
 
-                        withContext(Dispatchers.Main){
+                        withContext(Dispatchers.Main) {
+                            while (nowFragmentNumber != 0)
+                                delay(300)
                             val noticeDialog = NoticeDialog(con, intent)
                             noticeDialog.setDig(con, intent)
 
                             val abc = findViewById<TextView>(R.id.drTime)
                             val abc2 = findViewById<TextView>(R.id.drkWh)
-                            noticeDialog.setOnClickedListener(object : NoticeDialog.ButtonClickListener{
+                            noticeDialog.setOnClickedListener(object :
+                                NoticeDialog.ButtonClickListener {
                                 override fun onClicked(drtime: String, drkwh: String) {
                                     abc.text = drtime
                                     abc2.text = drkwh
@@ -123,16 +122,25 @@ class MainActivity : FragmentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun drRequestInfoDay(day: Int){
+    fun drRequestInfoDay(day: Int) {
         val date = LocalDateTime.of(LocalDateTime.now().year, LocalDateTime.now().month, day, 0, 0)
         Log.d("log", "date: $date")
 
         api.getDrRequestInfoDay(date.toString()).enqueue(object : Callback<DrRequestInfo> {
             override fun onResponse(call: Call<DrRequestInfo>, response: Response<DrRequestInfo>) {
                 val body = response.body()
-                Log.d("abc_ :","${body}")
+                Log.d("abc_ :", "${body}")
                 if (body != null && body.toString() != "[]") {
-                    drRequestInfo = DrRequestInfo(body.requestId, body.requestStartTime, body.requestEndTime, body.amount, body.user1Flag, body.user2Flag, body.user3Flag, body.decisionFlag)
+                    drRequestInfo = DrRequestInfo(
+                        body.requestId,
+                        body.requestStartTime,
+                        body.requestEndTime,
+                        body.amount,
+                        body.user1Flag,
+                        body.user2Flag,
+                        body.user3Flag,
+                        body.decisionFlag
+                    )
                 }
             }
 

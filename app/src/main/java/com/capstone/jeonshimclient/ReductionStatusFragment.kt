@@ -14,9 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_reductionstatus.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,8 +31,8 @@ class ReductionStatusFragment : Fragment() {
     var now: LocalDate = LocalDate.now()
     @RequiresApi(Build.VERSION_CODES.O)
     val listAdapter = CalendarAdapter(itemList)
-    lateinit var calendarList: RecyclerView
-    lateinit var mLayoutManager: LinearLayoutManager
+    private lateinit var calendarList: RecyclerView
+    private lateinit var mLayoutManager: LinearLayoutManager
     @RequiresApi(Build.VERSION_CODES.O)
     var selectedDay: Int = LocalDate.now().dayOfMonth
     @RequiresApi(Build.VERSION_CODES.O)
@@ -179,7 +176,7 @@ class ReductionStatusFragment : Fragment() {
             ) {
                 Log.d("log", response.toString())
                 Log.d("log", response.body().toString())
-                var body = response.body()
+                val body = response.body()
                 if (body != null && body.toString() != "[]") {
                     drRequestInfo = body
                     changeText()
@@ -195,19 +192,21 @@ class ReductionStatusFragment : Fragment() {
     }
 
     fun changeText() {
-        if (drRequestInfo?.user1Flag == true)
-            showgraph1.text = "사용량 보기 >"
-        else
-            showgraph1.text = "참여하지 않음"
+        if(showgraph1 != null){
+            if (drRequestInfo?.user1Flag == true)
+                showgraph1.text = "사용량 보기 >"
+            else
+                showgraph1.text = "참여하지 않음"
 
-        if (drRequestInfo?.user2Flag == true)
-            showgraph2.text = "사용량 보기 >"
-        else
-            showgraph2.text = "참여하지 않음"
+            if (drRequestInfo?.user2Flag == true)
+                showgraph2.text = "사용량 보기 >"
+            else
+                showgraph2.text = "참여하지 않음"
 
-        if (drRequestInfo?.user3Flag == true)
-            showgraph3.text = "사용량 보기 >"
-        else
-            showgraph3.text = "참여하지 않음"
+            if (drRequestInfo?.user3Flag == true)
+                showgraph3.text = "사용량 보기 >"
+            else
+                showgraph3.text = "참여하지 않음"
+        }
     }
 }

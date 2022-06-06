@@ -15,13 +15,10 @@ import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
-import java.time.LocalTime
 
 class UserFragment : Fragment() {
     private val api = APIS.create()
@@ -49,7 +46,7 @@ class UserFragment : Fragment() {
     private var userdialog_text3 = 0F // 이번 달 사용 전력량
     private var userdialog_text4 = 0F // 하루 사용 전력량
 
-    lateinit var mainActivity: MainActivity
+    private lateinit var mainActivity: MainActivity
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -62,12 +59,14 @@ class UserFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadSpinner(view)
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun loadSpinner(view: View) {
         val spinner: Spinner = view.findViewById(R.id.spinner_fragment_user)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -188,7 +187,7 @@ class UserFragment : Fragment() {
     // 사용자 정보를 받기 위한 모든 get
     // counter를 4로 맞춰놓고 비동기 방식으로 IO를 진행
     // 통신이 끝나고 dialog 를 띄워야 하므로 counter 가 0이 될 때까지 딜레이를 주어야 함
-    suspend fun getAll(userId: Int) {
+    private suspend fun getAll(userId: Int) {
         counterIO = 4
         getFee(userId)
         getRelayIsUsing(userId)
@@ -200,7 +199,7 @@ class UserFragment : Fragment() {
         }
     }
 
-    fun getRelayIsUsing(userId: Int) {
+    private fun getRelayIsUsing(userId: Int) {
         api.getRelayIsUsing(userId).enqueue(object : Callback<RelayIsUsing> {
             override fun onResponse(call: Call<RelayIsUsing>, response: Response<RelayIsUsing>) {
                 val body = response.body()
@@ -222,7 +221,7 @@ class UserFragment : Fragment() {
         })
     }
 
-    fun getFee(userId: Int) {
+    private fun getFee(userId: Int) {
         api.getFee(userId).enqueue(object : Callback<Fee> {
             override fun onResponse(call: Call<Fee>, response: Response<Fee>) {
                 val body = response.body()
@@ -244,7 +243,7 @@ class UserFragment : Fragment() {
         })
     }
 
-    fun getUsageDay(userId: Int) {
+    private fun getUsageDay(userId: Int) {
         api.getUsageDay(userId).enqueue(object : Callback<List<Measurement>> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
@@ -296,7 +295,7 @@ class UserFragment : Fragment() {
         })
     }
 
-    fun getUsageMonth(userId: Int) {
+    private fun getUsageMonth(userId: Int) {
         api.getUsageMonth(userId).enqueue(object : Callback<List<Measurement>> {
             override fun onResponse(
                 call: Call<List<Measurement>>,

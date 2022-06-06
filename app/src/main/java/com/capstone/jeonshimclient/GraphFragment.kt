@@ -1,7 +1,6 @@
 package com.capstone.jeonshimclient
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -10,12 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -25,20 +21,10 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlinx.android.synthetic.main.fragment_graph.*
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
-import kotlin.math.log10
-import kotlin.math.pow
-import kotlin.text.Typography.times
 
 class GraphFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -62,15 +48,17 @@ class GraphFragment : Fragment() {
     private val strArray = ArrayList<String>()
     private val strArrayMonth = ArrayList<String>()
 
+    private var switch1 = 0
+    private var switch2 = 0
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d("log", "OnCreate")
         // days에 들어가야할 날짜들부터 넣어줌
         var date = LocalDate.now().minusDays(365)
         var date2 = date.month
-        months.add(LocalDate.of(date.year, date2, 1))
-        for (i in 0..365) {
+        for (i in 0..366) {
             days.add(date)
             if (date2 != date.month) {
                 months.add(LocalDate.of(date.year, date2, 1))
@@ -81,40 +69,27 @@ class GraphFragment : Fragment() {
             Log.d("chart", date.toString())
         }
         // x축 항목 만들어주려고 string형 배열
-        for (i in 0..365) {
+        for (i in 0..366) {
             strArray.add("${days[i].year}/${days[i].monthValue}/${days[i].dayOfMonth}")
         }
         for (value in months) {
-            strArrayMonth.add("${value.year}/${value.month}")
+            strArrayMonth.add("${value.year}/${value.monthValue}")
         }
 
         api = APIS.create()
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("log", "Coroutine.launch")
-            if (!completeAPI1) {
-                Log.d("log", "API1")
+        if (genMonthHash.isEmpty())
+            CoroutineScope(Dispatchers.IO).launch {
+                Log.d("log", "Coroutine.launch")
                 generator_present_expected_Graph_API()
-                if (nowChart == 1)
-                    withContext(Dispatchers.Main) {
-                        generator_present_expected_Graph(requireContext())
-                    }
-            }
-            if (!completeAPI2) {
-                Log.d("log", "API2")
                 usage_present_expected_Graph_API()
-                if (nowChart == 2) {
-                    withContext(Dispatchers.Main) {
-                        usage_present_expected_Graph(requireContext())
-                    }
-                }
             }
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("log", "OnCreateView")
         return inflater.inflate(R.layout.fragment_graph, container, false)
     }
 
@@ -122,15 +97,27 @@ class GraphFragment : Fragment() {
     @SuppressLint("ResourceAsColor", "ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("log", "onViewCreated")
+        Log.d("log", "OnViewCreated")
         Log.d("log", "graph")
-        graphFragmentMain()
+        CoroutineScope(Dispatchers.Main).launch {
+            while (!completeAPI1 || !completeAPI2) {
+                delay(100)
+            }
+            graphFragmentMain()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun graphFragmentMain() {
         // 어플 시작시 띄우는 그래프 = 발전량 그래프
-        generator_present_expected_Graph(requireContext())
+        try {
+            generator_present_expected_Graph(requireContext())
+        }catch (e: Exception){
+        }
+
+        switch1 = 1 // 1 = 발전량 2 = 사용량
+        switch2 = 1 // 1 = 일 2 = 월
+
         bt_start_graph1.setOnClickListener {
             bt_start_graph1.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_bs_blue)
@@ -156,6 +143,22 @@ class GraphFragment : Fragment() {
             text_fragment_graph2.text =
                 "일 년 동안 건물 전체에서 사용된 전력의 양을 보여줍니다.\n실제로 사용한 전력의 양과 이후에 사용될 전력의 양을 \n동시에 확인할 수 있습니다.\n( 세대별 사용량은 세대 정보 페이지에서 조회합니다. )"
 
+        }
+        bt_start_graph3.setOnClickListener { // 월버튼 누른 상태
+            if (switch1 == 1) {
+                gen_month_Graph(requireContext())
+            } // 발전량이면
+            else {
+                usage_month_Graph(requireContext())
+            }
+        }
+        bt_start_graph4.setOnClickListener {    // 일버튼 누른 상태
+            if (switch1 == 1) {
+                generator_present_expected_Graph(requireContext())
+            } // 발전량이면
+            else {
+                usage_present_expected_Graph(requireContext())
+            }
         }
     }
 
@@ -196,6 +199,30 @@ class GraphFragment : Fragment() {
             generator_present_expected_Graph_API()
         }
 
+        val call3 = api.getMeasurementGen()
+        try {
+            val execute = call3.execute()
+            val body = execute.body()
+            Log.d("log", "getMeasurementGen1 :$execute")
+            Log.d("log", "getMeasurementGen2 :" + body.toString())
+            Log.d(
+                "log", "getMeasurementGen3 :" + body?.count().toString()
+            )
+            if (body.toString() != "[]" && body != null) {
+                val count = body.count()
+                for (index in 0 until count) {
+                    val targetTime = LocalDateTime.parse(body[index].timeCurrent).toLocalDate()
+                    val amount = body[index].current * body[index].voltage * 15
+                    if (!genTimeHash.containsKey(targetTime))
+                        genTimeHash[targetTime] = amount.toInt()
+                    else
+                        genTimeHash[targetTime] = amount.toInt() + genTimeHash.getValue(targetTime)
+                }
+            }
+        } catch (e: Exception) {
+
+        }
+
         val call2 = api.getPredictionGen()
         try {
             val execute2 = call2.execute()
@@ -209,13 +236,13 @@ class GraphFragment : Fragment() {
                 val count = body2.count()
                 for (index in 0 until count) {
                     val targetTime =
-                        LocalDateTime.parse(body2[index].period).toLocalDate()
-                    Log.d("log", "발견된 targetTime = $targetTime")
+                        LocalDateTime.parse(body2[index].period).toLocalDate().plusDays(1)
 
-                    val amount = body2[index].amount
+                    val amount = body2[index].amount * 0.002f
 
                     if (!predictionTimeHash.containsKey(targetTime))
                         predictionTimeHash[targetTime] = amount
+
                     else
                         predictionTimeHash[targetTime] =
                             amount + predictionTimeHash.getValue(targetTime)
@@ -238,25 +265,27 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-        for (i in 0 until 365) {
+        for (i in 0..365) {
             y = if (genTimeHash.containsKey(days[i]))
                 genTimeHash[days[i]]!!.toFloat()
             else
                 0f
             generator_entries_present.add(BarEntry(x++, y))
+            Log.d("log", "gen. y = $y")
         }
-        y = if (predictionTimeHash.containsKey(days[6]))
-            predictionTimeHash[days[6]]!!
+        y = if (predictionTimeHash.containsKey(LocalDate.now().plusDays(1)))
+            predictionTimeHash[LocalDate.now().plusDays(1)]!!
         else
             0f
-        generator_entries_expected.add(BarEntry(x++, y))
+        Log.d("log", "gen. 마지막 y = $y")
+        generator_entries_expected.add(BarEntry(x, y))
 
 
         chart_graphfragment.run {
             isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
-            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setVisibleXRangeMaximum(50f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
@@ -266,7 +295,7 @@ class GraphFragment : Fragment() {
                 granularity = 3f // 25 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
-                setDrawAxisLine(true) // 축 그리기 설정
+                setDrawAxisLine(false) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
@@ -282,6 +311,7 @@ class GraphFragment : Fragment() {
                 textSize = 12f // 텍스트 크기
                 valueFormatter = XAxisFormatter_generator() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
+
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
             setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
@@ -321,7 +351,6 @@ class GraphFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun usage_present_expected_Graph_API() {
-        Log.d("log", "api가 반복되고 있는 것인지 확인")
 
         val call = api.getYearUsageData()
         try {
@@ -362,34 +391,60 @@ class GraphFragment : Fragment() {
         }
 
         for (i in 1..USERCOUNT) {
-            val call = api.getPredictionUsage("$i")
+            val call2 = api.getMeasurementUsage(i)
             try {
-                val execute = call.execute()
-                val body = execute.body()
-                Log.d("log", "getPredictionUsage$i 1 :$execute")
-                Log.d("log", "getPredictionUsage$i 2 :" + body.toString())
-                Log.d(
-                    "log", "getPredictionUsage$i 3 :" + body?.count().toString()
-                )
-                if (body.toString() != "[]" && body != null) {
-                    val count = body.count()
+                val execute2 = call2.execute()
+                val body2 = execute2.body()
+                if (body2 != null && body2.toString() != "[]") {
+                    val count = body2.count()
                     var amount: Float
                     for (index in 0 until count) {
-                        val targetTime =
-                            LocalDateTime.parse(body[index].period).toLocalDate()
+                        val targetTime = LocalDateTime.parse(body2[index].timeCurrent).toLocalDate()
 
-                        amount = body[index].amount
+                        amount = body2[index].current * body2[index].voltage * 15
 
-                        if (!usagePredictionTimeHash.containsKey(targetTime))
-                            usagePredictionTimeHash[targetTime] = amount
+                        if (!usageTimeHash.containsKey(targetTime))
+                            usageTimeHash[targetTime] = amount.toInt()
                         else
-                            usagePredictionTimeHash[targetTime] =
-                                amount + usagePredictionTimeHash.getValue(targetTime)
+                            usageTimeHash[targetTime] =
+                                amount.toInt() + usageTimeHash.getValue(targetTime)
                     }
                 }
             } catch (e: Exception) {
                 usage_present_expected_Graph_API()
             }
+        }
+
+        val call3 = api.getPredictionUsage()
+        try {
+            val execute3 = call3.execute()
+            val body3 = execute3.body()
+            Log.d("log", "getPredictionUsage1 :$execute3")
+            Log.d("log", "getPredictionUsage2 :" + body3.toString())
+            Log.d(
+                "log", "getPredictionUsage3 :" + body3?.count().toString()
+            )
+            var logAmount = 0f
+            if (body3 != null && body3.toString() != "[]") {
+                val count = body3.count()
+                var amount: Float
+                for (index in 0 until count) {
+                    val targetTime =
+                        LocalDateTime.parse(body3[index].period).toLocalDate()
+
+                    amount = body3[index].amount * 2.5f
+//                    logAmount += amount
+                    if (!usagePredictionTimeHash.containsKey(targetTime))
+                        usagePredictionTimeHash[targetTime] = amount
+                    else
+                        usagePredictionTimeHash[targetTime] =
+                            amount + usagePredictionTimeHash.getValue(targetTime)
+                }
+            }
+//            Log.d("log", "예측사용량 = $logAmount")
+
+        } catch (e: Exception) {
+            usage_present_expected_Graph_API()
         }
         completeAPI2 = true
     }
@@ -407,7 +462,7 @@ class GraphFragment : Fragment() {
         var y: Float
         Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
         Log.d("log", "그래프 그릴건데 $days")
-        for (i in 0 until 365) {
+        for (i in 0..365) {
             y = if (usageTimeHash.containsKey(days[i]))
                 usageTimeHash[days[i]]!!.toFloat()
             else 0f
@@ -417,18 +472,19 @@ class GraphFragment : Fragment() {
             usagePredictionTimeHash[LocalDate.now()]!!
         else
             0f
-        expected_Entry.add((BarEntry(x++, y)))
+        Log.d("log", "usage. 마지막 y = $y")
+        expected_Entry.add((BarEntry(x, y)))
 
         chart_graphfragment.run {
             isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
-            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
-                axisMinimum = 10000f // 최소값 0
+                axisMinimum = 7000f // 최소값 0
                 granularity = 3f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
@@ -493,8 +549,7 @@ class GraphFragment : Fragment() {
         var y: Float
         Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
         Log.d("log", "그래프 그릴건데 $days")
-        for (i in usageMonthHash)
-        {
+        for (i in usageMonthHash) {
             y = i.value
             month_Entry.add((BarEntry(x++, y)))
         }
@@ -503,7 +558,7 @@ class GraphFragment : Fragment() {
             isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
-            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
@@ -564,8 +619,7 @@ class GraphFragment : Fragment() {
         var y: Float
         Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
         Log.d("log", "그래프 그릴건데 $days")
-        for (i in usageMonthHash)
-        {
+        for (i in usageMonthHash) {
             y = i.value
             month_Entry.add((BarEntry(x++, y)))
         }
@@ -574,7 +628,7 @@ class GraphFragment : Fragment() {
             isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
-            setVisibleXRangeMaximum(90f); // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지

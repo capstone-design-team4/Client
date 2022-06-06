@@ -20,15 +20,13 @@ interface APIS {
         @Body params: RelayController
     ): Call<PostResult>
 
-    @GET("/graph/predictUsage/{userId}")
+    @GET("/graph/predictionUsage")
     @Headers(
         "accept: application/json",
         "content-type: application/json"
     )
     fun getPredictionUsage(
-        @Path("userId") userId: String
     ): Call<List<Prediction>>
-
 
     @GET("/graph/predictionGen")
     @Headers(
@@ -57,6 +55,22 @@ interface APIS {
     fun getMeasurementUsageDay(
         @Path("userId") userId: String
     ): Call<List<Measurement>>
+
+    @GET("/graph/measurementGen")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getMeasurementGen():Call<List<Measurement>>
+
+    @GET("/graph/measurementUsage/{userId}")
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    fun getMeasurementUsage(
+        @Path("userId") userId: Int
+    ):Call<List<Measurement>>
 
     @GET("/userManagement/batteryCharge")
     @Headers(

@@ -1,5 +1,6 @@
 package com.capstone.jeonshimclient
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.widget.TextView
 open class NoticeDialog(context: Context, intent: Intent) {
     private val dialog = Dialog(context)
 
+    @SuppressLint("SetTextI18n")
     fun setDig(context: Context, intent: Intent){
         var drTime = "00:00 ~ 00:00"
         var drKwh = 0.0F
@@ -41,7 +43,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         val txtKwh = dialog.findViewById<TextView>(R.id.text_drkwh)
 
         txtTime.text = drTime
-        txtKwh.text = "${drKwh} W"
+        txtKwh.text = "$drKwh W"
 
         btnDone.setOnClickListener{
             onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())
