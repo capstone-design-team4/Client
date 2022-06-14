@@ -12,6 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+            <!--      시작 액비티비      -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,8 +23,6 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true">
-            <!--      시작 액비티비      -->
-
         </activity>
     </application>
 
