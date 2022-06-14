@@ -60,10 +60,10 @@ class GraphFragment : Fragment() {
         var date2 = date.month
         for (i in 0..366) {
             days.add(date)
-            if (date2 != date.month) {
-                months.add(LocalDate.of(date.year, date2, 1))
-                date2 = date.month
-            }
+            if(months.isEmpty())
+                months.add(LocalDate.of(date.year, date.month, 1))
+            else if(months[months.count() - 1].month != date.month)
+                months.add(LocalDate.of(date.year, date.month, 1))
             date = date.plusDays(1)
 
             Log.d("chart", date.toString())
@@ -103,22 +103,24 @@ class GraphFragment : Fragment() {
             while (!completeAPI1 || !completeAPI2) {
                 delay(100)
             }
-            graphFragmentMain()
+            try{
+                graphFragmentMain()
+            }catch (e: Exception){
+                cancel()
+            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun graphFragmentMain() {
         // 어플 시작시 띄우는 그래프 = 발전량 그래프
-        try {
-            generator_present_expected_Graph(requireContext())
-        }catch (e: Exception){
-        }
+        generator_present_expected_Graph(requireContext())
 
         switch1 = 1 // 1 = 발전량 2 = 사용량
         switch2 = 1 // 1 = 일 2 = 월
 
         bt_start_graph1.setOnClickListener {
+            switch1 = 1
             bt_start_graph1.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_bs_blue)
             bt_start_graph1.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -132,6 +134,7 @@ class GraphFragment : Fragment() {
 
         }
         bt_start_graph2.setOnClickListener {
+            switch1 = 2
             bt_start_graph2.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.background_bs_blue)
             bt_start_graph2.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -285,7 +288,7 @@ class GraphFragment : Fragment() {
             isAutoScaleMinMaxEnabled = true
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
-            setVisibleXRangeMaximum(50f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
+            setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
             setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)//격자구조 넣을건지
@@ -313,7 +316,7 @@ class GraphFragment : Fragment() {
             }
 
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+//            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
@@ -424,7 +427,7 @@ class GraphFragment : Fragment() {
             Log.d(
                 "log", "getPredictionUsage3 :" + body3?.count().toString()
             )
-            var logAmount = 0f
+//            var logAmount = 0f
             if (body3 != null && body3.toString() != "[]") {
                 val count = body3.count()
                 var amount: Float
@@ -460,8 +463,8 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
-        Log.d("log", "그래프 그릴건데 $days")
+//        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
+//        Log.d("log", "그래프 그릴건데 $days")
         for (i in 0..365) {
             y = if (usageTimeHash.containsKey(days[i]))
                 usageTimeHash[days[i]]!!.toFloat()
@@ -485,14 +488,14 @@ class GraphFragment : Fragment() {
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
                 axisMinimum = 7000f // 최소값 0
-                granularity = 3f // 50 단위마다 선을 그리려고 설정.
+                granularity = 1f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 12f //라벨 텍스트 크기
+                textSize = 8f //라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
@@ -501,16 +504,16 @@ class GraphFragment : Fragment() {
                 setDrawGridLines(false) // 격자
                 textColor = ContextCompat.getColor(context, R.color.blue_back) //라벨 색상
                 textColor = ContextCompat.getColor(context, R.color.blue_back2) //라벨 색상
-                textSize = 12f // 텍스트 크기
+                textSize = 8f // 텍스트 크기
                 valueFormatter = XAxisFormatter_usage() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+//            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
             legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
-            legend.textSize = 12f
+            legend.textSize = 8f
         }
 
         val present_set = BarDataSet(present_Entry, "현재 사용량") // 데이터셋 초기화
@@ -525,6 +528,7 @@ class GraphFragment : Fragment() {
 
         val chart_data = BarData(dataSet)
         chart_data.barWidth = 0.3f //막대 너비 설정
+        Log.d("log", "막대 너비는 ${chart_data.barWidth}")
         chart_graphfragment.run {
             this.data = chart_data //차트의 데이터를 data로 설정해줌.
             this.data.setDrawValues(false)
@@ -547,9 +551,8 @@ class GraphFragment : Fragment() {
 
         var x = 1f
         var y: Float
-        Log.d("log", "그래프 그릴건데 ${usageTimeHash.keys}")
-        Log.d("log", "그래프 그릴건데 $days")
-        for (i in usageMonthHash) {
+        Log.d("log", "그래프 그릴건데 ${genMonthHash.keys}")
+        for (i in genMonthHash) {
             y = i.value
             month_Entry.add((BarEntry(x++, y)))
         }
@@ -559,19 +562,19 @@ class GraphFragment : Fragment() {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
-            setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+            setPinchZoom(true) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
                 axisMinimum = 10000f // 최소값 0
-                granularity = 3f // 50 단위마다 선을 그리려고 설정.
+                granularity = 1f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 12f //라벨 텍스트 크기
+                textSize = 8f //라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
@@ -580,16 +583,16 @@ class GraphFragment : Fragment() {
                 setDrawGridLines(false) // 격자
                 textColor = ContextCompat.getColor(context, R.color.blue_back) //라벨 색상
                 textColor = ContextCompat.getColor(context, R.color.blue_back2) //라벨 색상
-                textSize = 12f // 텍스트 크기
+                textSize = 8f // 텍스트 크기
                 valueFormatter = XAxisFormatter_usage_month() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+//            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
             legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
-            legend.textSize = 12f
+            legend.textSize = 8f
         }
 
         val month_set = BarDataSet(month_Entry, "월별 사용량") // 데이터셋 초기화
@@ -604,7 +607,7 @@ class GraphFragment : Fragment() {
         chart_graphfragment.run {
             this.data = chart_data //차트의 데이터를 data로 설정해줌.
             this.data.setDrawValues(false)
-            setFitBars(true)
+            setFitBars(false)
         }
     }
 
@@ -629,19 +632,19 @@ class GraphFragment : Fragment() {
             description.isEnabled = false // 차트 옆에 별도로 표기되는 description을 안보이게 설정 (false)
 //            setMaxVisibleValueCount(7) // 최대 보이는 그래프 개수를 7개로 지정
             setVisibleXRangeMaximum(90f) // 가로 스크롤 생김 + 스크롤 넘어가기전 표출되는 데이터 값
-            setPinchZoom(false) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
+            setPinchZoom(true) // 핀치줌(두손가락으로 줌인 줌 아웃하는것) 설정
             setDrawBarShadow(false) // 그래프의 그림자
             setDrawGridBackground(false)// 격자구조 넣을건지
             axisLeft.run { // 왼쪽 축. 즉 Y방향 축을 뜻한다.
                 axisMinimum = 10000f // 최소값 0
-                granularity = 3f // 50 단위마다 선을 그리려고 설정.
+                granularity = 1f // 50 단위마다 선을 그리려고 설정.
                 setDrawLabels(true) // 값 적는거 허용 (0, 50, 100)
                 setDrawGridLines(true) //격자 라인 활용
                 setDrawAxisLine(false) // 축 그리기 설정
                 axisLineColor = ContextCompat.getColor(context, R.color.gray_1) // 축 색깔 설정
                 gridColor = ContextCompat.getColor(context, R.color.gray_1) // 축 아닌 격자 색깔 설정
                 textColor = ContextCompat.getColor(context, R.color.gray_1) // 라벨 텍스트 컬러 설정
-                textSize = 12f //라벨 텍스트 크기
+                textSize = 8f //라벨 텍스트 크기
             }
             xAxis.run {
                 position = XAxis.XAxisPosition.BOTTOM //X축을 아래에다가 둔다.
@@ -650,16 +653,16 @@ class GraphFragment : Fragment() {
                 setDrawGridLines(false) // 격자
                 textColor = ContextCompat.getColor(context, R.color.blue_back) //라벨 색상
                 textColor = ContextCompat.getColor(context, R.color.blue_back2) //라벨 색상
-                textSize = 12f // 텍스트 크기
+                textSize = 8f // 텍스트 크기
                 valueFormatter = XAxisFormatter_usage_month() // X축 라벨값(밑에 표시되는 글자) 바꿔주기 위해 설정
             }
             axisRight.isEnabled = false // 오른쪽 Y축을 안보이게 해줌.
-            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
+//            setTouchEnabled(true) // 그래프 터치해도 아무 변화없게 막음
             animateY(1000) // 밑에서부터 올라오는 애니매이션 적용
 
             legend.isEnabled = true
             legend.textColor = ContextCompat.getColor(context, R.color.gray_1)
-            legend.textSize = 12f
+            legend.textSize = 8f
         }
 
         val month_set = BarDataSet(month_Entry, "월별 사용량") // 데이터셋 초기화
@@ -674,7 +677,7 @@ class GraphFragment : Fragment() {
         chart_graphfragment.run {
             this.data = chart_data //차트의 데이터를 data로 설정해줌.
             this.data.setDrawValues(false)
-            setFitBars(true)
+            setFitBars(false)
         }
     }
 

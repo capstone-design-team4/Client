@@ -168,7 +168,7 @@ class UserFragment : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 for (i in 1..3)
                     getRelayIsUsing(i)
-                delay(100)      // 리퀘스트 받아오는데에 시간을 고려해서 딜레이 약간 넣어줌
+                delay(300)      // 리퀘스트 받아오는데에 시간을 고려해서 딜레이 약간 넣어줌
                 withContext(Dispatchers.Main) {
                     switchDialog =
                         SwitchDialog(
@@ -205,9 +205,18 @@ class UserFragment : Fragment() {
                 val body = response.body()
                 if (body != null && body.toString() != "[]") {
                     when (userId) {
-                        1 -> relayIsUsing1 = body.relayIsUsing
-                        2 -> relayIsUsing2 = body.relayIsUsing
-                        3 -> relayIsUsing3 = body.relayIsUsing
+                        1 -> {
+                            Log.d("log", body.relayIsUsing.toString())
+                            relayIsUsing1 = body.relayIsUsing
+                        }
+                        2 -> {
+                            Log.d("log", body.relayIsUsing.toString())
+                            relayIsUsing2 = body.relayIsUsing
+                        }
+                        3 -> {
+                            Log.d("log", body.relayIsUsing.toString())
+                            relayIsUsing3 = body.relayIsUsing
+                        }
                     }
                 }
                 counterIO -= 1    // 동기화를 위해 존재함 counter == 0 일때 모든 get이 끝남을 의미
@@ -262,6 +271,7 @@ class UserFragment : Fragment() {
                     for (i in 0 until count) {
                         val temp = body[i].current * body[i].voltage * 15
                         val targetTime = LocalDateTime.parse(body[i].timeCurrent).hour
+                        Log.d("log", "targetTime = $targetTime")
                         amount += temp
                         when (userId) {
                             1 -> if (!usageHash1.containsKey(targetTime))

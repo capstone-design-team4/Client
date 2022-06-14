@@ -24,7 +24,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         val endTime = intent.getStringExtra("endTime")
         val kWh = intent.getFloatExtra("kwh", 0F)
 
-        drTime = startTime + " : "+ endTime
+        drTime = startTime + " ~ "+ endTime
         drKwh = kWh
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -43,7 +43,7 @@ open class NoticeDialog(context: Context, intent: Intent) {
         val txtKwh = dialog.findViewById<TextView>(R.id.text_drkwh)
 
         txtTime.text = drTime
-        txtKwh.text = "$drKwh W"
+        txtKwh.text = "$drKwh Wh"
 
         btnDone.setOnClickListener{
             onClickedListener.onClicked(txtTime.text.toString(), txtKwh.text.toString())

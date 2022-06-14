@@ -82,22 +82,27 @@ class SwitchDialog(
                             response: Response<BatteryCharge>
                         ) {
                             if (response.isSuccessful) {
+                                Log.d("log", "성공")
+                                Log.d("log", response.body()!!.toString())
                                 charge = response.body()!!.charge
                             }
                             flag = true
                         }
 
                         override fun onFailure(call: Call<BatteryCharge>, t: Throwable) {
+                            // 실패
+                            Log.d("log", t.message.toString())
+                            Log.d("log", "fail")
                             flag = true
                         }
                     })
                     while (!flag) {
                         delay(100)
                     }
-                    if (charge <= 20) {
+                    if (charge <= 30) {
                         // 20이하라서 토스트 띄워야 함
                         withContext(Dispatchers.Main){
-                            Toast.makeText(context, "배터리 저장량이 20% 이하힙니다", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "배터리 저장량이 30% 이하힙니다", Toast.LENGTH_SHORT).show()
                         }
                     } else
                         api.postRelayController(relayData!!).enqueue(object : Callback<PostResult> {

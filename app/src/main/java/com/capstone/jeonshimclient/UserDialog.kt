@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -61,6 +62,7 @@ open class UserDialog(context: Context, intent: Intent) {
         dialog.bt_out.setOnClickListener {
             dialog.dismiss()
         }
+        Log.d("log",usageHash.toString())
         dialog.text_edit_dialog_user1.text = "$item1 원"
         dialog.text_edit_dialog_user2.text = item2
         dialog.text_edit_dialog_user3.text = "$item3 W"

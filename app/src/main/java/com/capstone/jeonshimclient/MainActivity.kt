@@ -19,7 +19,8 @@ class MainActivity : FragmentActivity() {
     private var nowFragmentNumber = 0
     var drRequestInfo: DrRequestInfo? = null   // DrRequestInfo 객체
     private val api: APIS = APIS.create()
-
+    public var time: String? = null
+    public var wh: String? = null
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +83,7 @@ class MainActivity : FragmentActivity() {
                     val starttime = LocalDateTime.parse(drRequestInfo?.requestStartTime)
                     val endtime = LocalDateTime.parse(drRequestInfo?.requestEndTime)
 
-                    if (LocalDateTime.now().hour == starttime.hour - 1) {
+                    if (LocalDateTime.now().hour == starttime.hour) {
                         val startTime_string =
                             starttime.hour.toString() + ":" + starttime.minute.toString()
                         val endTime_string =
@@ -97,7 +98,7 @@ class MainActivity : FragmentActivity() {
                         intent.putExtra("kwh", drRequestInfo?.amount)
 
                         withContext(Dispatchers.Main) {
-                            while (nowFragmentNumber != 0)
+                            while (nowFragmentNumber != 1)
                                 delay(300)
                             val noticeDialog = NoticeDialog(con, intent)
                             noticeDialog.setDig(con, intent)
@@ -109,6 +110,8 @@ class MainActivity : FragmentActivity() {
                                 override fun onClicked(drtime: String, drkwh: String) {
                                     abc.text = drtime
                                     abc2.text = drkwh
+                                    time = drtime
+                                    wh = drkwh
                                 }
                             })
                         }
