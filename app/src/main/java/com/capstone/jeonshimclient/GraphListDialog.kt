@@ -27,10 +27,8 @@ import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.log
 import kotlin.math.log10
 import kotlin.math.pow
-import kotlin.text.Typography.times
 
 open class GraphListDialog(context: Context) {
     private val dialog = Dialog(context)

@@ -95,19 +95,19 @@
             tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/bt_start_graph3"
             android:layout_width="44dp"
             android:layout_height="31dp"
             android:text="월"
             android:textColor="#000000"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/bt_start_graph4"
             app:layout_constraintTop_toBottomOf="@+id/bt_start_graph2"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/bt_start_graph4"
             android:layout_width="44dp"
             android:layout_height="31dp"
             android:layout_marginEnd="35dp"
@@ -146,7 +146,7 @@
         android:layout_marginStart="25dp"
         android:fontFamily="@font/font1"
         android:padding="5dp"
-        android:text="일주일 동안 건물에서 발전시킨 전력의 양을 보여줍니다.\n실제로 발전된 전력의 양과 이후에 발전될 전력의 양을 \n동시에 확인할 수 있습니다."
+        android:text="일 년 동안 건물에서 발전시킨 전력의 양을 보여줍니다.\n실제로 발전된 전력의 양과 이후에 발전될 전력의 양을 \n동시에 확인할 수 있습니다."
         android:textSize="15sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
