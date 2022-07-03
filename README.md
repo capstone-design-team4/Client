@@ -1,5 +1,34 @@
+# Capstone
+
+이 프로젝트는 2022 세종대학교 capstone디자인 프로젝트 및 창의설계 경진대회에 출품되었습니다.
+여러 주제 중 DC 전력그리드를 위한 월간 전력 사용량 예측을 선정하여 진행되었고 금상을 수상하였습니다.
+
+* AI repo : 
+* Backend repo :
+
+## 참여자
+* 박주원 : hardware, server 개발
+* 유진식 : AI 개발
+* 이범석 : android 개발
+* 손현조 : android 개발
+
+# Feature
+다음의 기능들을 담은 서비스를 구현했습니다.
+
+  * 지난 DR감축요청 확인
+  * 각 세대별 참여 여부 열람
+  * 사용량, 예측량 그래프 열람
+  * 월간 전기 요금표 계산
+  * 하드웨어 스위치 원격 작동
+  * 배터리 잔량 확인
+  * 리싸이클러뷰 + 어댑터를 통해 데이터 이동 및 다이얼로그 실행
+  * 스피너
+  * 하나의 액티비티에 다수의 프래그먼트를 올리는 구조로 구현
+  * 하단 네비게이션 바를 이용한 프래그먼트 이동
+  * 다이얼로그 실행 및 정보 주고 받기
+
 # Client
-1차 UI
+## 1차 UI
 
 ![KakaoTalk_20220513_081104158](https://user-images.githubusercontent.com/53038672/170083875-6d3086b8-5aa7-494f-b703-7d1f3d280bc5.png)
 ![KakaoTalk_20220513_081104158_01](https://user-images.githubusercontent.com/53038672/170083886-4e2f9424-3b14-4443-a6ef-7cff48bf1ce2.png)
@@ -9,22 +38,15 @@
 ![KakaoTalk_20220513_081104158_05](https://user-images.githubusercontent.com/53038672/170083911-efa89161-1540-42ec-965b-fb1bb10b8768.png)
 ![KakaoTalk_20220513_081104158_06](https://user-images.githubusercontent.com/53038672/170083916-5daac6e4-eb20-48d8-a100-aeeebf4369a0.png)
 
-기능:
-  - 하나의 액티비티에 다수의 프래그먼트를 올리는 구조로 구현
-  - 하단 네비게이션 바를 이용한 프래그먼트 이동
-  - 다이얼로그 실행 및 정보 주고 받기
-  - 그래프
-  - 리싸이클러뷰 + 어댑터를 통해 데이터 이동 및 다이얼로그 실행
-  - 스피너
 
-2차 UI (최종)
 
-<img src="https://user-images.githubusercontent.com/77970380/177027699-cb5a931e-5eb8-4901-8724-3c0194ec244d.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027247-f9668462-ee96-4b05-9f4e-cf4309235917.jpg" height="600" width="300">![KakaoTalk_20220608_195548681](https://user-images.githubusercontent.com/77970380/177027872-6537de0a-9865-4c15-baa1-e3fa1e079cd2.jpg)
+## 2차 UI (최종)
 
-<img src="https://user-images.githubusercontent.com/77970380/177027771-a5ed9771-acee-485f-831a-3371bda293d9.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027804-bbc992ff-3630-4112-941b-c7a97c6f3127.jpg" height="600" width="300">
-<img src="https://user-images.githubusercontent.com/77970380/177027825-3e717b9e-4a22-451a-a1fa-e2f04e8aab61.jpg" height="600" width="300">
+<img src="https://user-images.githubusercontent.com/77970380/177027699-cb5a931e-5eb8-4901-8724-3c0194ec244d.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027247-f9668462-ee96-4b05-9f4e-cf4309235917.jpg" height="600" width="300">
+<img src="https://user-images.githubusercontent.com/77970380/177027872-6537de0a-9865-4c15-baa1-e3fa1e079cd2.jpg" height="300" width="300">
 
-![KakaoTalk_20220608_153028412_04](https://user-images.githubusercontent.com/77970380/177027858-4c4326bc-a3eb-425f-acef-ffa7898fc298.jpg)
-![KakaoTalk_20220608_153028412_05](https://user-images.githubusercontent.com/77970380/177027863-91dab8dc-c6bc-4cbd-88bf-314582efb1f7.jpg)
-![KakaoTalk_20220608_153028412_06](https://user-images.githubusercontent.com/77970380/177027866-79f44bc7-ff34-46ca-b7a4-7f0c0cff8c7d.jpg)
-![KakaoTalk_20220608_153028412_07](https://user-images.githubusercontent.com/77970380/177027868-ea65a20b-fa7e-4d49-bf66-7c63a6ad408f.jpg)
+<img src="https://user-images.githubusercontent.com/77970380/177027804-bbc992ff-3630-4112-941b-c7a97c6f3127.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027825-3e717b9e-4a22-451a-a1fa-e2f04e8aab61.jpg" height="600" width="300">
+
+<img src="https://user-images.githubusercontent.com/77970380/177027858-4c4326bc-a3eb-425f-acef-ffa7898fc298.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027863-91dab8dc-c6bc-4cbd-88bf-314582efb1f7.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027866-79f44bc7-ff34-46ca-b7a4-7f0c0cff8c7d.jpg" height="600" width="300">
+
+<img src="https://user-images.githubusercontent.com/77970380/177027868-ea65a20b-fa7e-4d49-bf66-7c63a6ad408f.jpg" height="600" width="300">
