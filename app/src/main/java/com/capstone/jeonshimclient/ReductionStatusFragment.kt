@@ -234,7 +234,7 @@ class ReductionStatusFragment : Fragment() {
                 Log.d("log", t.message.toString())
                 Log.d("log", "fail")
                 nullBody = true
-                changeText()
+                // changeText()
             }
         })
     }
