@@ -6,7 +6,7 @@
 * AI repo : 
 * Backend repo :
 
-## 참여자
+### 참여자
 * [박주원](https://github.com/qkrwndnjsdlqslek) : hardware, server 개발
 * [유진식](https://github.com/starplantr) : AI 개발
 * [이범석](https://github.com/YiBeomSeok) : android 개발
@@ -28,7 +28,7 @@
   * 다이얼로그 실행 및 정보 주고 받기
 
 # Client
-## 1차 UI
+### 1차 UI
 
 ![KakaoTalk_20220513_081104158](https://user-images.githubusercontent.com/53038672/170083875-6d3086b8-5aa7-494f-b703-7d1f3d280bc5.png)
 ![KakaoTalk_20220513_081104158_01](https://user-images.githubusercontent.com/53038672/170083886-4e2f9424-3b14-4443-a6ef-7cff48bf1ce2.png)
@@ -40,7 +40,7 @@
 
 
 
-## 2차 UI (최종)
+### 2차 UI (최종)
 
 <img src="https://user-images.githubusercontent.com/77970380/177027699-cb5a931e-5eb8-4901-8724-3c0194ec244d.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027247-f9668462-ee96-4b05-9f4e-cf4309235917.jpg" height="600" width="300">
 <img src="https://user-images.githubusercontent.com/77970380/177027872-6537de0a-9865-4c15-baa1-e3fa1e079cd2.jpg" height="300" width="300">
