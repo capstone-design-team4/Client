@@ -18,14 +18,3 @@
   - 스피너
 
 2차 UI (최종)
-
-![KakaoTalk_20220608_153028412](https://user-images.githubusercontent.com/77970380/177026624-8fb4a6e3-2872-4028-b898-f8d844262d53.jpg)
-![KakaoTalk_20220608_195548681_01](https://user-images.githubusercontent.com/77970380/177026637-9f1177c7-9bac-4cbd-b083-08f662078744.jpg)
-![KakaoTalk_20220608_154527836](https://user-images.githubusercontent.com/77970380/177026643-3fd4a867-01e4-4a1c-9fe4-502cad1493eb.jpg)
-![KakaoTalk_20220608_154527836_01](https://user-images.githubusercontent.com/77970380/177026646-c8ca5070-66c0-4e2d-a204-81fe2753d58f.jpg)
-![KakaoTalk_20220608_194334404](https://user-images.githubusercontent.com/77970380/177026650-afb3c3a2-4dc4-4b3f-86e1-4b690e69d32d.jpg)
-![KakaoTalk_20220608_195548681](https://user-images.githubusercontent.com/77970380/177026651-88cc6a23-da11-4428-b8c5-f8aaa6aab244.jpg)
-![KakaoTalk_20220608_153028412_04](https://user-images.githubusercontent.com/77970380/177026652-91ec2f93-e7fc-44ed-b5a6-85e0e7e4df2b.jpg)
-![KakaoTalk_20220608_153028412_05](https://user-images.githubusercontent.com/77970380/177026657-ece1b3bc-6b50-4a46-8ede-746cd3974dcf.jpg)
-![KakaoTalk_20220608_153028412_06](https://user-images.githubusercontent.com/77970380/177026658-1c71ee53-0aa8-40d4-b7ff-754186736e46.jpg)
-![KakaoTalk_20220608_153028412_07](https://user-images.githubusercontent.com/77970380/177026660-2022ee90-34f8-44d7-91a5-8a89c851a439.jpg)
