@@ -7,10 +7,10 @@
 * Backend repo :
 
 ## 참여자
-* 박주원 : hardware, server 개발
-* 유진식 : AI 개발
-* 이범석 : android 개발
-* 손현조 : android 개발
+* [박주원](https://github.com/qkrwndnjsdlqslek) : hardware, server 개발
+* [유진식](https://github.com/starplantr) : AI 개발
+* [이범석](https://github.com/YiBeomSeok) : android 개발
+* [손현조](https://github.com/BoyCho) : android 개발
 
 # Feature
 다음의 기능들을 담은 서비스를 구현했습니다.
@@ -50,3 +50,9 @@
 <img src="https://user-images.githubusercontent.com/77970380/177027858-4c4326bc-a3eb-425f-acef-ffa7898fc298.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027863-91dab8dc-c6bc-4cbd-88bf-314582efb1f7.jpg" height="600" width="300"> <img src="https://user-images.githubusercontent.com/77970380/177027866-79f44bc7-ff34-46ca-b7a4-7f0c0cff8c7d.jpg" height="600" width="300">
 
 <img src="https://user-images.githubusercontent.com/77970380/177027868-ea65a20b-fa7e-4d49-bf66-7c63a6ad408f.jpg" height="600" width="300">
+
+# Used Open source
+프로젝트에서 사용한 오픈소스 라이브러리
+*
+*
+*
