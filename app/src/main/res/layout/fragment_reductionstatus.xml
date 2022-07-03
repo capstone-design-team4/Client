@@ -104,10 +104,10 @@
                 android:layout_marginTop="15dp"
                 android:clickable="false"
                 android:src="@drawable/left_dark"
-                android:tint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#FFFFFF" />
 
             <ImageView
                 android:id="@+id/calenderImage"
