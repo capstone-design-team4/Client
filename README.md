@@ -40,8 +40,3 @@
 
 <img src="https://user-images.githubusercontent.com/77970380/177027868-ea65a20b-fa7e-4d49-bf66-7c63a6ad408f.jpg" height="600" width="300">
 
-# Used Open source
-프로젝트에서 사용한 오픈소스 라이브러리
-*
-*
-*
