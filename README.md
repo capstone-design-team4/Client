@@ -1,9 +1,4 @@
-# Capstone Design
-
-이 프로젝트는 2022 세종대학교 Capstone 디자인 프로젝트 및 창의설계 경진대회에 출품되었습니다.
-DC 전력그리드를 위한 월간 전력 사용량 예측을 선정하여 진행되었고 금상을 수상하였습니다.
-
-### 📺 YouTube
+## 📺 YouTube
 https://www.youtube.com/watch?v=tnAfcAQGePY&t=11s
 
 ### 👥 참여자
